@@ -1,0 +1,1 @@
+int doub(const int n);
