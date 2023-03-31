@@ -7,8 +7,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-add_executable(doub_test doub_test.cpp)
-target_link_libraries(doub_test GTest::gtest_main doubler)
+add_executable(all_tests tuple_test.cc)
+target_link_libraries(all_tests GTest::gtest_main tuple)
 
 include(GoogleTest)
-gtest_discover_tests(doub_test)
+gtest_discover_tests(all_tests)
