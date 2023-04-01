@@ -18,5 +18,7 @@ class Mat {
   bool operator==(const Mat<sz>& other) const;
   Mat<sz> operator*(const Mat<sz>& other) const;
   Tuple operator*(const Tuple tup) const;
+  Mat<sz> transp() const;
+
   static Mat<sz> iden();
 };

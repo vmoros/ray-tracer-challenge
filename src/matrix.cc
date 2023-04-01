@@ -61,6 +61,25 @@ Tuple Mat<4>::operator*(const Tuple tup) const {
 }
 
 template <size_t sz>
+Mat<sz> Mat<sz>::transp() const {
+  Mat<sz> ans{};
+  std::array<size_t, sz> inds{};
+  std::iota(inds.begin(), inds.end(), 0);
+
+  std::for_each(inds.begin(), inds.end(), [&](size_t i) {
+    // turn col into row
+    // put row into ans
+
+    std::array<double, sz> row{};
+    std::for_each(inds.begin(), inds.end(),
+                  [&](size_t j) { row[j] = data_[j][i]; });
+    ans.data_[i] = row;
+  });
+
+  return ans;
+}
+
+template <size_t sz>
 Mat<sz> Mat<sz>::iden() {
   Mat<sz> ans{};
   std::array<size_t, sz> inds{};
