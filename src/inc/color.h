@@ -15,5 +15,10 @@ class Color : public Tuple {
   double g() const;
   double b() const;
 
+  int rclamp() const;
+  int gclamp() const;
+  int bclamp() const;
+
   static Color Black();
+  static Color Red();
 };

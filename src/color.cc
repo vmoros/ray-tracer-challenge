@@ -1,6 +1,10 @@
 #include <color.h>
 #include <helpers.h>
 
+#include <algorithm>
+
+static constexpr int MAX_PIXEL = 255;
+
 Color::Color(double r, double g, double b) : Tuple(r, g, b, 0) {}
 Color::Color(Tuple t) : Tuple(t) {}
 
@@ -17,4 +21,15 @@ double Color::r() const { return x_; }
 double Color::g() const { return y_; }
 double Color::b() const { return z_; }
 
+int Color::rclamp() const {
+  return std::clamp(static_cast<int>(r() * MAX_PIXEL), 0, MAX_PIXEL);
+}
+int Color::gclamp() const {
+  return std::clamp(static_cast<int>(g() * MAX_PIXEL), 0, MAX_PIXEL);
+}
+int Color::bclamp() const {
+  return std::clamp(static_cast<int>(b() * MAX_PIXEL), 0, MAX_PIXEL);
+}
+
 Color Color::Black() { return Color(0.0, 0.0, 0.0); }
+Color Color::Red() { return Color(1.0, 0.0, 0.0); }

@@ -4,6 +4,7 @@
 #include <cmath>
 
 // Constructors/factories
+Tuple::Tuple() : x_(0.0), y_(0.0), z_(0.0), w_(0) {}
 Tuple::Tuple(double x, double y, double z, int w)
     : x_(x), y_(y), z_(z), w_(w) {}
 Tuple Tuple::Point(double x_, double y_, double z_) { return {x_, y_, z_, 1}; }

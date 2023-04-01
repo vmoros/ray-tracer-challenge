@@ -8,6 +8,7 @@ class Tuple {
   int w_;
 
   // Constructors/factories
+  Tuple();
   Tuple(double x, double y, double z, int w);
   static Tuple Point(double x, double y, double z);
   static Tuple Vector(double x, double y, double z);
