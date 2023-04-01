@@ -1,9 +1,9 @@
 class Tuple {
  public:
-  double x;
-  double y;
-  double z;
-  int w;
+  double x_;
+  double y_;
+  double z_;
+  int w_;
 
   Tuple(double x, double y, double z, int w);
   static Tuple Point(double x, double y, double z);

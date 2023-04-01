@@ -4,10 +4,10 @@
 TEST(TupleTest, PointFromTupleructor_HasRightComponents) {
   Tuple t(4.3, -4.2, 3.1, 1);
 
-  EXPECT_DOUBLE_EQ(t.x, 4.3);
-  EXPECT_DOUBLE_EQ(t.y, -4.2);
-  EXPECT_DOUBLE_EQ(t.z, 3.1);
-  EXPECT_EQ(t.w, 1);
+  EXPECT_DOUBLE_EQ(t.x_, 4.3);
+  EXPECT_DOUBLE_EQ(t.y_, -4.2);
+  EXPECT_DOUBLE_EQ(t.z_, 3.1);
+  EXPECT_EQ(t.w_, 1);
   EXPECT_TRUE(t.isPoint());
   EXPECT_FALSE(t.isVector());
 }
@@ -15,10 +15,10 @@ TEST(TupleTest, PointFromTupleructor_HasRightComponents) {
 TEST(TupleTest, PointFromFactory_HasRightComponents) {
   Tuple t = Tuple::Point(4, -4, 3);
 
-  EXPECT_DOUBLE_EQ(t.x, 4);
-  EXPECT_DOUBLE_EQ(t.y, -4);
-  EXPECT_DOUBLE_EQ(t.z, 3);
-  EXPECT_EQ(t.w, 1);
+  EXPECT_DOUBLE_EQ(t.x_, 4);
+  EXPECT_DOUBLE_EQ(t.y_, -4);
+  EXPECT_DOUBLE_EQ(t.z_, 3);
+  EXPECT_EQ(t.w_, 1);
   EXPECT_TRUE(t.isPoint());
   EXPECT_FALSE(t.isVector());
 }
@@ -26,10 +26,10 @@ TEST(TupleTest, PointFromFactory_HasRightComponents) {
 TEST(TupleTest, VectorFromTupleructor_HasRightComponents) {
   Tuple t(4.3, -4.2, 3.1, 0);
 
-  EXPECT_DOUBLE_EQ(t.x, 4.3);
-  EXPECT_DOUBLE_EQ(t.y, -4.2);
-  EXPECT_DOUBLE_EQ(t.z, 3.1);
-  EXPECT_EQ(t.w, 0);
+  EXPECT_DOUBLE_EQ(t.x_, 4.3);
+  EXPECT_DOUBLE_EQ(t.y_, -4.2);
+  EXPECT_DOUBLE_EQ(t.z_, 3.1);
+  EXPECT_EQ(t.w_, 0);
   EXPECT_FALSE(t.isPoint());
   EXPECT_TRUE(t.isVector());
 }
@@ -37,10 +37,10 @@ TEST(TupleTest, VectorFromTupleructor_HasRightComponents) {
 TEST(TupleTest, VectorFromFactory_HasRightComponents) {
   Tuple t = Tuple::Vector(4, -4, 3);
 
-  EXPECT_DOUBLE_EQ(t.x, 4);
-  EXPECT_DOUBLE_EQ(t.y, -4);
-  EXPECT_DOUBLE_EQ(t.z, 3);
-  EXPECT_EQ(t.w, 0);
+  EXPECT_DOUBLE_EQ(t.x_, 4);
+  EXPECT_DOUBLE_EQ(t.y_, -4);
+  EXPECT_DOUBLE_EQ(t.z_, 3);
+  EXPECT_EQ(t.w_, 0);
   EXPECT_FALSE(t.isPoint());
   EXPECT_TRUE(t.isVector());
 }
