@@ -66,3 +66,9 @@ TEST(MatrixTest, Mat4MultipliedByTuple_GivesTuple) {
 
   EXPECT_EQ(a * b, res);
 }
+
+TEST(MatrixTest, Mat4MultipliedByIdentity_DoesNotChange) {
+  Mat<4> a({{{0, 1, 2, 4}, {1, 2, 4, 8}, {2, 4, 8, 16}, {4, 8, 16, 32}}});
+
+  EXPECT_EQ(a * Mat<4>::iden(), a);
+}

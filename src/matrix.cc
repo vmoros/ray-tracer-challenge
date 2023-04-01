@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <numeric>
+#include <ranges>
 
 template <size_t sz>
 Mat<sz>::Mat(data d) : data_(d) {}
@@ -12,10 +13,10 @@ Mat<sz>::Mat() : data_({}) {}
 
 template <size_t sz>
 bool Mat<sz>::operator==(const Mat<sz>& other) const {
-  std::array<size_t, sz> inds{};
-  std::iota(inds.begin(), inds.end(), 0);
-  return std::all_of(inds.begin(), inds.end(), [&other, this](size_t i) {
-    return data_[i] == other.data_[i];
+  const auto zip = std::views::zip(data_, other.data_);
+  return std::all_of(zip.begin(), zip.end(), [&](const auto& pair) {
+    const auto& [mine, theirs] = pair;
+    return mine == theirs;
   });
 }
 
@@ -55,6 +56,18 @@ Tuple Mat<4>::operator*(const Tuple tup) const {
            data_[2][3] * tup.w_;
   ans.w_ = static_cast<int>(data_[3][0] * tup.x_ + data_[3][1] * tup.y_ +
                             data_[3][2] * tup.z_ + data_[3][3] * tup.w_);
+
+  return ans;
+}
+
+template <size_t sz>
+Mat<sz> Mat<sz>::iden() {
+  Mat<sz> ans{};
+  std::array<size_t, sz> inds{};
+  std::iota(inds.begin(), inds.end(), 0);
+
+  std::for_each(inds.begin(), inds.end(),
+                [&](size_t i) { ans.data_[i][i] = 1.0; });
 
   return ans;
 }
