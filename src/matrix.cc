@@ -77,13 +77,8 @@ Mat<sz> Mat<sz>::transp() const {
   std::array<size_t, sz> inds{};
   std::iota(inds.begin(), inds.end(), 0);
 
-  std::for_each(inds.begin(), inds.end(), [&](size_t i) {
-    // std::array<double, sz> row{};
-    // std::for_each(inds.begin(), inds.end(),
-    //               [&](size_t j) { row.at(j) = data_[j][i]; });
-    // ans.data_[i] = row;
-    ans.data_[i] = col(i);
-  });
+  std::for_each(inds.begin(), inds.end(),
+                [&](size_t i) { ans.data_[i] = col(i); });
 
   return ans;
 }
@@ -91,11 +86,15 @@ Mat<sz> Mat<sz>::transp() const {
 template <size_t sz>
 Mat<sz> Mat<sz>::iden() {
   Mat<sz> ans{};
-  std::array<size_t, sz> inds{};
-  std::iota(inds.begin(), inds.end(), 0);
+  // std::array<size_t, sz> inds{};
+  // std::iota(inds.begin(), inds.end(), 0);
 
-  std::for_each(inds.begin(), inds.end(),
-                [&](size_t i) { ans.data_[i][i] = 1.0; });
+  // std::for_each(inds.begin(), inds.end(),
+  //               [&](size_t i) { ans.data_[i][i] = 1.0; });
+
+  for (size_t i : std::views::iota(0uz, sz)) {
+    ans.data_[i][i] = 1.0;
+  }
 
   return ans;
 }
