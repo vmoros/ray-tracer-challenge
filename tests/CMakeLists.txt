@@ -7,8 +7,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-add_executable(all_tests tuple_test.cc)
-target_link_libraries(all_tests GTest::gtest_main tuple)
+add_executable(all_tests tuple_test.cc color_test.cc)
+target_link_libraries(all_tests GTest::gtest_main stuff)
 
 include(GoogleTest)
 gtest_discover_tests(all_tests)

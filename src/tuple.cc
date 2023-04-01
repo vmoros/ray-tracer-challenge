@@ -1,11 +1,7 @@
+#include <helpers.h>
 #include <tuple.h>
 
 #include <cmath>
-
-static bool dbleq(double a, double b) {
-  const double eps = 0.0000001;
-  return abs(a - b) < eps;
-}
 
 // Constructors/factories
 Tuple::Tuple(double x, double y, double z, int w)
@@ -17,15 +13,40 @@ Tuple Tuple::Vector(double x_, double y_, double z_) { return {x_, y_, z_, 0}; }
 Tuple Tuple::operator+(Tuple other) const {
   return {x_ + other.x_, y_ + other.y_, z_ + other.z_, w_ + other.w_};
 }
-Tuple Tuple::operator-(Tuple other) const {
-  return {x_ - other.x_, y_ - other.y_, z_ - other.z_, w_ - other.w_};
-}
+Tuple Tuple::operator-(Tuple other) const { return *this + (-other); }
 Tuple Tuple::operator-() const { return {-x_, -y_, -z_, -w_}; }
 bool Tuple::operator==(Tuple other) const {
   return dbleq(x_, other.x_) && dbleq(y_, other.y_) && dbleq(z_, other.z_) &&
          (w_ == other.w_);
 }
+Tuple Tuple::operator*(double scale) const {
+  return {x_ * scale, y_ * scale, z_ * scale, static_cast<int>(w_ * scale)};
+}
+Tuple Tuple::operator/(double scale) const {
+  return {x_ / scale, y_ / scale, z_ / scale, static_cast<int>(w_ / scale)};
+}
 
 // Misc
 bool Tuple::isPoint() const { return w_ == 1; }
+
 bool Tuple::isVector() const { return w_ == 0; }
+
+double Tuple::mag() const {
+  return sqrt(x_ * x_ + y_ * y_ + z_ * z_ + w_ * w_);
+}
+
+Tuple Tuple::norm() const {
+  const double myMag = mag();
+  return {x_ / myMag, y_ / myMag, z_ / myMag, static_cast<int>(w_ / myMag)};
+}
+
+double Tuple::dot(Tuple other) const {
+  return x_ * other.x_ + y_ * other.y_ + z_ * other.z_ + w_ * other.w_;
+}
+
+Tuple Tuple::cross(Tuple other) const {
+  double comp1 = y_ * other.z_ - z_ * other.y_;
+  double comp2 = z_ * other.x_ - x_ * other.z_;
+  double comp3 = x_ * other.y_ - y_ * other.x_;
+  return Vector(comp1, comp2, comp3);
+}
