@@ -10,6 +10,7 @@ class Mat {
 
  private:
   double dot(const Mat<sz>& other, size_t row, size_t col) const;
+  std::array<double, sz> col(size_t c) const;
 
  public:
   data data_;

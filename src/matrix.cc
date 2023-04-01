@@ -23,10 +23,21 @@ bool Mat<sz>::operator==(const Mat<sz>& other) const {
 template <size_t sz>
 double Mat<sz>::dot(const Mat<sz>& other, size_t row, size_t col) const {
   std::array<size_t, sz> inds{};
-  std::iota(inds.begin(), inds.end(), 0);
+  std::iota(inds.begin(), inds.end(), 0uz);
   return std::transform_reduce(
       inds.begin(), inds.end(), 0.0, std::plus{},
       [&](size_t i) { return data_[row][i] * other.data_[i][col]; });
+}
+
+template <size_t sz>
+std::array<double, sz> Mat<sz>::col(size_t c) const {
+  std::array<size_t, sz> inds{};
+  std::iota(inds.begin(), inds.end(), 0);
+  std::array<double, sz> ans{};
+  std::transform(inds.begin(), inds.end(), ans.begin(),
+                 [&](size_t i) { return data_[i][c]; });
+
+  return ans;
 }
 
 template <size_t sz>
@@ -67,13 +78,11 @@ Mat<sz> Mat<sz>::transp() const {
   std::iota(inds.begin(), inds.end(), 0);
 
   std::for_each(inds.begin(), inds.end(), [&](size_t i) {
-    // turn col into row
-    // put row into ans
-
-    std::array<double, sz> row{};
-    std::for_each(inds.begin(), inds.end(),
-                  [&](size_t j) { row[j] = data_[j][i]; });
-    ans.data_[i] = row;
+    // std::array<double, sz> row{};
+    // std::for_each(inds.begin(), inds.end(),
+    //               [&](size_t j) { row.at(j) = data_[j][i]; });
+    // ans.data_[i] = row;
+    ans.data_[i] = col(i);
   });
 
   return ans;
