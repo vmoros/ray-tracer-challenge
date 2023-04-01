@@ -16,3 +16,5 @@ Color Color::operator*(Tuple other) const {
 double Color::r() const { return x_; }
 double Color::g() const { return y_; }
 double Color::b() const { return z_; }
+
+Color Color::Black() { return Color(0.0, 0.0, 0.0); }

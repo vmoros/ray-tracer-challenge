@@ -14,4 +14,6 @@ class Color : public Tuple {
   double r() const;
   double g() const;
   double b() const;
+
+  static Color Black();
 };
