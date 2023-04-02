@@ -20,6 +20,13 @@ class Mat {
   Mat<sz> operator*(const Mat<sz>& other) const;
   Tuple operator*(const Tuple tup) const;
   Mat<sz> transp() const;
+  double det() const;
+  Mat<sz - 1> submat(size_t row, size_t col) const;
+  double minor(size_t row, size_t col) const;
+  double cofactor(size_t row, size_t col) const;
+  bool isInvertible() const;
+  Mat<sz> inverse() const;
+  void print() const;
 
   static Mat<sz> iden();
 };
