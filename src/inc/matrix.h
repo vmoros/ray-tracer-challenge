@@ -29,4 +29,11 @@ class Mat {
   void print() const;
 
   static Mat<sz> iden();
+  static Mat<4> translator(double x, double y, double z);
+  static Mat<4> scaler(double x, double y, double z);
+  static Mat<4> rotator_x(double rad);
+  static Mat<4> rotator_y(double rad);
+  static Mat<4> rotator_z(double rad);
+  static Mat<4> shearer(double xy, double xz, double yx, double yz, double zx,
+                        double zy);
 };

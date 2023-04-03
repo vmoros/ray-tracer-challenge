@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <exception>
 #include <iostream>
 #include <numeric>
@@ -119,6 +120,47 @@ Mat<sz> Mat<sz>::iden() {
   }
 
   return ans;
+}
+
+template <size_t sz>
+Mat<4> Mat<sz>::translator(double x, double y, double z) {
+  return Mat<4>({{{1, 0, 0, x}, {0, 1, 0, y}, {0, 0, 1, z}, {0, 0, 0, 1}}});
+}
+
+template <size_t sz>
+Mat<4> Mat<sz>::scaler(double x, double y, double z) {
+  return Mat<4>({{{x, 0, 0, 0}, {0, y, 0, 0}, {0, 0, z, 0}, {0, 0, 0, 1}}});
+}
+
+template <size_t sz>
+Mat<4> Mat<sz>::rotator_x(double rad) {
+  return Mat<4>({{{1, 0, 0, 0},
+                  {0, cos(rad), -sin(rad), 0},
+                  {0, sin(rad), cos(rad), 0},
+                  {0, 0, 0, 1}}});
+}
+
+template <size_t sz>
+Mat<4> Mat<sz>::rotator_y(double rad) {
+  return Mat<4>({{{cos(rad), 0, sin(rad), 0},
+                  {0, 1, 0, 0},
+                  {-sin(rad), 0, cos(rad), 0},
+                  {0, 0, 0, 1}}});
+}
+
+template <size_t sz>
+Mat<4> Mat<sz>::rotator_z(double rad) {
+  return Mat<4>({{{cos(rad), -sin(rad), 0, 0},
+                  {sin(rad), cos(rad), 0, 0},
+                  {0, 0, 1, 0},
+                  {0, 0, 0, 1}}});
+}
+
+template <size_t sz>
+Mat<4> Mat<sz>::shearer(double xy, double xz, double yx, double yz, double zx,
+                        double zy) {
+  return Mat<4>(
+      {{{1, xy, xz, 0}, {yx, 1, yz, 0}, {zx, zy, 1, 0}, {0, 0, 0, 1}}});
 }
 
 template <size_t sz>

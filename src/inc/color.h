@@ -20,5 +20,8 @@ class Color : public Tuple {
   int bclamp() const;
 
   static Color Black();
+  static Color White();
   static Color Red();
+  static Color Green();
+  static Color Blue();
 };

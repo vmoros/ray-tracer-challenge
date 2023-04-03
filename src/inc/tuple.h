@@ -28,4 +28,5 @@ class Tuple {
   Tuple norm() const;
   double dot(Tuple other) const;
   Tuple cross(Tuple other) const;
+  void print() const;
 };

@@ -3,6 +3,9 @@
 #include <tuple.h>
 
 #include <array>
+#include <numbers>
+
+static constexpr double PI = std::numbers::pi;
 
 TEST(MatrixTest, Mat4_HasCorrectComponents) {
   Mat<4> m({{{1, 2, 3, 4},
@@ -200,4 +203,132 @@ TEST(MatrixTest, Mat4MultiplicationByInverse_UndoesMultiplication) {
   Mat<4> b({{{8, 2, 2, 2}, {3, -1, 7, 0}, {7, 0, 5, 4}, {6, -2, 0, 5}}});
 
   EXPECT_EQ(a * b * b.inverse(), a);
+}
+
+TEST(MatrixTest, TranslationMatrix_MovesPointByCorrectAmount) {
+  Mat<4> translator = Mat<4>::translator(5, -3, 2);
+  Tuple origPoint = Tuple::Point(-3, 4, 5);
+  Tuple newPoint = Tuple::Point(2, 1, 7);
+
+  EXPECT_EQ(translator * origPoint, newPoint);
+}
+
+TEST(MatrixTest, MultiplyingByInverseOfTranslation_MovesBackwards) {
+  Mat<4> translator = Mat<4>::translator(5, -3, 2);
+  Mat<4> invTrans = translator.inverse();
+  Tuple origPoint = Tuple::Point(-3, 4, 5);
+  Tuple newPoint = Tuple::Point(-8, 7, 3);
+
+  EXPECT_EQ(invTrans * origPoint, newPoint);
+}
+
+TEST(MatrixTest, MultiplyingVectorByTranslation_DoesNotChangeTheVector) {
+  Mat<4> translator = Mat<4>::translator(5, -3, 2);
+  Tuple vec = Tuple::Vector(-3, 4, 5);
+
+  EXPECT_EQ(translator * vec, vec);
+}
+
+TEST(MatrixTest, ScalingMatrix_ScalesPointCorrectly) {
+  Mat<4> transform = Mat<4>::scaler(2, 3, 4);
+  Tuple p = Tuple::Point(-4, 6, 8);
+  Tuple res = Tuple::Point(-8, 18, 32);
+
+  EXPECT_EQ(transform * p, res);
+}
+
+TEST(MatrixTest, ScalingMatrix_ScalesVectorCorrectly) {
+  Mat<4> transform = Mat<4>::scaler(2, 3, 4);
+  Tuple v = Tuple::Vector(-4, 6, 8);
+  Tuple res = Tuple::Vector(-8, 18, 32);
+
+  EXPECT_EQ(transform * v, res);
+}
+
+TEST(MatrixTest, InverseOfScaler_ScalesBackwards) {
+  Mat<4> transform = Mat<4>::scaler(2, 3, 4);
+  Mat<4> inv = transform.inverse();
+  Tuple v = Tuple::Vector(-4, 6, 8);
+  Tuple res = Tuple::Vector(-2, 2, 2);
+
+  EXPECT_EQ(inv * v, res);
+}
+
+TEST(MatrixTest, NegativeScaler_Reflects) {
+  Mat<4> transform = Mat<4>::scaler(-1, 1, 1);
+  Tuple p = Tuple::Point(2, 3, 4);
+  Tuple res = Tuple::Point(-2, 3, 4);
+
+  EXPECT_EQ(transform * p, res);
+}
+
+TEST(MatrixTest, xAxisRotation_Works) {
+  Tuple p = Tuple::Point(0, 1, 0);
+  Mat<4> half_quarter = Mat<4>::rotator_x(PI / 4);
+  Mat<4> full_quarter = Mat<4>::rotator_x(PI / 2);
+
+  EXPECT_EQ(half_quarter * p, Tuple::Point(0, sqrt(2) / 2, sqrt(2) / 2));
+  EXPECT_EQ(full_quarter * p, Tuple::Point(0, 0, 1));
+}
+
+TEST(MatrixTest, InverseOfXRotation_ReversesRotation) {
+  Tuple p = Tuple::Point(0, 1, 0);
+  Mat<4> half_quarter = Mat<4>::rotator_x(PI / 4);
+
+  EXPECT_EQ(half_quarter.inverse() * p,
+            Tuple::Point(0, sqrt(2) / 2, -sqrt(2) / 2));
+}
+
+TEST(MatrixTest, yAxisRotation_Works) {
+  Tuple p = Tuple::Point(0, 0, 1);
+  Mat<4> half_quarter = Mat<4>::rotator_y(PI / 4);
+  Mat<4> full_quarter = Mat<4>::rotator_y(PI / 2);
+
+  EXPECT_EQ(half_quarter * p, Tuple::Point(sqrt(2) / 2, 0, sqrt(2) / 2));
+  EXPECT_EQ(full_quarter * p, Tuple::Point(1, 0, 0));
+}
+
+TEST(MatrixTest, zAxisRotation_Works) {
+  Tuple p = Tuple::Point(0, 1, 0);
+  Mat<4> half_quarter = Mat<4>::rotator_z(PI / 4);
+  Mat<4> full_quarter = Mat<4>::rotator_z(PI / 2);
+
+  EXPECT_EQ(half_quarter * p, Tuple::Point(-sqrt(2) / 2, sqrt(2) / 2, 0));
+  EXPECT_EQ(full_quarter * p, Tuple::Point(-1, 0, 0));
+}
+
+TEST(MatrixTest, Shearing_MovesEachDimensionInProportionToEachOtherDimension) {
+  Tuple p = Tuple::Point(2, 3, 4);
+  Mat<4> shearXY = Mat<4>::shearer(1, 0, 0, 0, 0, 0);
+  Mat<4> shearXZ = Mat<4>::shearer(0, 1, 0, 0, 0, 0);
+  Mat<4> shearYX = Mat<4>::shearer(0, 0, 1, 0, 0, 0);
+  Mat<4> shearYZ = Mat<4>::shearer(0, 0, 0, 1, 0, 0);
+  Mat<4> shearZX = Mat<4>::shearer(0, 0, 0, 0, 1, 0);
+  Mat<4> shearZY = Mat<4>::shearer(0, 0, 0, 0, 0, 1);
+
+  EXPECT_EQ(shearXY * p, Tuple::Point(5, 3, 4));
+  EXPECT_EQ(shearXZ * p, Tuple::Point(6, 3, 4));
+  EXPECT_EQ(shearYX * p, Tuple::Point(2, 5, 4));
+  EXPECT_EQ(shearYZ * p, Tuple::Point(2, 7, 4));
+  EXPECT_EQ(shearZX * p, Tuple::Point(2, 3, 6));
+  EXPECT_EQ(shearZY * p, Tuple::Point(2, 3, 7));
+}
+
+TEST(MatrixTest, ChainedTransformations_CombineInReverseOrder) {
+  Tuple p = Tuple::Point(1, 0, 1);
+  Mat<4> A = Mat<4>::rotator_x(PI / 2);
+  Mat<4> B = Mat<4>::scaler(5, 5, 5);
+  Mat<4> C = Mat<4>::translator(10, 5, 7);
+  Tuple finalPoint = Tuple::Point(15, 0, 7);
+
+  // Applying transformations one at a time and then all together
+  Tuple p2 = A * p;
+  Tuple p3 = B * p2;  // B * (A * p)
+  Tuple p4 = C * p3;  // C * (B * (A * p))
+  Tuple allTransformations = C * B * A * p;
+
+  EXPECT_EQ(p2, Tuple::Point(1, -1, 0));
+  EXPECT_EQ(p3, Tuple::Point(5, -5, 0));
+  EXPECT_EQ(p4, finalPoint);
+  EXPECT_EQ(allTransformations, finalPoint);
 }

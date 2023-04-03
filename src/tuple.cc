@@ -2,6 +2,7 @@
 #include <tuple.h>
 
 #include <cmath>
+#include <iostream>
 
 // Constructors/factories
 Tuple::Tuple() : x_(0.0), y_(0.0), z_(0.0), w_(0) {}
@@ -50,4 +51,8 @@ Tuple Tuple::cross(Tuple other) const {
   double comp2 = z_ * other.x_ - x_ * other.z_;
   double comp3 = x_ * other.y_ - y_ * other.x_;
   return Vector(comp1, comp2, comp3);
+}
+
+void Tuple::print() const {
+  std::cout << "(" << x_ << ", " << y_ << ", " << z_ << ")" << std::endl;
 }
