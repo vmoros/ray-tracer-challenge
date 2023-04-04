@@ -6,13 +6,13 @@
 #include <fstream>
 #include <iostream>
 #include <numbers>
+#include <string>
 
 static constexpr size_t WIDTH = 500;
 static constexpr size_t HEIGHT = 500;
 static constexpr size_t LO = HEIGHT / 30;
 static constexpr size_t HOURS = 12;
 static constexpr double PI = std::numbers::pi;
-// static constexpr size_t HI = 490;
 
 Mat<4> rotateClockwise(Tuple center, double rad) {
   Mat<4> centerToOrigin =

@@ -1,9 +1,9 @@
 #pragma once
 
+#include <color.h>
+
 #include <ostream>
 #include <vector>
-
-#include "color.h"
 
 class Canvas {
  public:

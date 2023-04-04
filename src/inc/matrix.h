@@ -1,8 +1,8 @@
 #pragma once
 
-#include <array>
+#include <tuple.h>
 
-#include "tuple.h"
+#include <array>
 
 template <size_t sz>
 class Mat {

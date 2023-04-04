@@ -8,7 +8,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-add_executable(all_tests tuple_test.cc color_test.cc canvas_test.cc matrix_test.cc)
+add_executable(all_tests tuple_test.cc color_test.cc canvas_test.cc
+    matrix_test.cc ray_test.cc intersection_test.cc)
 target_link_libraries(all_tests GTest::gtest_main stuff)
 
 include(GoogleTest)

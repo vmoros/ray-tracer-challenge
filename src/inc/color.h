@@ -1,5 +1,5 @@
 #pragma once
-#include "tuple.h"
+#include <tuple.h>
 
 class Color : public Tuple {
  public:
