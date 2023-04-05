@@ -27,8 +27,8 @@ TEST(RayTest, RayIntersectsSphere_TwiceThroughTheOrigin) {
   auto xs = s.intersect(r);
 
   EXPECT_EQ(xs.size(), 2);
-  EXPECT_DOUBLE_EQ(xs[0], 4.0);
-  EXPECT_DOUBLE_EQ(xs[1], 6.0);
+  EXPECT_DOUBLE_EQ(xs[0].t_, 4.0);
+  EXPECT_DOUBLE_EQ(xs[1].t_, 6.0);
 }
 
 TEST(RayTest, RayIntersectsSphere_TwiceAtTangent) {
@@ -37,8 +37,8 @@ TEST(RayTest, RayIntersectsSphere_TwiceAtTangent) {
   auto xs = s.intersect(r);
 
   EXPECT_EQ(xs.size(), 2);
-  EXPECT_DOUBLE_EQ(xs[0], 5.0);
-  EXPECT_DOUBLE_EQ(xs[1], 5.0);
+  EXPECT_DOUBLE_EQ(xs[0].t_, 5.0);
+  EXPECT_DOUBLE_EQ(xs[1].t_, 5.0);
 }
 
 TEST(RayTest, RayAboveSphere_DoesNotIntersect) {
@@ -55,8 +55,8 @@ TEST(RayTest, RayStartingInsideSphere_IntersectsSphereTwice) {
   auto xs = s.intersect(r);
 
   EXPECT_EQ(xs.size(), 2);
-  EXPECT_DOUBLE_EQ(xs[0], -1.0);
-  EXPECT_DOUBLE_EQ(xs[1], 1.0);
+  EXPECT_DOUBLE_EQ(xs[0].t_, -1.0);
+  EXPECT_DOUBLE_EQ(xs[1].t_, 1.0);
 }
 
 TEST(RayTest, RayStartingInFrontOfSphere_IntersectsSphereTwice) {
@@ -65,6 +65,6 @@ TEST(RayTest, RayStartingInFrontOfSphere_IntersectsSphereTwice) {
   auto xs = s.intersect(r);
 
   EXPECT_EQ(xs.size(), 2);
-  EXPECT_DOUBLE_EQ(xs[0], -6.0);
-  EXPECT_DOUBLE_EQ(xs[1], -4.0);
+  EXPECT_DOUBLE_EQ(xs[0].t_, -6.0);
+  EXPECT_DOUBLE_EQ(xs[1].t_, -4.0);
 }
