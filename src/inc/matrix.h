@@ -13,7 +13,6 @@ class Mat {
   std::array<double, sz> col(size_t c) const;
 
  public:
-  data data_;
   Mat(data d);
   Mat();
   bool operator==(const Mat<sz>& other) const;
@@ -36,4 +35,6 @@ class Mat {
   static Mat<4> rotator_z(double rad);
   static Mat<4> shearer(double xy, double xz, double yx, double yz, double zx,
                         double zy);
+
+  data data_;
 };

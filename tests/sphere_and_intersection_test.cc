@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <matrix.h>
 #include <ray.h>
 #include <sphere.h>
 
@@ -59,4 +60,13 @@ TEST(IntersectionTest, FindIntersectionHitWithVariousT_GivesCorrectHit) {
   std::vector<Intersection> xs = {i1, i2, i3, i4};
 
   EXPECT_EQ(Intersection::hit(xs), i4);
+}
+
+TEST(IntersectionTest, Sphere_ContainsCorrectTransformation) {
+  Sphere s;
+  EXPECT_EQ(s.transformation_, Mat<4>::iden());
+
+  Mat<4> newTransformation = Mat<4>::translator(2, 3, 4);
+  s.transformation_ = newTransformation;
+  EXPECT_EQ(s.transformation_, newTransformation);
 }

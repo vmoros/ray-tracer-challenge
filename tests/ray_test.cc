@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <matrix.h>
 #include <ray.h>
 #include <sphere.h>
 #include <tuple.h>
@@ -67,4 +68,22 @@ TEST(RayTest, RayStartingInFrontOfSphere_IntersectsSphereTwice) {
   EXPECT_EQ(xs.size(), 2);
   EXPECT_DOUBLE_EQ(xs[0].t_, -6.0);
   EXPECT_DOUBLE_EQ(xs[1].t_, -4.0);
+}
+
+TEST(RayTest, RayCanBeTranslated) {
+  Ray r(Tuple::Point(1, 2, 3), Tuple::Vector(0, 1, 0));
+  Mat<4> m = Mat<4>::translator(3, 4, 5);
+  Ray r2 = r.transform(m);
+
+  EXPECT_EQ(r2.origin_, Tuple::Point(4, 6, 8));
+  EXPECT_EQ(r2.direction_, Tuple::Vector(0, 1, 0));
+}
+
+TEST(RayTest, RayCanBeScaled) {
+  Ray r(Tuple::Point(1, 2, 3), Tuple::Vector(0, 1, 0));
+  Mat<4> m = Mat<4>::scaler(2, 3, 4);
+  Ray r2 = r.transform(m);
+
+  EXPECT_EQ(r2.origin_, Tuple::Point(2, 6, 12));
+  EXPECT_EQ(r2.direction_, Tuple::Vector(0, 3, 0));
 }

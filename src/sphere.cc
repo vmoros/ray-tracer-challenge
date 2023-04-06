@@ -28,7 +28,13 @@ bool Intersection::operator==(const Intersection other) const {
   return dbleq(t_, other.t_) && (obj_ == other.obj_);
 }
 
-Sphere::Sphere() : center_(Tuple::Point(0, 0, 0)), radius_(0.0) {}
+Sphere::Sphere()
+    : radius_(0.0),
+      center_(Tuple::Point(0, 0, 0)),
+      transformation_(Mat<4>::iden()) {}
+
+Sphere::Sphere(double radius, Tuple center, Mat<4> transformation)
+    : radius_(radius), center_(center), transformation_(transformation) {}
 
 std::vector<Intersection> Sphere::intersect(Ray ray) const {
   Tuple sphere_to_ray = ray.origin_ - Tuple::Point(0, 0, 0);

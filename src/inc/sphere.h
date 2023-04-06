@@ -1,5 +1,6 @@
 #pragma once
 
+#include <matrix.h>
 #include <ray.h>
 #include <tuple.h>
 
@@ -22,9 +23,12 @@ class Intersection {
 class Sphere {
  public:
   Sphere();
+  Sphere(double radius, Tuple center, Mat<4> transformation);
+
   std::vector<Intersection> intersect(Ray r) const;
   bool operator==(Sphere other) const;
 
-  Tuple center_;
   double radius_;
+  Tuple center_;
+  Mat<4> transformation_;
 };

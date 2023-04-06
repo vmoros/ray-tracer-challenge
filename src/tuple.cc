@@ -54,5 +54,6 @@ Tuple Tuple::cross(Tuple other) const {
 }
 
 void Tuple::print() const {
-  std::cout << "(" << x_ << ", " << y_ << ", " << z_ << ")" << std::endl;
+  std::cout << "(" << x_ << ", " << y_ << ", " << z_ << ", " << w_ << ")"
+            << std::endl;
 }
