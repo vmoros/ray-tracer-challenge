@@ -23,12 +23,10 @@ class Intersection {
 class Sphere {
  public:
   Sphere();
-  Sphere(double radius, Tuple center, Mat<4> transformation);
+  Sphere(Mat<4> transformation);
 
   std::vector<Intersection> intersect(Ray r) const;
   bool operator==(Sphere other) const;
 
-  double radius_;
-  Tuple center_;
   Mat<4> transformation_;
 };

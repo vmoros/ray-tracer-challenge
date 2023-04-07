@@ -70,3 +70,23 @@ TEST(IntersectionTest, Sphere_ContainsCorrectTransformation) {
   s.transformation_ = newTransformation;
   EXPECT_EQ(s.transformation_, newTransformation);
 }
+
+TEST(IntersectionTest, ScaledSphere_HasCorrectIntersections) {
+  Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
+  Sphere s;
+  s.transformation_ = Mat<4>::scaler(2, 2, 2);
+  auto xs = s.intersect(r);
+
+  EXPECT_EQ(xs.size(), 2);
+  EXPECT_DOUBLE_EQ(xs[0].t_, 3.0);
+  EXPECT_DOUBLE_EQ(xs[1].t_, 7.0);
+}
+
+TEST(IntersectionTest, TranslatedSphere_HasCorrectIntersections) {
+  Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
+  Sphere s;
+  s.transformation_ = Mat<4>::translator(5, 0, 0);
+  auto xs = s.intersect(r);
+
+  EXPECT_EQ(xs.size(), 0);
+}

@@ -51,7 +51,7 @@ TEST(RayTest, RayAboveSphere_DoesNotIntersect) {
 }
 
 TEST(RayTest, RayStartingInsideSphere_IntersectsSphereTwice) {
-  Ray r(Tuple::Point(0, 0, 0), Tuple::Vector(0, 0, 1));
+  Ray r(Tuple::Origin(), Tuple::Vector(0, 0, 1));
   Sphere s;
   auto xs = s.intersect(r);
 

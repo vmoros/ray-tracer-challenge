@@ -4,6 +4,7 @@
 
 static constexpr int MAX_PIXEL = 255;
 
+Color::Color() : Tuple(0, 0, 0, 0) {}
 Color::Color(double r, double g, double b) : Tuple(r, g, b, 0) {}
 Color::Color(Tuple t) : Tuple(t) {}
 

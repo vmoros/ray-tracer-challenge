@@ -10,6 +10,7 @@ Tuple::Tuple(double x, double y, double z, int w)
     : x_(x), y_(y), z_(z), w_(w) {}
 Tuple Tuple::Point(double x_, double y_, double z_) { return {x_, y_, z_, 1}; }
 Tuple Tuple::Vector(double x_, double y_, double z_) { return {x_, y_, z_, 0}; }
+Tuple Tuple::Origin() { return Point(0, 0, 0); }
 
 // Operators
 Tuple Tuple::operator+(Tuple other) const {

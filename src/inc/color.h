@@ -3,6 +3,7 @@
 
 class Color : public Tuple {
  public:
+  Color();
   Color(double r, double g, double b);
   Color(Tuple t);
 
