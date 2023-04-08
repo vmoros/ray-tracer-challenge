@@ -27,6 +27,7 @@ class Sphere {
 
   std::vector<Intersection> intersect(Ray r) const;
   bool operator==(Sphere other) const;
+  Tuple normal_at(Tuple world_point) const;
 
   Mat<4> transformation_;
 };

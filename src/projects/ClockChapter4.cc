@@ -1,5 +1,6 @@
 #include <canvas.h>
 #include <color.h>
+#include <helpers.h>
 #include <matrix.h>
 #include <tuple.h>
 
@@ -12,7 +13,6 @@ static constexpr size_t WIDTH = 500;
 static constexpr size_t HEIGHT = 500;
 static constexpr size_t LO = HEIGHT / 30;
 static constexpr size_t HOURS = 12;
-static constexpr double PI = std::numbers::pi;
 
 Mat<4> rotateClockwise(Tuple center, double rad) {
   Mat<4> centerToOrigin =

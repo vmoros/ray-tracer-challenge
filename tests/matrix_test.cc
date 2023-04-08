@@ -1,11 +1,10 @@
 #include <gtest/gtest.h>
+#include <helpers.h>
 #include <matrix.h>
 #include <tuple.h>
 
 #include <array>
 #include <numbers>
-
-static constexpr double PI = std::numbers::pi;
 
 TEST(MatrixTest, Mat4_HasCorrectComponents) {
   Mat<4> m({{{1, 2, 3, 4},

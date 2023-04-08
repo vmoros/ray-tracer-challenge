@@ -50,6 +50,15 @@ std::vector<Intersection> Sphere::intersect(Ray ray) const {
   return {{t1, *this}, {t2, *this}};
 }
 
+Tuple Sphere::normal_at(Tuple world_point) const {
+  Tuple object_point = transformation_.inverse() * world_point;
+  Tuple object_normal = object_point - Tuple::Origin();
+  Tuple world_normal = transformation_.inverse().transp() * object_normal;
+  world_normal.w_ = 0;
+
+  return world_normal.norm();
+}
+
 bool Sphere::operator==(const Sphere other) const {
   return transformation_ == other.transformation_;
 }

@@ -58,3 +58,7 @@ void Tuple::print() const {
   std::cout << "(" << x_ << ", " << y_ << ", " << z_ << ", " << w_ << ")"
             << std::endl;
 }
+
+Tuple Tuple::reflect(Tuple normal) const {
+  return *this - normal * 2 * dot(normal);
+}

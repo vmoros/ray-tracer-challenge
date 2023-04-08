@@ -163,3 +163,19 @@ TEST(TupleTest, CrossProducts_HaveExpectedResults) {
   EXPECT_EQ(a.cross(b), res);
   EXPECT_EQ(b.cross(a), -res);
 }
+
+TEST(TupleTest, VectorApproachingAt45Degrees_ReflectsAt45Degrees) {
+  Tuple v = Tuple::Vector(1, -1, 0);
+  Tuple n = Tuple::Vector(0, 1, 0);
+  Tuple r = v.reflect(n);
+
+  EXPECT_EQ(r, Tuple::Vector(1, 1, 0));
+}
+
+TEST(TupleTest, VectorReflectsOffSlantedSurface_Correctly) {
+  Tuple v = Tuple::Vector(0, -1, 0);
+  Tuple n = Tuple::Vector(sqrt(2) / 2, sqrt(2) / 2, 0);
+  Tuple r = v.reflect(n);
+
+  EXPECT_EQ(r, Tuple::Vector(1, 0, 0));
+}

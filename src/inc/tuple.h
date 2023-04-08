@@ -30,4 +30,5 @@ class Tuple {
   double dot(Tuple other) const;
   Tuple cross(Tuple other) const;
   void print() const;
+  Tuple reflect(Tuple normal) const;
 };
