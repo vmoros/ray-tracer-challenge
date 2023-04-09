@@ -1,5 +1,6 @@
 #pragma once
 
+#include <material.h>
 #include <matrix.h>
 #include <ray.h>
 #include <tuple.h>
@@ -24,10 +25,13 @@ class Sphere {
  public:
   Sphere();
   Sphere(Mat<4> transformation);
+  Sphere(Mat<4> transformation, Material material);
 
   std::vector<Intersection> intersect(Ray r) const;
   bool operator==(Sphere other) const;
   Tuple normal_at(Tuple world_point) const;
 
+  // Member variables
   Mat<4> transformation_;
+  Material material_;
 };

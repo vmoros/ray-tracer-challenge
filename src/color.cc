@@ -3,8 +3,9 @@
 #include <algorithm>
 
 static constexpr int MAX_PIXEL = 255;
+static constexpr double PINK_G = 0.2;
 
-Color::Color() : Tuple(0, 0, 0, 0) {}
+Color::Color() : Color(0, 0, 0) {}
 Color::Color(double r, double g, double b) : Tuple(r, g, b, 0) {}
 Color::Color(Tuple t) : Tuple(t) {}
 
@@ -36,3 +37,4 @@ Color Color::White() { return Color(1.0, 1.0, 1.0); }
 Color Color::Red() { return Color(1.0, 0.0, 0.0); }
 Color Color::Green() { return Color(0.0, 1.0, 0.0); }
 Color Color::Blue() { return Color(0.0, 0.0, 1.0); }
+Color Color::Pink() { return {1.0, PINK_G, 1.0}; }

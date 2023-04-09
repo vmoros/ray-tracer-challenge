@@ -30,7 +30,11 @@ bool Intersection::operator==(const Intersection other) const {
 
 Sphere::Sphere() : transformation_(Mat<4>::iden()) {}
 
-Sphere::Sphere(Mat<4> transformation) : transformation_(transformation) {}
+Sphere::Sphere(Mat<4> transformation)
+    : transformation_(transformation), material_() {}
+
+Sphere::Sphere(Mat<4> transformation, Material material)
+    : transformation_(transformation), material_(material) {}
 
 std::vector<Intersection> Sphere::intersect(Ray ray) const {
   ray = ray.transform(transformation_.inverse());

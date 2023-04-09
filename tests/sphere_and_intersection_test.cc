@@ -138,3 +138,18 @@ TEST(SphereTest, NormalOnTransformedSphere_IsCorrect) {
 
   EXPECT_EQ(n, Tuple::Vector(0, 0.97014, -0.24254));
 }
+
+TEST(SphereTest, Sphere_HasDefaultMaterial) {
+  Sphere s;
+
+  EXPECT_EQ(s.material_, Material());
+}
+
+TEST(SphereTest, Sphere_CanBeAssignedNewMaterial) {
+  Sphere s;
+  Material m;
+  m.ambient_ = 1.0;
+  s.material_ = m;
+
+  EXPECT_EQ(s.material_, m);
+}
