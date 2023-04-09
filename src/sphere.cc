@@ -28,13 +28,11 @@ bool Intersection::operator==(const Intersection other) const {
   return dbleq(t_, other.t_) && (obj_ == other.obj_);
 }
 
-Sphere::Sphere() : transformation_(Mat<4>::iden()) {}
-
-Sphere::Sphere(Mat<4> transformation)
-    : transformation_(transformation), material_() {}
-
 Sphere::Sphere(Mat<4> transformation, Material material)
     : transformation_(transformation), material_(material) {}
+Sphere::Sphere(Mat<4> transformation) : Sphere(transformation, Material()) {}
+Sphere::Sphere(Material material) : Sphere(Mat<4>::iden(), material) {}
+Sphere::Sphere() : Sphere(Mat<4>::iden(), Material()) {}
 
 std::vector<Intersection> Sphere::intersect(Ray ray) const {
   ray = ray.transform(transformation_.inverse());

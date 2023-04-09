@@ -1,6 +1,3 @@
-// This is basically the same as the chapter 5 project
-// except with Phong lighting/reflection
-
 #include <canvas.h>
 #include <color.h>
 #include <light.h>
@@ -14,49 +11,43 @@
 #include <iostream>
 #include <optional>
 #include <string>
-#include <vector>
 
-static constexpr size_t DIM = 1000;
+static constexpr size_t CANVAS_PIXELS = 1000;
+static constexpr double WALL_Z = 10;
+static constexpr double WALL_SIZE = 7;
+static constexpr double PIXEL_SIZE = WALL_SIZE / CANVAS_PIXELS;
+static constexpr double HALF = WALL_SIZE / 2;
 
 int main() {
   std::cout << "Starting Circle Chapter 6 program" << std::endl;
   std::string filename = "CircleCh6.ppm";
   std::ofstream out(filename);
-  Canvas c(DIM, DIM);
 
-  // The sphere should have diameter of the whole canvas
-  // and be centered at the center of the canvas
-  Mat<4> transformation = Mat<4>::translator(DIM / 2, DIM / 2, 0) *
-                          Mat<4>::scaler(DIM / 2, DIM / 2, DIM / 2);
+  Tuple ray_origin = Tuple::Point(0, 0, -5);
+  Canvas canvas(CANVAS_PIXELS, CANVAS_PIXELS, Color::White());
+  Sphere sphere(Mat<4>::scaler(1, 1, 1), Material(Color::Red()));
+  PointLight light(Tuple::Point(-10, 10, -10), Color::White());
 
-  Sphere s(transformation, Material(Color::Pink()));
-  Tuple center = Tuple::Point(DIM / 2, DIM / 2, 0);
-  PointLight light(center + Tuple::Point(DIM / -3.0, DIM / -3.0, -1.0 * DIM),
-                   Color::White());
+  for (size_t y = 0; y < CANVAS_PIXELS; ++y) {
+    double world_y = HALF - PIXEL_SIZE * y;
+    for (size_t x = 0; x < CANVAS_PIXELS; ++x) {
+      double world_x = -HALF + PIXEL_SIZE * x;
+      Tuple position = Tuple::Point(world_x, world_y, WALL_Z);
 
-  for (size_t row = 0; row < DIM; ++row) {
-    for (size_t col = 0; col < DIM; ++col) {
-      Ray r(Tuple::Point(static_cast<double>(row), static_cast<double>(col),
-                         -static_cast<double>(2 * DIM)),
-            Tuple::Vector(0, 0, 1).norm());
-      Color color;
-
-      std::vector<Intersection> intersections = s.intersect(r);
-      if (intersections.empty()) {
-        color = Color::White();
-      } else {
-        Intersection hit = Intersection::hit(intersections).value();
-        Tuple point = r.position(hit.t_);
+      Ray ray(ray_origin, (position - ray_origin).norm());
+      if (std::optional<Intersection> maybe_hit =
+              Intersection::hit(sphere.intersect(ray));
+          maybe_hit.has_value()) {
+        Intersection hit = maybe_hit.value();
+        Tuple point = ray.position(hit.t_);
         Tuple normal = hit.obj_.normal_at(point);
-        Tuple eye = -r.direction_;
-
-        color = light.lighting(hit.obj_.material_, point, eye, normal);
+        Tuple eye = -ray.direction_;
+        Color color = light.lighting(hit.obj_.material_, point, eye, normal);
+        canvas.write_pixel(x, y, color);
       }
-      c.write_pixel(row, col, color);
     }
   }
 
-  out << c;
-
+  out << canvas;
   std::cout << "I just saved the file " << filename << std::endl;
 }

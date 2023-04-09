@@ -9,37 +9,35 @@
 #include <iostream>
 #include <string>
 
-static constexpr size_t WIDTH = 500;
-static constexpr size_t HEIGHT = 500;
-static constexpr size_t VERTICAL_SQUISH = 8;
+static constexpr size_t CANVAS_PIXELS = 1000;
+static constexpr double WALL_Z = 10;
+static constexpr double WALL_SIZE = 7;
+static constexpr double PIXEL_SIZE = WALL_SIZE / CANVAS_PIXELS;
+static constexpr double HALF = WALL_SIZE / 2;
+static const Tuple RAY_ORIGIN = Tuple::Point(0, 0, -5);
+static const Color COLOR = Color::Red();
 
 int main() {
-  std::cout << "Starting Circle program" << std::endl;
-  std::string filename = "Circle.ppm";
+  std::cout << "Starting Circle Chapter 5 program" << std::endl;
+  std::string filename = "CircleCh5.ppm";
   std::ofstream out(filename);
-  Canvas c(WIDTH, HEIGHT);
 
-  // The sphere should have diameter of the whole canvas and be centered at the
-  // center of the canvas
-  Sphere s(Mat<4>::translator(WIDTH / 2, HEIGHT / 2, 0) *
-           Mat<4>::scaler(WIDTH / 2, HEIGHT / VERTICAL_SQUISH, 1));
+  Canvas canvas(CANVAS_PIXELS, CANVAS_PIXELS);
+  Sphere shape;
 
-  for (size_t row = 0; row < WIDTH; ++row) {
-    for (size_t col = 0; col < HEIGHT; ++col) {
-      Ray r(
-          Tuple::Point(static_cast<double>(row), static_cast<double>(col), -1),
-          Tuple::Vector(0, 0, 1));
-      Color color;
-      if (s.intersect(r).empty()) {
-        color = Color::Black();
-      } else {
-        color = Color::Red();
+  for (size_t y = 0; y < CANVAS_PIXELS; ++y) {
+    double world_y = HALF - PIXEL_SIZE * y;
+    for (size_t x = 0; x < CANVAS_PIXELS; ++x) {
+      double world_x = -HALF + PIXEL_SIZE * x;
+      Tuple position = Tuple::Point(world_x, world_y, WALL_Z);
+
+      Ray r(RAY_ORIGIN, (position - RAY_ORIGIN).norm());
+      if (auto hit = Intersection::hit(shape.intersect(r)); hit.has_value()) {
+        canvas.write_pixel(x, y, COLOR);
       }
-      c.write_pixel(row, col, color);
     }
   }
 
-  out << c;
-
+  out << canvas;
   std::cout << "I just saved the file " << filename << std::endl;
 }

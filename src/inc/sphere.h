@@ -23,10 +23,13 @@ class Intersection {
 
 class Sphere {
  public:
-  Sphere();
-  Sphere(Mat<4> transformation);
+  // Constructors
   Sphere(Mat<4> transformation, Material material);
+  Sphere(Mat<4> transformation);
+  Sphere(Material material);
+  Sphere();
 
+  // Misc
   std::vector<Intersection> intersect(Ray r) const;
   bool operator==(Sphere other) const;
   Tuple normal_at(Tuple world_point) const;

@@ -2,7 +2,6 @@
 #include <helpers.h>
 #include <material.h>
 
-static const Color COL(1, 1, 1);
 static constexpr double AMB = 0.1;
 static constexpr double DIFF = 0.9;
 static constexpr double SPEC = 0.9;
@@ -15,7 +14,7 @@ Material::Material(Color color)
       specular_(SPEC),
       shininess_(SHIN) {}
 
-Material::Material() : Material(COL) {}
+Material::Material() : Material(Color::White()) {}
 
 bool Material::operator==(Material other) const {
   return color_ == other.color_ && dbleq(ambient_, other.ambient_) &&
