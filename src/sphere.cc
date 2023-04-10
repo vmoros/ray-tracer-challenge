@@ -4,14 +4,15 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <optional>
 #include <ranges>
 #include <vector>
 
-Intersection::Intersection(double t, const Sphere& obj) : t_(t), obj_(obj) {}
+Intersection::Intersection(double t, Sphere* obj) : t_(t), obj_(obj) {}
 
 std::optional<Intersection> Intersection::hit(
-    std::vector<Intersection> intersections) {
+    const std::vector<Intersection>& intersections) {
   auto filtered = intersections | std::views::filter([](const auto inter) {
                     return inter.t_ >= 0.0;
                   });
@@ -21,11 +22,30 @@ std::optional<Intersection> Intersection::hit(
   if (ans == std::ranges::end(filtered)) {
     return std::nullopt;
   }
+
   return *ans;
 }
 
 bool Intersection::operator==(const Intersection other) const {
   return dbleq(t_, other.t_) && (obj_ == other.obj_);
+}
+
+Intersection::Comps Intersection::prepare_computations(Ray ray) const {
+  Intersection::Comps ans = {
+      .inside_ = false,
+      .t_ = t_,
+      .obj_ = obj_,
+      .point_ = ray.position(t_),
+      .eyev_ = -ray.direction_,
+      .normalv_ = obj_->normal_at(ray.position(t_)),
+  };
+
+  if (ans.normalv_.dot(ans.eyev_) < 0) {
+    ans.inside_ = true;
+    ans.normalv_ = -ans.normalv_;
+  }
+
+  return ans;
 }
 
 Sphere::Sphere(Mat<4> transformation, Material material)
@@ -34,7 +54,7 @@ Sphere::Sphere(Mat<4> transformation) : Sphere(transformation, Material()) {}
 Sphere::Sphere(Material material) : Sphere(Mat<4>::iden(), material) {}
 Sphere::Sphere() : Sphere(Mat<4>::iden(), Material()) {}
 
-std::vector<Intersection> Sphere::intersect(Ray ray) const {
+std::vector<Intersection> Sphere::intersect(Ray ray) {
   ray = ray.transform(transformation_.inverse());
   Tuple sphere_to_ray = ray.origin_ - Tuple::Origin();
 
@@ -49,7 +69,7 @@ std::vector<Intersection> Sphere::intersect(Ray ray) const {
 
   double t1 = (-b - sqrt(discrim)) / (2 * a);
   double t2 = (-b + sqrt(discrim)) / (2 * a);
-  return {{t1, *this}, {t2, *this}};
+  return {{t1, this}, {t2, this}};
 }
 
 Tuple Sphere::normal_at(Tuple world_point) const {
@@ -62,5 +82,6 @@ Tuple Sphere::normal_at(Tuple world_point) const {
 }
 
 bool Sphere::operator==(const Sphere other) const {
-  return transformation_ == other.transformation_;
+  return transformation_ == other.transformation_ &&
+         material_ == other.material_;
 }

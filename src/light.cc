@@ -5,6 +5,10 @@
 PointLight::PointLight(Tuple pos, Color intns)
     : position_(pos), intensity_(intns) {}
 
+bool PointLight::operator==(PointLight other) const {
+  return position_ == other.position_ && intensity_ == other.intensity_;
+}
+
 Color PointLight::lighting(Material material, Tuple point, Tuple eyev,
                            Tuple normalv) const {
   Color effective_color = material.color_ * intensity_;

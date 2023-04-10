@@ -25,7 +25,10 @@ int main() {
 
   Tuple ray_origin = Tuple::Point(0, 0, -5);
   Canvas canvas(CANVAS_PIXELS, CANVAS_PIXELS, Color::White());
-  Sphere sphere(Mat<4>::scaler(1, 1, 1), Material(Color::Red()));
+  Material mat(Color::Blue());
+  mat.shininess_ = 20;
+
+  Sphere sphere(Mat<4>::scaler(1, 1, 1), mat);
   PointLight light(Tuple::Point(-10, 10, -10), Color::White());
 
   for (size_t y = 0; y < CANVAS_PIXELS; ++y) {
@@ -40,9 +43,9 @@ int main() {
           maybe_hit.has_value()) {
         Intersection hit = maybe_hit.value();
         Tuple point = ray.position(hit.t_);
-        Tuple normal = hit.obj_.normal_at(point);
+        Tuple normal = hit.obj_->normal_at(point);
         Tuple eye = -ray.direction_;
-        Color color = light.lighting(hit.obj_.material_, point, eye, normal);
+        Color color = light.lighting(hit.obj_->material_, point, eye, normal);
         canvas.write_pixel(x, y, color);
       }
     }

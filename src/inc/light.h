@@ -6,8 +6,11 @@
 class PointLight {
  public:
   PointLight(Tuple pos, Color intns);
+
   Color lighting(Material material, Tuple point, Tuple eyev,
                  Tuple normalv) const;
+
+  bool operator==(PointLight other) const;
 
   // Member variables
   Tuple position_;

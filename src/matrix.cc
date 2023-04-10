@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <exception>
 #include <iostream>
 #include <numeric>
 #include <ranges>
@@ -20,8 +19,6 @@ bool Mat<sz>::operator==(const Mat<sz>& other) const {
   for (size_t row : std::views::iota(0uz, sz)) {
     for (size_t col : std::views::iota(0uz, sz)) {
       if (!dbleq(data_[row][col], other.data_[row][col])) {
-        // std::cout << "WRONG!!!! " << data_[row][col] << " is not equal to "
-        //           << other.data_[row][col] << std::endl;
         return false;
       }
     }
@@ -194,7 +191,7 @@ double Mat<sz>::minor(size_t row, size_t col) const {
 template <>
 double Mat<2>::minor([[maybe_unused]] size_t row,
                      [[maybe_unused]] size_t col) const {
-  std::terminate();
+  throw std::runtime_error("Error: tried to take the minor of a 2D matrix");
 }
 
 template <size_t sz>
@@ -215,7 +212,7 @@ bool Mat<sz>::isInvertible() const {
 template <size_t sz>
 Mat<sz> Mat<sz>::inverse() const {
   if (!isInvertible()) {
-    std::terminate();
+    throw std::runtime_error("Error: tried to invert a singular matrix");
   }
 
   Mat<sz> ans{};

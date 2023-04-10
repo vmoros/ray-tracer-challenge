@@ -16,6 +16,12 @@ Material::Material(Color color)
 
 Material::Material() : Material(Color::White()) {}
 
+Material::Material(Color color, double diffuse, double specular)
+    : Material(color) {
+  diffuse_ = diffuse;
+  specular_ = specular;
+}
+
 bool Material::operator==(Material other) const {
   return color_ == other.color_ && dbleq(ambient_, other.ambient_) &&
          dbleq(diffuse_, other.diffuse_) && dbleq(specular_, other.specular_) &&
