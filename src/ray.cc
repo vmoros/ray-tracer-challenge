@@ -6,6 +6,7 @@
 
 Ray::Ray(Tuple origin, Tuple direction)
     : origin_(origin), direction_(direction) {}
+Ray::Ray() : Ray(Tuple::Origin(), Tuple::Vector(0, 0, 1)) {}
 
 Tuple Ray::position(double t) const { return origin_ + direction_ * t; }
 

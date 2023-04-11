@@ -6,6 +6,7 @@
 class Ray {
  public:
   Ray(Tuple origin, Tuple direction);
+  Ray();
 
   Tuple position(double t) const;
   Ray transform(Mat<4> mat) const;

@@ -1,4 +1,5 @@
 #include <helpers.h>
+#include <shape.h>
 #include <sphere.h>
 #include <tuple.h>
 
