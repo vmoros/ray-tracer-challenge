@@ -38,10 +38,7 @@ double Tuple::mag() const {
   return sqrt(x_ * x_ + y_ * y_ + z_ * z_ + w_ * w_);
 }
 
-Tuple Tuple::norm() const {
-  const double myMag = mag();
-  return {x_ / myMag, y_ / myMag, z_ / myMag, static_cast<int>(w_ / myMag)};
-}
+Tuple Tuple::norm() const { return *this / mag(); }
 
 double Tuple::dot(Tuple other) const {
   return x_ * other.x_ + y_ * other.y_ + z_ * other.z_ + w_ * other.w_;

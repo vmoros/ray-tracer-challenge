@@ -13,7 +13,7 @@ class Sphere;  // forward decl to make Intersection work
 class Intersection {
  public:
   // Constructors & assigners
-  Intersection(double t, Sphere* obj);
+  Intersection(double t, const Sphere* obj);
 
   // Misc
   static std::optional<Intersection> hit(
@@ -23,7 +23,7 @@ class Intersection {
   struct Comps {  // pre-computed values
     bool inside_;
     double t_;
-    Sphere* obj_;
+    const Sphere* obj_;
     Tuple point_;
     Tuple eyev_;
     Tuple normalv_;
@@ -33,7 +33,7 @@ class Intersection {
 
   // Member variables
   double t_;
-  Sphere* obj_;
+  const Sphere* obj_;
 };
 
 class Sphere {
@@ -45,7 +45,7 @@ class Sphere {
   Sphere();
 
   // Misc
-  std::vector<Intersection> intersect(Ray r);
+  std::vector<Intersection> intersect(Ray r) const;
   bool operator==(Sphere other) const;
   Tuple normal_at(Tuple world_point) const;
 

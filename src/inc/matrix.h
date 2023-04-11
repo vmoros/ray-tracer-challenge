@@ -35,6 +35,7 @@ class Mat {
   static Mat<4> rotator_z(double rad);
   static Mat<4> shearer(double xy, double xz, double yx, double yz, double zx,
                         double zy);
+  static Mat<4> view_transform(Tuple from, Tuple to, Tuple up);
 
   data data_;
 };

@@ -9,7 +9,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_executable(all_tests tuple_test.cc color_test.cc canvas_test.cc
-    matrix_test.cc ray_test.cc sphere_and_intersection_test.cc light_test.cc material_test.cc world_test.cc)
+    matrix_test.cc ray_test.cc sphere_and_intersection_test.cc light_test.cc
+    material_test.cc world_test.cc camera_test.cc)
 target_link_libraries(all_tests GTest::gtest_main stuff)
 
 include(GoogleTest)

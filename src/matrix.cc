@@ -1,9 +1,9 @@
 #include <helpers.h>
 #include <matrix.h>
+#include <tuple.h>
 
 #include <algorithm>
 #include <array>
-#include <cmath>
 #include <iostream>
 #include <numeric>
 #include <ranges>
@@ -16,8 +16,8 @@ Mat<sz>::Mat() : data_({}) {}
 
 template <size_t sz>
 bool Mat<sz>::operator==(const Mat<sz>& other) const {
-  for (size_t row : std::views::iota(0uz, sz)) {
-    for (size_t col : std::views::iota(0uz, sz)) {
+  for (size_t row = 0; row < sz; ++row) {
+    for (size_t col = 0; col < sz; ++col) {
       if (!dbleq(data_[row][col], other.data_[row][col])) {
         return false;
       }
@@ -29,7 +29,7 @@ bool Mat<sz>::operator==(const Mat<sz>& other) const {
 
 template <size_t sz>
 double Mat<sz>::dot(const Mat<sz>& other, size_t row, size_t col) const {
-  auto inds = std::views::iota(0uz, sz);
+  auto inds = std::views::iota(size_t{0}, sz);
   return std::transform_reduce(
       inds.begin(), inds.end(), 0.0, std::plus{},
       [&](size_t i) { return data_[row][i] * other.data_[i][col]; });
@@ -37,7 +37,7 @@ double Mat<sz>::dot(const Mat<sz>& other, size_t row, size_t col) const {
 
 template <size_t sz>
 std::array<double, sz> Mat<sz>::col(size_t c) const {
-  auto inds = std::views::iota(0uz, sz);
+  auto inds = std::views::iota(size_t{0}, sz);
   std::array<double, sz> ans{};
   std::transform(inds.begin(), inds.end(), ans.begin(),
                  [&](size_t i) { return data_[i][c]; });
@@ -56,8 +56,8 @@ Mat<sz> Mat<sz>::operator*(const Mat<sz>& other) const {
   //     ans.data_[row][col] = dot(other, row, col);
   //   });
   // });
-  for (size_t row : std::views::iota(0uz, sz)) {
-    for (size_t col : std::views::iota(0uz, sz)) {
+  for (size_t row = 0; row < sz; ++row) {
+    for (size_t col = 0; col < sz; ++col) {
       ans.data_[row][col] = dot(other, row, col);
     }
   }
@@ -90,7 +90,7 @@ template <size_t sz>
 double Mat<sz>::det() const {
   double ans = 0;
 
-  for (size_t i : std::views::iota(0uz, sz)) {
+  for (size_t i = 0; i < sz; ++i) {
     ans += data_[0][i] * cofactor(0, i);
   }
 
@@ -101,7 +101,7 @@ template <size_t sz>
 Mat<sz> Mat<sz>::transp() const {
   Mat<sz> ans{};
 
-  for (size_t i : std::views::iota(0uz, sz)) {
+  for (size_t i = 0; i < sz; ++i) {
     ans.data_[i] = col(i);
   }
 
@@ -112,7 +112,7 @@ template <size_t sz>
 Mat<sz> Mat<sz>::iden() {
   Mat<sz> ans{};
 
-  for (size_t i : std::views::iota(0uz, sz)) {
+  for (size_t i = 0; i < sz; ++i) {
     ans.data_[i][i] = 1.0;
   }
 
@@ -161,17 +161,30 @@ Mat<4> Mat<sz>::shearer(double xy, double xz, double yx, double yz, double zx,
 }
 
 template <size_t sz>
+Mat<4> Mat<sz>::view_transform(Tuple from, Tuple to, Tuple up) {
+  Tuple forward = (to - from).norm();
+  Tuple left = forward.cross(up.norm());
+  Tuple true_up = left.cross(forward);
+  Mat<4> orientation({{{left.x_, left.y_, left.z_, 0.0},
+                       {true_up.x_, true_up.y_, true_up.z_, 0.0},
+                       {-forward.x_, -forward.y_, -forward.z_, 0.0},
+                       {0.0, 0.0, 0.0, 1.0}}});
+
+  return orientation * Mat<4>::translator(-from.x_, -from.y_, -from.z_);
+}
+
+template <size_t sz>
 Mat<sz - 1> Mat<sz>::submat(size_t row, size_t col) const {
   Mat<sz - 1> ans{};
 
   int rowAdj = 0;
-  for (size_t r : std::views::iota(0uz, sz)) {
+  for (size_t r = 0; r < sz; ++r) {
     if (r == row) {
       rowAdj = 1;
       continue;
     }
     int colAdj = 0;
-    for (size_t c : std::views::iota(0uz, sz)) {
+    for (size_t c = 0; c < sz; ++c) {
       if (c == col) {
         colAdj = 1;
         continue;
@@ -216,8 +229,8 @@ Mat<sz> Mat<sz>::inverse() const {
   }
 
   Mat<sz> ans{};
-  for (size_t row : std::views::iota(0uz, sz)) {
-    for (size_t col : std::views::iota(0uz, sz)) {
+  for (size_t row = 0; row < sz; ++row) {
+    for (size_t col = 0; col < sz; ++col) {
       double cofac = cofactor(row, col);
       ans.data_[col][row] = cofac / det();
     }

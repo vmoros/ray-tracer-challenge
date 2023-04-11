@@ -9,7 +9,7 @@
 #include <ranges>
 #include <vector>
 
-Intersection::Intersection(double t, Sphere* obj) : t_(t), obj_(obj) {}
+Intersection::Intersection(double t, const Sphere* obj) : t_(t), obj_(obj) {}
 
 std::optional<Intersection> Intersection::hit(
     const std::vector<Intersection>& intersections) {
@@ -54,7 +54,7 @@ Sphere::Sphere(Mat<4> transformation) : Sphere(transformation, Material()) {}
 Sphere::Sphere(Material material) : Sphere(Mat<4>::iden(), material) {}
 Sphere::Sphere() : Sphere(Mat<4>::iden(), Material()) {}
 
-std::vector<Intersection> Sphere::intersect(Ray ray) {
+std::vector<Intersection> Sphere::intersect(Ray ray) const {
   ray = ray.transform(transformation_.inverse());
   Tuple sphere_to_ray = ray.origin_ - Tuple::Origin();
 

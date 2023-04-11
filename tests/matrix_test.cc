@@ -331,3 +331,39 @@ TEST(MatrixTest, ChainedTransformations_CombineInReverseOrder) {
   EXPECT_EQ(p4, finalPoint);
   EXPECT_EQ(allTransformations, finalPoint);
 }
+
+TEST(MatrixTest, DefaultTransformationMatrix_HasCorrectComponents) {
+  Tuple from = Tuple::Point(0, 0, 0);
+  Tuple to = Tuple::Point(0, 0, -1);
+  Tuple up = Tuple::Vector(0, 1, 0);
+
+  EXPECT_EQ(Mat<4>::view_transform(from, to, up), Mat<4>::iden());
+}
+
+TEST(MatrixTest, TransformationLookingAtPositiveZ_Mirrors) {
+  Tuple from = Tuple::Point(0, 0, 0);
+  Tuple to = Tuple::Point(0, 0, 1);
+  Tuple up = Tuple::Vector(0, 1, 0);
+
+  EXPECT_EQ(Mat<4>::view_transform(from, to, up), Mat<4>::scaler(-1, 1, -1));
+}
+
+TEST(MatrixTest, TransformationLookingAtOriginFromZAxis_MovesTheWorld) {
+  Tuple from = Tuple::Point(0, 0, 8);
+  Tuple to = Tuple::Point(0, 0, 0);
+  Tuple up = Tuple::Vector(0, 1, 0);
+
+  EXPECT_EQ(Mat<4>::view_transform(from, to, up), Mat<4>::translator(0, 0, -8));
+}
+
+TEST(MatrixTest, ArbitraryViewTransformation_HasCorrectComponents) {
+  Tuple from = Tuple::Point(1, 3, 2);
+  Tuple to = Tuple::Point(4, -2, 8);
+  Tuple up = Tuple::Vector(1, 1, 0);
+  Mat<4> res({{{-0.50709, 0.50709, 0.67612, -2.36643},
+               {0.76772, 0.60609, 0.12122, -2.82843},
+               {-0.35857, 0.59761, -0.71714, 0.0},
+               {0.0, 0.0, 0.0, 1.0}}});
+
+  EXPECT_EQ(Mat<4>::view_transform(from, to, up), res);
+}

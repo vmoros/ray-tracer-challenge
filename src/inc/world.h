@@ -9,14 +9,15 @@
 
 class World {
  public:
-  // Constructors
+  // Constructors & factories
   World(std::vector<Sphere> spheres, PointLight light);
   World();
+  static World Empty();
 
   // Misc
-  std::vector<Intersection> intersect(Ray ray);
+  std::vector<Intersection> intersect(Ray ray) const;
   Color shade_hit(Intersection::Comps comps) const;
-  Color color_at(Ray ray);
+  Color color_at(Ray ray) const;
 
   // Member variables
   std::vector<Sphere> spheres_;

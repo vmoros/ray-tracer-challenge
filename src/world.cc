@@ -19,7 +19,13 @@ World::World(std::vector<Sphere> spheres, PointLight light)
 
 World::World() : World({s1, s2}, {default_light}) {}
 
-std::vector<Intersection> World::intersect(Ray ray) {
+World World::Empty() {
+  World ans;
+  ans.spheres_.clear();
+  return ans;
+}
+
+std::vector<Intersection> World::intersect(Ray ray) const {
   std::vector<Intersection> ans;
 
   for (auto& sphere : spheres_) {
@@ -38,7 +44,7 @@ Color World::shade_hit(Intersection::Comps comps) const {
                          comps.normalv_);
 }
 
-Color World::color_at(Ray ray) {
+Color World::color_at(Ray ray) const {
   std::vector<Intersection> xs = intersect(ray);
   std::optional<Intersection> maybe_hit = Intersection::hit(xs);
   if (!maybe_hit.has_value()) {

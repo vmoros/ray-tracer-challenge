@@ -15,7 +15,7 @@ TEST(LightTest, PointLight_HasCorrectComponents) {
 
 class LightingFixture : public ::testing::Test {
  public:
-  Material m;
+  Material m{};
   Tuple position = Tuple::Origin();
 };
 
