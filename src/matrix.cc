@@ -12,7 +12,16 @@ template <size_t sz>
 Mat<sz>::Mat(data d) : data_(d) {}
 
 template <size_t sz>
-Mat<sz>::Mat() : data_({}) {}
+Mat<sz>::Mat() : data_({}) {
+  for (size_t i = 0; i < sz; ++i) {
+    data_[i][i] = 1.0;
+  }
+}
+
+template <size_t sz>
+Mat<sz> Mat<sz>::iden() {
+  return Mat<sz>();
+}
 
 template <size_t sz>
 bool Mat<sz>::operator==(const Mat<sz>& other) const {
@@ -48,14 +57,7 @@ std::array<double, sz> Mat<sz>::col(size_t c) const {
 template <size_t sz>
 Mat<sz> Mat<sz>::operator*(const Mat<sz>& other) const {
   Mat<sz> ans{};
-  // std::array<size_t, sz> inds{};
-  // std::iota(inds.begin(), inds.end(), 0);
 
-  // std::for_each(inds.begin(), inds.end(), [&](size_t row) {
-  //   std::for_each(inds.begin(), inds.end(), [&](size_t col) {
-  //     ans.data_[row][col] = dot(other, row, col);
-  //   });
-  // });
   for (size_t row = 0; row < sz; ++row) {
     for (size_t col = 0; col < sz; ++col) {
       ans.data_[row][col] = dot(other, row, col);
@@ -103,17 +105,6 @@ Mat<sz> Mat<sz>::transp() const {
 
   for (size_t i = 0; i < sz; ++i) {
     ans.data_[i] = col(i);
-  }
-
-  return ans;
-}
-
-template <size_t sz>
-Mat<sz> Mat<sz>::iden() {
-  Mat<sz> ans{};
-
-  for (size_t i = 0; i < sz; ++i) {
-    ans.data_[i][i] = 1.0;
   }
 
   return ans;
