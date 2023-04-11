@@ -1,5 +1,6 @@
 #include <canvas.h>
 #include <color.h>
+#include <intersection.h>
 #include <matrix.h>
 #include <ray.h>
 #include <sphere.h>

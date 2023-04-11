@@ -1,4 +1,5 @@
 #include <color.h>
+#include <intersection.h>
 #include <light.h>
 #include <material.h>
 #include <sphere.h>

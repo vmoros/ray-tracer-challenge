@@ -1,6 +1,7 @@
 #pragma once
 
 #include <color.h>
+#include <intersection.h>
 #include <light.h>
 #include <ray.h>
 #include <sphere.h>
