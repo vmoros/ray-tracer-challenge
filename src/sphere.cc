@@ -31,19 +31,24 @@ bool Intersection::operator==(const Intersection other) const {
 }
 
 Intersection::Comps Intersection::prepare_computations(Ray ray) const {
+  Tuple pos = ray.position(t_);
+
   Intersection::Comps ans = {
       .inside_ = false,
       .t_ = t_,
       .obj_ = obj_,
-      .point_ = ray.position(t_),
+      .point_ = pos,
+      // Deliberately not setting over_point_ because it will be set later
       .eyev_ = -ray.direction_,
-      .normalv_ = obj_->normal_at(ray.position(t_)),
+      .normalv_ = obj_->normal_at(pos),
   };
 
   if (ans.normalv_.dot(ans.eyev_) < 0) {
     ans.inside_ = true;
     ans.normalv_ = -ans.normalv_;
   }
+
+  ans.over_point_ = ans.point_ + ans.normalv_ * EPS;
 
   return ans;
 }

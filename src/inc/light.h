@@ -5,11 +5,12 @@
 
 class PointLight {
  public:
+  // Constructors
   PointLight(Tuple pos, Color intns);
 
-  Color lighting(Material material, Tuple point, Tuple eyev,
-                 Tuple normalv) const;
-
+  // Misc
+  Color lighting(Material material, Tuple point, Tuple eyev, Tuple normalv,
+                 bool in_shadow = false) const;
   bool operator==(PointLight other) const;
 
   // Member variables

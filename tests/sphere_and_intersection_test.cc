@@ -94,6 +94,16 @@ TEST(IntersectionTest, TranslatedSphere_HasCorrectIntersections) {
   EXPECT_EQ(xs.size(), 0);
 }
 
+TEST(IntersectionTest, HitIsSlightlyMoved_ToPreventSelfShadows) {
+  Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
+  Sphere shape(Mat<4>::translator(0, 0, 1));
+  Intersection i(5, &shape);
+  Intersection::Comps comps = i.prepare_computations(r);
+
+  EXPECT_LT(comps.over_point_.z_, -EPS / 2);
+  EXPECT_GT(comps.point_.z_, comps.over_point_.z_);
+}
+
 TEST(SphereTest, SphereNormalAtPointOnXAxis_IsCorrect) {
   Sphere s;
   Tuple n = s.normal_at(Tuple::Point(1, 0, 0));

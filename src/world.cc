@@ -12,7 +12,7 @@
 
 static const Sphere s1(Material(Color(0.8, 1.0, 0.6), 0.7, 0.2));
 static const Sphere s2(Mat<4>::scaler(0.5, 0.5, 0.5));
-PointLight default_light(Tuple::Point(-10, 10, -10), Color(1, 1, 1));
+PointLight default_light(Tuple::Point(-10, 10, -10), Color::White());
 
 World::World(std::vector<Sphere> spheres, PointLight light)
     : spheres_(spheres), light_(light) {}
@@ -40,8 +40,10 @@ std::vector<Intersection> World::intersect(Ray ray) const {
 }
 
 Color World::shade_hit(Intersection::Comps comps) const {
+  bool shadowed = is_shadowed(comps.over_point_);
+
   return light_.lighting(comps.obj_->material_, comps.point_, comps.eyev_,
-                         comps.normalv_);
+                         comps.normalv_, shadowed);
 }
 
 Color World::color_at(Ray ray) const {
@@ -54,4 +56,16 @@ Color World::color_at(Ray ray) const {
   Intersection hit = maybe_hit.value();
   Intersection::Comps comps = hit.prepare_computations(ray);
   return shade_hit(comps);
+}
+
+bool World::is_shadowed(Tuple point) const {
+  Tuple v = light_.position_ - point;
+  double distance = v.mag();
+  Tuple direction = v.norm();
+
+  Ray r(point, direction);
+  std::vector<Intersection> intersections = intersect(r);
+
+  std::optional<Intersection> maybe_hit = Intersection::hit(intersections);
+  return maybe_hit.has_value() && (maybe_hit.value().t_ < distance);
 }

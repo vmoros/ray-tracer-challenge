@@ -18,6 +18,7 @@ class World {
   std::vector<Intersection> intersect(Ray ray) const;
   Color shade_hit(Intersection::Comps comps) const;
   Color color_at(Ray ray) const;
+  bool is_shadowed(Tuple point) const;
 
   // Member variables
   std::vector<Sphere> spheres_;

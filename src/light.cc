@@ -10,13 +10,13 @@ bool PointLight::operator==(PointLight other) const {
 }
 
 Color PointLight::lighting(Material material, Tuple point, Tuple eyev,
-                           Tuple normalv) const {
+                           Tuple normalv, bool in_shadow) const {
   Color effective_color = material.color_ * intensity_;
   Color ambient = effective_color * material.ambient_;
   Tuple lightv = (position_ - point).norm();
   double light_dot_normal = lightv.dot(normalv);
 
-  if (light_dot_normal < 0) {
+  if (light_dot_normal < 0 || in_shadow) {
     return ambient;
   }
 

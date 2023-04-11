@@ -25,6 +25,7 @@ class Intersection {
     double t_;
     const Sphere* obj_;
     Tuple point_;
+    Tuple over_point_;
     Tuple eyev_;
     Tuple normalv_;
   };
