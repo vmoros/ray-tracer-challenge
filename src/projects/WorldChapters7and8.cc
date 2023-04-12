@@ -56,7 +56,7 @@ int main() {
   left.material_.specular_ = 0.3;
 
   // Make world & camera
-  World w({floor, left_wall, right_wall, middle, right, left},
+  World w({&floor, &left_wall, &right_wall, &middle, &right, &left},
           PointLight(Tuple::Point(-10, 10, -10), Color::White()));
 
   Camera camera(2000, 1200, PI / 3);

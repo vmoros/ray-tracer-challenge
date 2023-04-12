@@ -4,14 +4,14 @@
 #include <intersection.h>
 #include <light.h>
 #include <ray.h>
-#include <sphere.h>
+#include <shape.h>
 
 #include <vector>
 
 class World {
  public:
   // Constructors & factories
-  World(std::vector<Sphere> spheres, PointLight light);
+  World(std::vector<Shape*> shapes, PointLight light);
   World();
   static World Empty();
 
@@ -22,6 +22,6 @@ class World {
   bool is_shadowed(Tuple point) const;
 
   // Member variables
-  std::vector<Sphere> spheres_;
+  std::vector<Shape*> shapes_;
   PointLight light_;
 };

@@ -15,6 +15,7 @@ I learned a lot by working on this project. In this file, I'll write about some 
     * References, even if they're not `const`, suffer from the same problem because changing a reference changes the thing that's being pointed to. You can't change what a reference points to, which is what you want to do in assignment if you have a member that's a reference.
       * This is a good reason to use raw pointers. The smart pointers involve ownership, which I didn't want my pointers to do. They're purely "observers" in my context, not owners. I don't want the object to be destroyed when my pointer dies so raw pointers were the right choice.
 * How to enable and benefit from sanitizers
+* At first, the only type of shape I had was Sphere and it was hard-coded everywhere: in World, Intersection, etc. Then I made an abstract Shape class that Sphere inherited from. Updating everything was a pain but I learned a lot about inheritance, virtual functions, polymorphism with pointers/references, etc.
 
 # Interesting bugs
 * I found intersections of spheres in a ranged for loop over a vector of spheres. My mistake was to take the spheres by copy (instead of by reference) in the for loop. Each intersection has a pointer to the sphere on which it's an intersection so with these copies, the pointers were to temporary spheres. That one took me a while to debug. Rust would prevent something like that with lifetimes.

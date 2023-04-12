@@ -8,7 +8,7 @@ TEST(IntersectionTest, Intersection_HasCorrectComponents) {
   Intersection i(3.5, &s);
 
   EXPECT_DOUBLE_EQ(i.t_, 3.5);
-  EXPECT_EQ(*i.obj_, s);
+  EXPECT_EQ(i.obj_, &s);
 }
 
 TEST(IntersectionTest, RaySphereIntersections_ContainObjects) {

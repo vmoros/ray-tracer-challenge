@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # "include-what-you-use;-Xiwyu;--mapping_file=/opt/homebrew/opt/llvm/include/c++/v1/libcxx.imp")
 # I want to use IWYU but it has weird suggestions, even after adding the mapping file.
 # For example, it says to add "#include <fwd>" for "std::string", which makes no sense
+# It also wants to change a lot of my includes from <> to "", which I dislike
 # I would use it only to remove, not to add, but it doesn't have that feature
 
 project(RayTracer)

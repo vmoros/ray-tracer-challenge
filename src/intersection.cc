@@ -1,11 +1,11 @@
 #include <helpers.h>
 #include <intersection.h>
-#include <sphere.h>
+#include <shape.h>
 
 #include <optional>
 #include <ranges>
 
-Intersection::Intersection(double t, const Sphere* obj) : t_(t), obj_(obj) {}
+Intersection::Intersection(double t, const Shape* obj) : t_(t), obj_(obj) {}
 
 std::optional<Intersection> Intersection::hit(
     const std::vector<Intersection>& intersections) {

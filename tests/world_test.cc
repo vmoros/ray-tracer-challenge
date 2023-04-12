@@ -5,6 +5,7 @@
 #include <material.h>
 #include <matrix.h>
 #include <ray.h>
+#include <shape.h>
 #include <sphere.h>
 #include <tuple.h>
 #include <world.h>
@@ -22,11 +23,9 @@ TEST(WorldTest, DefaultWorld_HasCorrectComponents) {
   World w;
 
   EXPECT_EQ(w.light_, light);
-  EXPECT_EQ(w.spheres_.size(), 2);
-  EXPECT_NE(std::find(w.spheres_.begin(), w.spheres_.end(), s1),
-            w.spheres_.end());
-  EXPECT_NE(std::find(w.spheres_.begin(), w.spheres_.end(), s2),
-            w.spheres_.end());
+  EXPECT_EQ(w.shapes_.size(), 2);
+  EXPECT_EQ(*dynamic_cast<Sphere*>(w.shapes_[0]), s1);
+  EXPECT_EQ(*dynamic_cast<Sphere*>(w.shapes_[1]), s2);
 }
 
 TEST(WorldTest, DefaultWorld_HasCorrectIntersections) {
@@ -48,7 +47,7 @@ TEST(WorldTest, PrepareComputations_HasCorrectComponents) {
   Intersection::Comps comps = i.prepare_computations(r);
 
   EXPECT_DOUBLE_EQ(comps.t_, i.t_);
-  EXPECT_EQ(*comps.obj_, *i.obj_);
+  EXPECT_EQ(comps.obj_, i.obj_);
   EXPECT_EQ(comps.point_, Tuple::Point(0, 0, -1));
   EXPECT_EQ(comps.eyev_, Tuple::Vector(0, 0, -1));
   EXPECT_EQ(comps.normalv_, Tuple::Vector(0, 0, -1));
@@ -78,7 +77,7 @@ TEST(WorldTest, PrepareComputations_DetectsHitOnTheInsideAndNegatesNormal) {
 TEST(WorldTest, ShadedIntersectionOnOutside_HasCorrectColor) {
   World w;
   Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
-  Sphere shape = w.spheres_[0];
+  Sphere& shape = dynamic_cast<Sphere&>(*w.shapes_[0]);
   Intersection i(4, &shape);
   Intersection::Comps comps = i.prepare_computations(r);
 
@@ -89,7 +88,7 @@ TEST(WorldTest, ShadedIntersectionOnInside_HasCorrectColor) {
   World w;
   w.light_ = PointLight(Tuple::Point(0, 0.25, 0), Color::White());
   Ray r(Tuple::Point(0, 0, 0), Tuple::Vector(0, 0, 1));
-  Sphere shape = w.spheres_[1];  // smaller inner sphere
+  Sphere& shape = dynamic_cast<Sphere&>(*w.shapes_[1]);  // smaller inner sphere
   Intersection i(0.5, &shape);
   Intersection::Comps comps = i.prepare_computations(r);
 
@@ -112,9 +111,9 @@ TEST(WorldTest, WhenRayHits_ColorIsCorrect) {
 
 TEST(WorldTest, WhenRayHasSeveralIntersections_FirstHitIsUsed) {
   World w;
-  Sphere& outer = w.spheres_[0];
+  Sphere& outer = dynamic_cast<Sphere&>(*w.shapes_[0]);
   outer.material_.ambient_ = 1.0;
-  Sphere& inner = w.spheres_[1];
+  Sphere& inner = dynamic_cast<Sphere&>(*w.shapes_[1]);
   inner.material_.ambient_ = 1.0;
   Ray r(Tuple::Point(0, 0, 0.75), Tuple::Vector(0, 0, -1));
 
@@ -153,7 +152,7 @@ TEST(WorldTest, PointInShadow_HasCorrectColor) {
   PointLight light(Tuple::Point(0, 0, -10), Color::White());
   Sphere s1;
   Sphere s2(Mat<4>::translator(0, 0, 10));
-  World w({s1, s2}, light);
+  World w({&s1, &s2}, light);
   Ray r(Tuple::Point(0, 0, 5), Tuple::Vector(0, 0, 1));
   Intersection i(4, &s2);
 
