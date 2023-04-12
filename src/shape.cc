@@ -1,6 +1,9 @@
 #include <ray.h>
 #include <shape.h>
 
+Shape::Shape(Mat<4> transformation, Material material)
+    : transformation_(transformation), material_(material) {}
+
 std::vector<Intersection> Shape::intersect(Ray r) const {
   Ray local_ray = r.transform(transformation_.inverse());
 

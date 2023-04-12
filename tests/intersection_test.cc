@@ -17,8 +17,8 @@ TEST(IntersectionTest, RaySphereIntersections_ContainObjects) {
   auto xs = s.intersect(r);
 
   EXPECT_EQ(xs.size(), 2);
-  EXPECT_EQ(*xs[0].obj_, s);
-  EXPECT_EQ(*xs[1].obj_, s);
+  EXPECT_EQ(xs[0].obj_, &s);
+  EXPECT_EQ(xs[1].obj_, &s);
 }
 
 TEST(IntersectionTest, FindIntersectionHitWithAllPositiveT_GivesCorrectHit) {
@@ -57,15 +57,6 @@ TEST(IntersectionTest, FindIntersectionHitWithVariousT_GivesCorrectHit) {
   std::vector<Intersection> xs = {i1, i2, i3, i4};
 
   EXPECT_EQ(Intersection::hit(xs), i4);
-}
-
-TEST(IntersectionTest, Sphere_ContainsCorrectTransformation) {
-  Sphere s;
-  EXPECT_EQ(s.transformation_, Mat<4>::iden());
-
-  Mat<4> newTransformation = Mat<4>::translator(2, 3, 4);
-  s.transformation_ = newTransformation;
-  EXPECT_EQ(s.transformation_, newTransformation);
 }
 
 TEST(IntersectionTest, ScaledSphere_HasCorrectIntersections) {

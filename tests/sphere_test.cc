@@ -4,11 +4,12 @@
 #include <sphere.h>
 
 #include <cmath>
+#include <type_traits>
 
 TEST(SphereTest, SphereNormalAtPointOnXAxis_IsCorrect) {
   Sphere s;
   Tuple n = s.normal_at(Tuple::Point(1, 0, 0));
-
+  n.print();
   EXPECT_EQ(n, Tuple::Vector(1, 0, 0));
 }
 
@@ -38,6 +39,7 @@ TEST(SphereTest, NormalOnTranslatedSphere_IsCorrect) {
   Sphere s;
   s.transformation_ = Mat<4>::translator(0, 1, 0);
   Tuple n = s.normal_at(Tuple::Point(0, 1.70711, -0.70711));
+  n.print();
 
   EXPECT_EQ(n, Tuple::Vector(0, 0.70711, -0.70711));
 }
@@ -50,17 +52,7 @@ TEST(SphereTest, NormalOnTransformedSphere_IsCorrect) {
   EXPECT_EQ(n, Tuple::Vector(0, 0.97014, -0.24254));
 }
 
-TEST(SphereTest, Sphere_HasDefaultMaterial) {
+TEST(SphereTest, Sphere_IsAShape) {
   Sphere s;
-
-  EXPECT_EQ(s.material_, Material());
-}
-
-TEST(SphereTest, Sphere_CanBeAssignedNewMaterial) {
-  Sphere s;
-  Material m;
-  m.ambient_ = 1.0;
-  s.material_ = m;
-
-  EXPECT_EQ(s.material_, m);
+  EXPECT_NE(dynamic_cast<Shape*>(&s), nullptr);
 }

@@ -4,12 +4,13 @@
 #include <material.h>
 #include <matrix.h>
 #include <ray.h>
+#include <shape.h>
 #include <tuple.h>
 
 #include <optional>
 #include <vector>
 
-class Sphere {
+class Sphere : public Shape {
  public:
   // Constructors
   Sphere(Mat<4> transformation, Material material);
@@ -18,11 +19,13 @@ class Sphere {
   Sphere();
 
   // Misc
-  std::vector<Intersection> intersect(Ray r) const;
   bool operator==(Sphere other) const;
-  Tuple normal_at(Tuple world_point) const;
 
-  // Member variables
-  Mat<4> transformation_;
-  Material material_;
+  // Member variables come from Shape
+
+  // Overrides
+  //  private:
+  std::vector<Intersection> local_intersect(Ray ray) const override;
+  Tuple local_normal_at(Tuple point) const override;
+  ~Sphere() = default;
 };
