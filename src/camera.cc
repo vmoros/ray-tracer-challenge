@@ -26,15 +26,15 @@ Camera::Camera(size_t hsize, size_t vsize, double fov)
 }
 
 Ray Camera::ray_for_pixel(size_t px, size_t py) const {
-  auto xoffset = (px + 0.5) * pixel_size_;
-  auto yoffset = (py + 0.5) * pixel_size_;
+  double xoffset = (px + 0.5) * pixel_size_;
+  double yoffset = (py + 0.5) * pixel_size_;
 
-  auto world_x = half_width_ - xoffset;
-  auto world_y = half_height_ - yoffset;
+  double world_x = half_width_ - xoffset;
+  double world_y = half_height_ - yoffset;
 
-  auto pixel = transform_.inverse() * Tuple::Point(world_x, world_y, -1.0);
-  auto origin = transform_.inverse() * Tuple::Origin();
-  auto direction = (pixel - origin).norm();
+  Tuple pixel = transform_.inverse() * Tuple::Point(world_x, world_y, -1.0);
+  Tuple origin = transform_.inverse() * Tuple::Origin();
+  Tuple direction = (pixel - origin).norm();
 
   return Ray(origin, direction);
 }

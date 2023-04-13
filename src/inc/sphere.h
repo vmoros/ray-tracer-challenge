@@ -24,7 +24,6 @@ class Sphere : public Shape {
   // Member variables come from Shape
 
   // Overrides
-  //  private:
   std::vector<Intersection> local_intersect(Ray ray) const override;
   Tuple local_normal_at(Tuple point) const override;
   ~Sphere() = default;

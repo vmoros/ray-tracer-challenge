@@ -9,3 +9,6 @@ target_link_libraries(CircleCh6 stuff)
 
 add_executable(WorldCh7and8 WorldChapters7and8.cc)
 target_link_libraries(WorldCh7and8 stuff)
+
+add_executable(PlaneCh9 PlaneCh9.cc)
+target_link_libraries(PlaneCh9 stuff)

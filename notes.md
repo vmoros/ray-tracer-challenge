@@ -16,6 +16,7 @@ I learned a lot by working on this project. In this file, I'll write about some 
       * This is a good reason to use raw pointers. The smart pointers involve ownership, which I didn't want my pointers to do. They're purely "observers" in my context, not owners. I don't want the object to be destroyed when my pointer dies so raw pointers were the right choice.
 * How to enable and benefit from sanitizers
 * At first, the only type of shape I had was Sphere and it was hard-coded everywhere: in World, Intersection, etc. Then I made an abstract Shape class that Sphere inherited from. Updating everything was a pain but I learned a lot about inheritance, virtual functions, polymorphism with pointers/references, etc.
+* Unnamed parameter to indicate that you're deliberately not using it. You might still need the parameter because you're overriding a virtual function, for example.
 
 # Interesting bugs
 * I found intersections of spheres in a ranged for loop over a vector of spheres. My mistake was to take the spheres by copy (instead of by reference) in the for loop. Each intersection has a pointer to the sphere on which it's an intersection so with these copies, the pointers were to temporary spheres. That one took me a while to debug. Rust would prevent something like that with lifetimes.
@@ -23,3 +24,7 @@ I learned a lot by working on this project. In this file, I'll write about some 
 * A point inside a sphere was shadowed but it shouldn't have been shadowed, because there was nothing between it and the light. The light was also inside the sphere.
   * It turns out that the problem was that my over-point (which is used to prevent self-shadowing) was using the wrong normal. If a point is inside an object, you negate the normal so that the lighting makes more sense, but I was setting the over-point before checking if the point was inside. So I used the original normal, and then later the normal was negated.
   * The solution was to set the over-point after checking whether the point is inside the object. That way, the over-point uses the correct normal.
+
+# To do
+* General cleanup
+* Switch from headers to modules for fun & learning
