@@ -8,7 +8,7 @@ set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=cppcoreguidelines* -checks=-cppcoreg
 
 add_library(stuff STATIC tuple.cc color.cc canvas.cc matrix.cc
     ray.cc sphere.cc light.cc material.cc world.cc camera.cc
-    intersection.cc shape.cc plane.cc)
+    intersection.cc shape.cc plane.cc pattern.cc)
 target_include_directories(stuff PUBLIC inc)
 
 add_subdirectory(projects)

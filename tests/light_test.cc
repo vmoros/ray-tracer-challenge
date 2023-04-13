@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include <light.h>
 #include <material.h>
+#include <pattern.h>
 #include <tuple.h>
 
 TEST(LightTest, PointLight_HasCorrectComponents) {
@@ -73,4 +74,19 @@ TEST_F(LightingFixture, SurfaceInShadow_GivesCorrectLighting) {
 
   Color result = light.lighting(m, position, eyev, normalv, true);
   EXPECT_EQ(result, Color(0.1, 0.1, 0.1));
+}
+
+TEST_F(LightingFixture, Lighting_AppliesStripePattern) {
+  m.pattern_ = StripePat(Color::White(), Color::Black());
+  m.ambient_ = 1;
+  m.diffuse_ = 0;
+  m.specular_ = 0;
+  Tuple eyev = Tuple::Vector(0, 0, -1);
+  Tuple normalv = Tuple::Vector(0, 0, -1);
+  PointLight light(Tuple::Point(0, 0, -10), Color::White());
+  Color c1 = light.lighting(m, Tuple::Point(0.9, 0, 0), eyev, normalv);
+  Color c2 = light.lighting(m, Tuple::Point(1.1, 0, 0), eyev, normalv);
+
+  EXPECT_EQ(c1, Color::White());
+  EXPECT_EQ(c2, Color::Black());
 }

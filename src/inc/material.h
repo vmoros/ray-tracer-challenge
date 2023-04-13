@@ -1,6 +1,9 @@
 #pragma once
 
 #include <color.h>
+#include <pattern.h>
+
+#include <optional>
 
 class Material {
  public:
@@ -16,4 +19,5 @@ class Material {
   double diffuse_;
   double specular_;
   double shininess_;
+  std::optional<StripePat> pattern_;
 };
