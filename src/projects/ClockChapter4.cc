@@ -6,7 +6,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <numbers>
 #include <string>
 
 static constexpr size_t WIDTH = 500;

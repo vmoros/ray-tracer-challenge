@@ -2,8 +2,8 @@
 
 #include <color.h>
 #include <material.h>
-#include <shape.h>
 #include <tuple.h>
+class Shape;
 
 class PointLight {
  public:

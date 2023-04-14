@@ -1,9 +1,6 @@
 #include <color.h>
 #include <gtest/gtest.h>
-#include <light.h>
 #include <material.h>
-
-#include <cmath>
 
 TEST(MaterialTest, Material_HasCorrectComponents) {
   Material m;

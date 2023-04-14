@@ -10,9 +10,6 @@
 #include <tuple.h>
 #include <world.h>
 
-#include <algorithm>
-#include <iostream>
-
 TEST(WorldTest, DefaultWorld_HasCorrectComponents) {
   PointLight light(Tuple::Point(-10, 10, -10), Color::White());
   Material mat(Color(0.8, 1.0, 0.6));

@@ -3,7 +3,7 @@
 #include <canvas.h>
 #include <matrix.h>
 #include <ray.h>
-#include <world.h>
+class World;
 
 class Camera {
  private:

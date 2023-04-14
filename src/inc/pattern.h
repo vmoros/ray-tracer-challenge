@@ -2,8 +2,8 @@
 
 #include <color.h>
 #include <matrix.h>
-class Shape;  // #include <shape.h>
-#include <tuple.h>
+class Shape;
+class Tuple;
 
 class Pattern {
  public:

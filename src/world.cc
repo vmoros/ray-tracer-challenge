@@ -7,9 +7,7 @@
 #include <world.h>
 
 #include <algorithm>
-#include <iostream>
-#include <memory>
-#include <numeric>
+#include <optional>
 #include <vector>
 
 static Sphere s1(Material(Color(0.8, 1.0, 0.6), 0.7, 0.2));

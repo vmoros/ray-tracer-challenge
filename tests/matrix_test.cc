@@ -4,7 +4,6 @@
 #include <tuple.h>
 
 #include <array>
-#include <numbers>
 
 TEST(MatrixTest, Mat4_HasCorrectComponents) {
   Mat<4> m({{{1, 2, 3, 4},

@@ -4,7 +4,6 @@
 #include <sphere.h>
 
 #include <cmath>
-#include <type_traits>
 
 TEST(SphereTest, SphereNormalAtPointOnXAxis_IsCorrect) {
   Sphere s;

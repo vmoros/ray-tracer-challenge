@@ -2,6 +2,7 @@
 #include <matrix.h>
 #include <ray.h>
 #include <tuple.h>
+#include <world.h>
 
 #include <cmath>
 

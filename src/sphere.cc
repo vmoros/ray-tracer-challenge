@@ -1,13 +1,9 @@
-#include <helpers.h>
+
 #include <shape.h>
 #include <sphere.h>
 #include <tuple.h>
 
-#include <algorithm>
 #include <cmath>
-#include <iostream>
-#include <optional>
-#include <ranges>
 #include <vector>
 
 Sphere::Sphere(Mat<4> transformation, Material material)
