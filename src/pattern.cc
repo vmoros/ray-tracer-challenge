@@ -23,3 +23,28 @@ Color StripePat::pattern_at(Tuple point) const {
 
   return b_;
 }
+
+Color GradientPat::pattern_at(Tuple point) const {
+  auto distance = b_ - a_;
+  auto fraction = point.x_ - floor(point.x_);
+
+  return a_ + distance * fraction;
+}
+
+Color RingPat::pattern_at(Tuple point) const {
+  double hyp = sqrt(point.x_ * point.x_ + point.z_ * point.z_);
+  if (static_cast<int>(floor(hyp)) % 2 == 0) {
+    return a_;
+  }
+
+  return b_;
+}
+
+Color CheckerPat::pattern_at(Tuple point) const {
+  double hyp = floor(point.x_) + floor(point.y_) + floor(point.z_);
+  if (static_cast<int>(hyp) % 2 == 0) {
+    return a_;
+  }
+
+  return b_;
+}

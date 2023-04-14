@@ -33,3 +33,45 @@ class StripePat : public Pattern {
   Color a_;
   Color b_;
 };
+
+class GradientPat : public Pattern {
+ public:
+  // Constructors
+  GradientPat(Color a, Color b) : a_(a), b_(b) {}
+  GradientPat() = default;
+
+  // Misc
+  Color pattern_at(Tuple point) const override;
+
+  // Member variables
+  Color a_;
+  Color b_;
+};
+
+class RingPat : public Pattern {
+ public:
+  // Constructors
+  RingPat(Color a, Color b) : a_(a), b_(b) {}
+  RingPat() = default;
+
+  // Misc
+  Color pattern_at(Tuple point) const override;
+
+  // Member variables
+  Color a_;
+  Color b_;
+};
+
+class CheckerPat : public Pattern {
+ public:
+  // Constructors
+  CheckerPat(Color a, Color b) : a_(a), b_(b) {}
+  CheckerPat() = default;
+
+  // Misc
+  Color pattern_at(Tuple point) const override;
+
+  // Member variables
+  Color a_;
+  Color b_;
+};

@@ -110,3 +110,47 @@ TEST(PatternTest,
   EXPECT_EQ(pattern.pattern_at_shape(&shape, Tuple::Point(2.5, 3, 3.5)),
             Color(0.75, 0.5, 0.25));
 }
+
+TEST(PatternTest, GradientPattern_LinearlyInterpolates) {
+  GradientPat pattern(white, black);
+
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0.25, 0, 0)),
+            Color(0.75, 0.75, 0.75));
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0.5, 0, 0)), Color(0.5, 0.5, 0.5));
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0.75, 0, 0)),
+            Color(0.25, 0.25, 0.25));
+}
+
+TEST(PatternTest, RingPattern_DependsOnXAndZ) {
+  RingPat pattern(white, black);
+
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(1, 0, 0)), black);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 1)), black);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0.708, 0, 0.708)), black);
+}
+
+TEST(PatternTest, CheckerPattern_RepeatsInX) {
+  CheckerPat pattern(white, black);
+
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0.99, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(1.01, 0, 0)), black);
+}
+
+TEST(PatternTest, CheckerPattern_RepeatsInY) {
+  CheckerPat pattern(white, black);
+
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0.99, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 1.01, 0)), black);
+}
+
+TEST(PatternTest, CheckerPattern_RepeatsInZ) {
+  CheckerPat pattern(white, black);
+
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 0.99)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 1.01)), black);
+}

@@ -12,3 +12,6 @@ target_link_libraries(WorldCh7and8 stuff)
 
 add_executable(PlaneCh9 PlaneCh9.cc)
 target_link_libraries(PlaneCh9 stuff)
+
+add_executable(Patterns Patterns.cc)
+target_link_libraries(Patterns stuff)
