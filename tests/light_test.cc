@@ -80,7 +80,8 @@ TEST_F(LightingFixture, SurfaceInShadow_GivesCorrectLighting) {
 }
 
 TEST_F(LightingFixture, Lighting_AppliesStripePattern) {
-  m.pattern_ = StripePat(Color::White(), Color::Black());
+  StripePat pat(Color::White(), Color::Black());
+  m.pattern_ = &pat;
   m.ambient_ = 1;
   m.diffuse_ = 0;
   m.specular_ = 0;

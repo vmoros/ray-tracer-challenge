@@ -18,28 +18,28 @@ TEST(PatternTest, StripePattern_HasCorrectComponents) {
 TEST(PatternTest, StripePattern_IsConstantInY) {
   StripePat pattern(white, black);
 
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(0, 0, 0)), white);
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(0, 1, 0)), white);
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(0, 2, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 1, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 2, 0)), white);
 }
 
 TEST(PatternTest, StripePattern_IsConstantInZ) {
   StripePat pattern(white, black);
 
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(0, 0, 0)), white);
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(0, 0, 1)), white);
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(0, 0, 2)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 1)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 2)), white);
 }
 
 TEST(PatternTest, StripePattern_AlternatesInX) {
   StripePat pattern(white, black);
 
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(0, 0, 0)), white);
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(0.9, 0, 0)), white);
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(1, 0, 0)), black);
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(-0.1, 0, 0)), black);
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(-1, 0, 0)), black);
-  EXPECT_EQ(pattern.stripe_at(Tuple::Point(-1.1, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(0.9, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(1, 0, 0)), black);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(-0.1, 0, 0)), black);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(-1, 0, 0)), black);
+  EXPECT_EQ(pattern.pattern_at(Tuple::Point(-1.1, 0, 0)), white);
 }
 
 TEST(PatternTest, StripesOnTransformedObject_AreColoredCorrectly) {
@@ -47,7 +47,7 @@ TEST(PatternTest, StripesOnTransformedObject_AreColoredCorrectly) {
   object.transformation_ = Mat<4>::scaler(2, 2, 2);
   StripePat pattern(white, black);
 
-  EXPECT_EQ(pattern.stripe_at_object(object, Tuple::Point(1.5, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at_shape(&object, Tuple::Point(1.5, 0, 0)), white);
 }
 
 TEST(PatternTest, TransformedStripesOnObject_AreColoredCorrectly) {
@@ -55,7 +55,7 @@ TEST(PatternTest, TransformedStripesOnObject_AreColoredCorrectly) {
   StripePat pattern(white, black);
   pattern.transformation_ = Mat<4>::scaler(2, 2, 2);
 
-  EXPECT_EQ(pattern.stripe_at_object(object, Tuple::Point(1.5, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at_shape(&object, Tuple::Point(1.5, 0, 0)), white);
 }
 
 TEST(PatternTest, TransformedStripesOnTransformedObject_AreColoredCorrectly) {
@@ -64,5 +64,49 @@ TEST(PatternTest, TransformedStripesOnTransformedObject_AreColoredCorrectly) {
   StripePat pattern(white, black);
   pattern.transformation_ = Mat<4>::translator(0.5, 0, 0);
 
-  EXPECT_EQ(pattern.stripe_at_object(object, Tuple::Point(2.5, 0, 0)), white);
+  EXPECT_EQ(pattern.pattern_at_shape(&object, Tuple::Point(2.5, 0, 0)), white);
+}
+
+class TestPattern : public Pattern {
+ private:
+  Color pattern_at(Tuple point) const override {
+    return Color(point.x_, point.y_, point.z_);
+  }
+};
+
+TEST(PatternTest, DefaultPattern_HasAssignableTransformation) {
+  TestPattern pattern;
+  EXPECT_EQ(pattern.transformation_, Mat<4>::iden());
+
+  pattern.transformation_ = Mat<4>::translator(1, 2, 3);
+  EXPECT_EQ(pattern.transformation_, Mat<4>::translator(1, 2, 3));
+}
+
+TEST(PatternTest, PatternWithObjectTransformation_TransformsCorrectly) {
+  Sphere shape;
+  shape.transformation_ = Mat<4>::scaler(2, 2, 2);
+  TestPattern pattern;
+
+  EXPECT_EQ(pattern.pattern_at_shape(&shape, Tuple::Point(2, 3, 4)),
+            Color(1, 1.5, 2));
+}
+
+TEST(PatternTest, PatternWithPatternTransformation_TransformsCorrectly) {
+  Sphere shape;
+  TestPattern pattern;
+  pattern.transformation_ = Mat<4>::scaler(2, 2, 2);
+
+  EXPECT_EQ(pattern.pattern_at_shape(&shape, Tuple::Point(2, 3, 4)),
+            Color(1, 1.5, 2));
+}
+
+TEST(PatternTest,
+     PatternWithObjectAndPatternTransformation_TransformsCorrectly) {
+  Sphere shape;
+  shape.transformation_ = Mat<4>::scaler(2, 2, 2);
+  TestPattern pattern;
+  pattern.transformation_ = Mat<4>::translator(0.5, 1, 1.5);
+
+  EXPECT_EQ(pattern.pattern_at_shape(&shape, Tuple::Point(2.5, 3, 3.5)),
+            Color(0.75, 0.5, 0.25));
 }

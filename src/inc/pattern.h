@@ -5,17 +5,31 @@
 class Shape;  // #include <shape.h>
 #include <tuple.h>
 
-class StripePat {
+class Pattern {
+ public:
+  // Constructors
+  Pattern(Mat<4> transformation);
+  Pattern() = default;
+
+  // Misc
+  Color pattern_at_shape(const Shape* shape, Tuple point) const;
+
+  // Virtual
+  virtual Color pattern_at(Tuple point) const = 0;
+
+  // Member variables
+  Mat<4> transformation_;
+};
+
+class StripePat : public Pattern {
  public:
   // Constructors
   StripePat(Color a, Color b);
 
   // Misc
-  Color stripe_at(Tuple point) const;
-  Color stripe_at_object(const Shape& object, Tuple point) const;
+  Color pattern_at(Tuple point) const override;
 
   // Member variables
   Color a_;
   Color b_;
-  Mat<4> transformation_;
 };

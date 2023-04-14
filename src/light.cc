@@ -13,7 +13,7 @@ Color PointLight::lighting(Material material, const Shape* object, Tuple point,
                            Tuple eyev, Tuple normalv, bool in_shadow) const {
   if (material.pattern_.has_value()) {
     material.color_ =
-        material.pattern_.value().stripe_at_object(*object, point);
+        material.pattern_.value()->pattern_at_shape(object, point);
   }
   Color effective_color = material.color_ * intensity_;
   Color ambient = effective_color * material.ambient_;
