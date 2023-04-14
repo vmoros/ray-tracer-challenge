@@ -3,7 +3,10 @@
 #include <light.h>
 #include <material.h>
 #include <pattern.h>
+#include <sphere.h>
 #include <tuple.h>
+
+static const Sphere s;
 
 TEST(LightTest, PointLight_HasCorrectComponents) {
   Color intensity(1, 1, 1);
@@ -25,7 +28,7 @@ TEST_F(LightingFixture, EyeBetweenLightAndSurface_GivesCorrectLighting) {
   Tuple normalv = Tuple::Vector(0, 0, -1);
   PointLight light(Tuple::Point(0, 0, -10), Color::White());
 
-  Color result = light.lighting(m, position, eyev, normalv);
+  Color result = light.lighting(m, &s, position, eyev, normalv);
   EXPECT_EQ(result, Color(1.9, 1.9, 1.9));
 }
 
@@ -35,7 +38,7 @@ TEST_F(LightingFixture,
   Tuple normalv = Tuple::Vector(0, 0, -1);
   PointLight light(Tuple::Point(0, 0, -10), Color::White());
 
-  Color result = light.lighting(m, position, eyev, normalv);
+  Color result = light.lighting(m, &s, position, eyev, normalv);
   EXPECT_EQ(result, Color(1.0, 1.0, 1.0));
 }
 
@@ -45,7 +48,7 @@ TEST_F(LightingFixture,
   Tuple normalv = Tuple::Vector(0, 0, -1);
   PointLight light(Tuple::Point(0, 10, -10), Color::White());
 
-  Color result = light.lighting(m, position, eyev, normalv);
+  Color result = light.lighting(m, &s, position, eyev, normalv);
   EXPECT_EQ(result, Color(0.7364, 0.7364, 0.7364));
 }
 
@@ -54,7 +57,7 @@ TEST_F(LightingFixture, EyeInPathOfReflectionVector_GivesCorrectLighting) {
   Tuple normalv = Tuple::Vector(0, 0, -1);
   PointLight light(Tuple::Point(0, 10, -10), Color::White());
 
-  Color result = light.lighting(m, position, eyev, normalv);
+  Color result = light.lighting(m, &s, position, eyev, normalv);
   EXPECT_EQ(result, Color(1.6364, 1.6364, 1.6364));
 }
 
@@ -63,7 +66,7 @@ TEST_F(LightingFixture, LightBehindSurface_GivesCorrectLighting) {
   Tuple normalv = Tuple::Vector(0, 0, -1);
   PointLight light(Tuple::Point(0, 0, 10), Color::White());
 
-  Color result = light.lighting(m, position, eyev, normalv);
+  Color result = light.lighting(m, &s, position, eyev, normalv);
   EXPECT_EQ(result, Color(0.1, 0.1, 0.1));
 }
 
@@ -72,7 +75,7 @@ TEST_F(LightingFixture, SurfaceInShadow_GivesCorrectLighting) {
   Tuple normalv = Tuple::Vector(0, 0, -1);
   PointLight light(Tuple::Point(0, 0, -10), Color::White());
 
-  Color result = light.lighting(m, position, eyev, normalv, true);
+  Color result = light.lighting(m, &s, position, eyev, normalv, true);
   EXPECT_EQ(result, Color(0.1, 0.1, 0.1));
 }
 
@@ -84,8 +87,8 @@ TEST_F(LightingFixture, Lighting_AppliesStripePattern) {
   Tuple eyev = Tuple::Vector(0, 0, -1);
   Tuple normalv = Tuple::Vector(0, 0, -1);
   PointLight light(Tuple::Point(0, 0, -10), Color::White());
-  Color c1 = light.lighting(m, Tuple::Point(0.9, 0, 0), eyev, normalv);
-  Color c2 = light.lighting(m, Tuple::Point(1.1, 0, 0), eyev, normalv);
+  Color c1 = light.lighting(m, &s, Tuple::Point(0.9, 0, 0), eyev, normalv);
+  Color c2 = light.lighting(m, &s, Tuple::Point(1.1, 0, 0), eyev, normalv);
 
   EXPECT_EQ(c1, Color::White());
   EXPECT_EQ(c2, Color::Black());

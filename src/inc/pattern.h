@@ -12,7 +12,7 @@ class StripePat {
 
   // Misc
   Color stripe_at(Tuple point) const;
-  Color stripe_at_object(Shape& object, Tuple point) const;
+  Color stripe_at_object(const Shape& object, Tuple point) const;
 
   // Member variables
   Color a_;

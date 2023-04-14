@@ -1,6 +1,8 @@
 #pragma once
+
 #include <color.h>
 #include <material.h>
+#include <shape.h>
 #include <tuple.h>
 
 class PointLight {
@@ -9,8 +11,8 @@ class PointLight {
   PointLight(Tuple pos, Color intns);
 
   // Misc
-  Color lighting(Material material, Tuple point, Tuple eyev, Tuple normalv,
-                 bool in_shadow = false) const;
+  Color lighting(Material material, const Shape* object, Tuple point,
+                 Tuple eyev, Tuple normalv, bool in_shadow = false) const;
   bool operator==(PointLight other) const;
 
   // Member variables

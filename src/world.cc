@@ -44,8 +44,8 @@ std::vector<Intersection> World::intersect(Ray ray) const {
 Color World::shade_hit(Intersection::Comps comps) const {
   bool shadowed = is_shadowed(comps.over_point_);
 
-  return light_.lighting(comps.obj_->material_, comps.point_, comps.eyev_,
-                         comps.normalv_, shadowed);
+  return light_.lighting(comps.obj_->material_, comps.obj_, comps.point_,
+                         comps.eyev_, comps.normalv_, shadowed);
 }
 
 Color World::color_at(Ray ray) const {

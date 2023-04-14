@@ -14,7 +14,7 @@ Color StripePat::stripe_at(Tuple point) const {
   return b_;
 }
 
-Color StripePat::stripe_at_object(Shape& object, Tuple point) const {
+Color StripePat::stripe_at_object(const Shape& object, Tuple point) const {
   Tuple object_point = object.transformation_.inverse() * point;
   Tuple pattern_point = transformation_.inverse() * object_point;
 

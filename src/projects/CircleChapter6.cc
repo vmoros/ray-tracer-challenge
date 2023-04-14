@@ -46,7 +46,8 @@ int main() {
         Tuple point = ray.position(hit.t_);
         Tuple normal = hit.obj_->normal_at(point);
         Tuple eye = -ray.direction_;
-        Color color = light.lighting(hit.obj_->material_, point, eye, normal);
+        Color color =
+            light.lighting(hit.obj_->material_, &sphere, point, eye, normal);
         canvas.write_pixel(x, y, color);
       }
     }

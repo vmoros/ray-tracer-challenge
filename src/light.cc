@@ -9,10 +9,11 @@ bool PointLight::operator==(PointLight other) const {
   return position_ == other.position_ && intensity_ == other.intensity_;
 }
 
-Color PointLight::lighting(Material material, Tuple point, Tuple eyev,
-                           Tuple normalv, bool in_shadow) const {
+Color PointLight::lighting(Material material, const Shape* object, Tuple point,
+                           Tuple eyev, Tuple normalv, bool in_shadow) const {
   if (material.pattern_.has_value()) {
-    material.color_ = material.pattern_.value().stripe_at(point);
+    material.color_ =
+        material.pattern_.value().stripe_at_object(*object, point);
   }
   Color effective_color = material.color_ * intensity_;
   Color ambient = effective_color * material.ambient_;
