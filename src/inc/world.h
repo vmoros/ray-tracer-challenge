@@ -11,7 +11,7 @@
 class World {
  public:
   // Constructors & factories
-  World(std::vector<Shape*> shapes, PointLight light);
+  World(std::vector<const Shape*> shapes, PointLight light);
   World();
   static World Empty();
 
@@ -22,6 +22,6 @@ class World {
   bool is_shadowed(Tuple point) const;
 
   // Member variables
-  std::vector<Shape*> shapes_;
+  std::vector<const Shape*> shapes_;
   PointLight light_;
 };

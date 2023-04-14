@@ -21,8 +21,8 @@ TEST(WorldTest, DefaultWorld_HasCorrectComponents) {
 
   EXPECT_EQ(w.light_, light);
   EXPECT_EQ(w.shapes_.size(), 2);
-  EXPECT_EQ(*dynamic_cast<Sphere*>(w.shapes_[0]), s1);
-  EXPECT_EQ(*dynamic_cast<Sphere*>(w.shapes_[1]), s2);
+  EXPECT_EQ(*dynamic_cast<const Sphere*>(w.shapes_[0]), s1);
+  EXPECT_EQ(*dynamic_cast<const Sphere*>(w.shapes_[1]), s2);
 }
 
 TEST(WorldTest, DefaultWorld_HasCorrectIntersections) {
@@ -74,8 +74,7 @@ TEST(WorldTest, PrepareComputations_DetectsHitOnTheInsideAndNegatesNormal) {
 TEST(WorldTest, ShadedIntersectionOnOutside_HasCorrectColor) {
   World w;
   Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
-  Sphere& shape = dynamic_cast<Sphere&>(*w.shapes_[0]);
-  Intersection i(4, &shape);
+  Intersection i(4, w.shapes_[0]);
   Intersection::Comps comps = i.prepare_computations(r);
 
   EXPECT_EQ(w.shade_hit(comps), Color(0.38066, 0.47583, 0.2855));
@@ -85,8 +84,7 @@ TEST(WorldTest, ShadedIntersectionOnInside_HasCorrectColor) {
   World w;
   w.light_ = PointLight(Tuple::Point(0, 0.25, 0), Color::White());
   Ray r(Tuple::Point(0, 0, 0), Tuple::Vector(0, 0, 1));
-  Sphere& shape = dynamic_cast<Sphere&>(*w.shapes_[1]);  // smaller inner sphere
-  Intersection i(0.5, &shape);
+  Intersection i(0.5, w.shapes_[1]);  // smaller inner sphere
   Intersection::Comps comps = i.prepare_computations(r);
 
   EXPECT_EQ(w.shade_hit(comps), Color(0.90498, 0.90498, 0.90498));
@@ -107,14 +105,15 @@ TEST(WorldTest, WhenRayHits_ColorIsCorrect) {
 }
 
 TEST(WorldTest, WhenRayHasSeveralIntersections_FirstHitIsUsed) {
+  Sphere s1(Material(Color(0.8, 1.0, 0.6), 0.7, 0.2));
+  s1.material_.ambient_ = 1.0;
+  Sphere s2(Mat<4>::scaler(0.5, 0.5, 0.5));
+  s2.material_.ambient_ = 1.0;
   World w;
-  Sphere& outer = dynamic_cast<Sphere&>(*w.shapes_[0]);
-  outer.material_.ambient_ = 1.0;
-  Sphere& inner = dynamic_cast<Sphere&>(*w.shapes_[1]);
-  inner.material_.ambient_ = 1.0;
+  w.shapes_ = {&s1, &s2};
   Ray r(Tuple::Point(0, 0, 0.75), Tuple::Vector(0, 0, -1));
 
-  EXPECT_EQ(w.color_at(r), inner.material_.color_);
+  EXPECT_EQ(w.color_at(r), Material());
 }
 
 TEST(WorldTest, NoObjectColinearWithLightAndPoint_NotInShadow) {

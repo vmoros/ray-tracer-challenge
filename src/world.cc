@@ -14,7 +14,7 @@ static Sphere s1(Material(Color(0.8, 1.0, 0.6), 0.7, 0.2));
 static Sphere s2(Mat<4>::scaler(0.5, 0.5, 0.5));
 PointLight default_light(Tuple::Point(-10, 10, -10), Color::White());
 
-World::World(std::vector<Shape*> shapes, PointLight light)
+World::World(std::vector<const Shape*> shapes, PointLight light)
     : shapes_(shapes), light_(light) {}
 
 World::World() : World({&s1, &s2}, {default_light}) {}
