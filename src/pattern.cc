@@ -4,10 +4,12 @@
 
 #include <cmath>
 
+Pattern::Pattern(Mat<4> transformation) : inverse_(transformation.inverse()) {}
+
 // Pattern
 Color Pattern::pattern_at_shape(const Shape* shape, Tuple point) const {
-  Tuple object_point = shape->transformation_.inverse() * point;
-  Tuple pattern_point = transformation_.inverse() * object_point;
+  Tuple object_point = shape->inverse_ * point;
+  Tuple pattern_point = inverse_ * object_point;
 
   return pattern_at(pattern_point);
 }

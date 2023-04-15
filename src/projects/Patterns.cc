@@ -55,7 +55,7 @@ int main() {
   left.material_.diffuse_ = 0.7;
   left.material_.specular_ = 0.3;
   RingPat queen_ring(Color::Pink(), Color(.1, 0.4, 0.9));
-  queen_ring.transformation_ = Mat<4>::scaler(.1, .1, .1);
+  queen_ring.set_transformation(Mat<4>::scaler(.1, .1, .1));
   left.material_.pattern_ = &queen_ring;
 
   // Make world & camera

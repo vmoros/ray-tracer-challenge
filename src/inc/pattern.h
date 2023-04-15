@@ -13,12 +13,15 @@ class Pattern {
 
   // Misc
   Color pattern_at_shape(const Shape* shape, Tuple point) const;
+  void set_transformation(Mat<4> transformation) {
+    inverse_ = transformation.inverse();
+  }
 
   // Virtual
   virtual Color pattern_at(Tuple point) const = 0;
 
   // Member variables
-  Mat<4> transformation_;
+  Mat<4> inverse_;
 };
 
 class StripePat : public Pattern {

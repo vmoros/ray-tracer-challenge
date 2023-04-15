@@ -36,3 +36,4 @@ I learned a lot by working on this project. In this file, I'll write about some 
 Patterns.cc run time (with 2000x1200 resolution and reflections on):
 Before caching each Shape's inverse: ~8.15 seconds
 After caching each Shape's inverse: ~3.1 seconds
+After caching Shape and Pattern inverses: ~2.5 seconds

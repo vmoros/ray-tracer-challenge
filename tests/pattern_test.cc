@@ -43,8 +43,7 @@ TEST(PatternTest, StripePattern_AlternatesInX) {
 }
 
 TEST(PatternTest, StripesOnTransformedObject_AreColoredCorrectly) {
-  Sphere object;
-  object.transformation_ = Mat<4>::scaler(2, 2, 2);
+  Sphere object(Mat<4>::scaler(2, 2, 2));
   StripePat pattern(white, black);
 
   EXPECT_EQ(pattern.pattern_at_shape(&object, Tuple::Point(1.5, 0, 0)), white);
@@ -53,7 +52,7 @@ TEST(PatternTest, StripesOnTransformedObject_AreColoredCorrectly) {
 TEST(PatternTest, TransformedStripesOnObject_AreColoredCorrectly) {
   Sphere object;
   StripePat pattern(white, black);
-  pattern.transformation_ = Mat<4>::scaler(2, 2, 2);
+  pattern.set_transformation(Mat<4>::scaler(2, 2, 2));
 
   EXPECT_EQ(pattern.pattern_at_shape(&object, Tuple::Point(1.5, 0, 0)), white);
 }
@@ -62,7 +61,7 @@ TEST(PatternTest, TransformedStripesOnTransformedObject_AreColoredCorrectly) {
   Sphere object;
   object.transformation_ = Mat<4>::scaler(2, 2, 2);
   StripePat pattern(white, black);
-  pattern.transformation_ = Mat<4>::translator(0.5, 0, 0);
+  pattern.set_transformation(Mat<4>::translator(0.5, 0, 0));
 
   EXPECT_EQ(pattern.pattern_at_shape(&object, Tuple::Point(2.5, 0, 0)), white);
 }
@@ -76,15 +75,17 @@ class TestPattern : public Pattern {
 
 TEST(PatternTest, DefaultPattern_HasAssignableTransformation) {
   TestPattern pattern;
-  EXPECT_EQ(pattern.transformation_, Mat<4>::iden());
+  EXPECT_EQ(pattern.inverse_.inverse(),
+            Mat<4>::iden());  // Pattern only stores its transformation's
+                              // inverse so we invert the inverse to find the
+                              // original transformation
 
-  pattern.transformation_ = Mat<4>::translator(1, 2, 3);
-  EXPECT_EQ(pattern.transformation_, Mat<4>::translator(1, 2, 3));
+  pattern.set_transformation(Mat<4>::translator(1, 2, 3));
+  EXPECT_EQ(pattern.inverse_.inverse(), Mat<4>::translator(1, 2, 3));
 }
 
 TEST(PatternTest, PatternWithObjectTransformation_TransformsCorrectly) {
-  Sphere shape;
-  shape.transformation_ = Mat<4>::scaler(2, 2, 2);
+  Sphere shape(Mat<4>::scaler(2, 2, 2));
   TestPattern pattern;
 
   EXPECT_EQ(pattern.pattern_at_shape(&shape, Tuple::Point(2, 3, 4)),
@@ -94,7 +95,7 @@ TEST(PatternTest, PatternWithObjectTransformation_TransformsCorrectly) {
 TEST(PatternTest, PatternWithPatternTransformation_TransformsCorrectly) {
   Sphere shape;
   TestPattern pattern;
-  pattern.transformation_ = Mat<4>::scaler(2, 2, 2);
+  pattern.set_transformation(Mat<4>::scaler(2, 2, 2));
 
   EXPECT_EQ(pattern.pattern_at_shape(&shape, Tuple::Point(2, 3, 4)),
             Color(1, 1.5, 2));
@@ -102,10 +103,9 @@ TEST(PatternTest, PatternWithPatternTransformation_TransformsCorrectly) {
 
 TEST(PatternTest,
      PatternWithObjectAndPatternTransformation_TransformsCorrectly) {
-  Sphere shape;
-  shape.transformation_ = Mat<4>::scaler(2, 2, 2);
+  Sphere shape(Mat<4>::scaler(2, 2, 2));
   TestPattern pattern;
-  pattern.transformation_ = Mat<4>::translator(0.5, 1, 1.5);
+  pattern.set_transformation(Mat<4>::translator(0.5, 1, 1.5));
 
   EXPECT_EQ(pattern.pattern_at_shape(&shape, Tuple::Point(2.5, 3, 3.5)),
             Color(0.75, 0.5, 0.25));
