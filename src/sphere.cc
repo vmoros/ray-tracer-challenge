@@ -13,8 +13,7 @@ Sphere::Sphere(Material material) : Sphere(Mat<4>::iden(), material) {}
 Sphere::Sphere() : Sphere(Mat<4>::iden(), Material()) {}
 
 bool Sphere::operator==(const Sphere other) const {
-  return transformation_ == other.transformation_ &&
-         material_ == other.material_;
+  return inverse_ == other.inverse_ && material_ == other.material_;
 }
 
 std::vector<Intersection> Sphere::local_intersect(Ray ray) const {

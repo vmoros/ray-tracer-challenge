@@ -59,7 +59,7 @@ TEST(PatternTest, TransformedStripesOnObject_AreColoredCorrectly) {
 
 TEST(PatternTest, TransformedStripesOnTransformedObject_AreColoredCorrectly) {
   Sphere object;
-  object.transformation_ = Mat<4>::scaler(2, 2, 2);
+  object.set_transformation(Mat<4>::scaler(2, 2, 2));
   StripePat pattern(white, black);
   pattern.set_transformation(Mat<4>::translator(0.5, 0, 0));
 

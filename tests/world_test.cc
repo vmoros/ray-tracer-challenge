@@ -171,11 +171,11 @@ TEST(WorldTest, InfiniteReflections_AreAvoided) {
   w.light_ = PointLight(Tuple::Origin(), Color(1, 1, 1));
   Plane lower;
   lower.material_.reflectivity_ = 1.0;
-  lower.transformation_ = Mat<4>::translator(0, -1, 0);
+  lower.set_transformation(Mat<4>::translator(0, -1, 0));
   w.shapes_.push_back(&lower);
   Plane upper;
   upper.material_.reflectivity_ = 1.0;
-  upper.transformation_ = Mat<4>::translator(0, 1, 0);
+  upper.set_transformation(Mat<4>::translator(0, 1, 0));
   w.shapes_.push_back(&upper);
   Ray r(Tuple::Origin(), Tuple::Vector(0, 1, 0));
   w.color_at(r).print();
@@ -192,7 +192,7 @@ TEST(WorldTest, ReflectedColorAtMaxRecursionLimit_DoesNothing) {
   World w;
   Plane shape;
   shape.material_.reflectivity_ = 0.5;
-  shape.transformation_ = Mat<4>::translator(0, -1, 0);
+  shape.set_transformation(Mat<4>::translator(0, -1, 0));
   w.shapes_.push_back(&shape);
   Ray r(Tuple::Point(0, 0, -3), Tuple::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
   Intersection i(sqrt(2), &shape);

@@ -20,29 +20,29 @@ int main() {
 
   // Make a plane as the back wall
   Plane back_wall;
-  back_wall.transformation_ = Mat<4>::rotator_y(PI / 2) *
-                              Mat<4>::translator(0, 0, 5) *
-                              Mat<4>::rotator_x(PI / 2);
+  back_wall.set_transformation(Mat<4>::rotator_y(PI / 2) *
+                               Mat<4>::translator(0, 0, 5) *
+                               Mat<4>::rotator_x(PI / 2));
 
   // Make large sphere in the middle
   Sphere middle;
-  middle.transformation_ = Mat<4>::translator(-0.5, 1, 0.5);
+  middle.set_transformation(Mat<4>::translator(-0.5, 1, 0.5));
   middle.material_.color_ = Color(0.1, 1, 0.5);
   middle.material_.diffuse_ = 0.7;
   middle.material_.specular_ = 0.3;
 
   // Make right sphere
   Sphere right;
-  right.transformation_ =
-      Mat<4>::translator(1.5, 0.5, -0.5) * Mat<4>::scaler(0.5, 0.5, 0.5);
+  right.set_transformation(Mat<4>::translator(1.5, 0.5, -0.5) *
+                           Mat<4>::scaler(0.5, 0.5, 0.5));
   right.material_.color_ = Color(0.5, 1, 0.1);
   right.material_.diffuse_ = 0.7;
   right.material_.specular_ = 0.3;
 
   // Make left sphere
   Sphere left;
-  left.transformation_ =
-      Mat<4>::translator(-1.5, 0.33, -0.75) * Mat<4>::scaler(0.33, 0.33, 0.33);
+  left.set_transformation(Mat<4>::translator(-1.5, 0.33, -0.75) *
+                          Mat<4>::scaler(0.33, 0.33, 0.33));
   left.material_.color_ = Color(1, 0.8, 0.1);
   left.material_.diffuse_ = 0.7;
   left.material_.specular_ = 0.3;

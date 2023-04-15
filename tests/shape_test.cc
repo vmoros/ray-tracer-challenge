@@ -31,15 +31,15 @@ class TestShape : public Shape {
 TEST(ShapeTest, DefaultTransformationInShape_IsIdentity) {
   TestShape s;
 
-  EXPECT_EQ(s.transformation_, Mat<4>::iden());
+  EXPECT_EQ(s.inverse_.inverse(), Mat<4>::iden());
 }
 
 TEST(ShapeTest, TransformationAssignedToShape_IsPreserved) {
   TestShape s;
   Mat<4> mat = Mat<4>::translator(2, 3, 4);
-  s.transformation_ = mat;
+  s.set_transformation(mat);
 
-  EXPECT_EQ(s.transformation_, mat);
+  EXPECT_EQ(s.inverse_.inverse(), mat);
 }
 
 TEST(ShapeTest, DefaultMaterialInShape_IsNoArgMaterial) {
