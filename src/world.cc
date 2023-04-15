@@ -41,17 +41,17 @@ std::vector<Intersection> World::intersect(Ray ray) const {
   return ans;
 }
 
-Color World::shade_hit(Intersection::Comps comps) const {
+Color World::shade_hit(Intersection::Comps comps, int remaining) const {
   bool shadowed = is_shadowed(comps.over_point_);
 
   Color surface =
       light_.lighting(comps.obj_->material_, comps.obj_, comps.over_point_,
                       comps.eyev_, comps.normalv_, shadowed);
-  Color reflected = reflected_color(comps);
+  Color reflected = reflected_color(comps, remaining);
   return surface + reflected;
 }
 
-Color World::color_at(Ray ray) const {
+Color World::color_at(Ray ray, int remaining) const {
   std::vector<Intersection> xs = intersect(ray);
   std::optional<Intersection> maybe_hit = Intersection::hit(xs);
   if (!maybe_hit.has_value()) {
@@ -60,7 +60,7 @@ Color World::color_at(Ray ray) const {
 
   Intersection hit = maybe_hit.value();
   Intersection::Comps comps = hit.prepare_computations(ray);
-  return shade_hit(comps);
+  return shade_hit(comps, remaining);
 }
 
 bool World::is_shadowed(Tuple point) const {
@@ -75,13 +75,19 @@ bool World::is_shadowed(Tuple point) const {
   return maybe_hit.has_value() && (maybe_hit.value().t_ < distance);
 }
 
-Color World::reflected_color(Intersection::Comps comps) const {
+Color World::reflected_color(Intersection::Comps comps, int remaining) const {
+  if (remaining < 1) {
+    return Color::Black();  // black because this reflected color will be added
+                            // to the surface's color, so if no reflection
+                            // happens, we want that addition to do nothing
+  }
+
   double reflectivity = comps.obj_->material_.reflectivity_;
   if (dbleq(reflectivity, 0.0)) {
     return Color::Black();
   }
 
   Ray reflect_ray(comps.over_point_, comps.reflectv_);
-  Color color = color_at(reflect_ray);
+  Color color = color_at(reflect_ray, remaining - 1);
   return color * reflectivity;
 }

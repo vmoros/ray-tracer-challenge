@@ -20,6 +20,7 @@ int main() {
   Plane floor;
   StripePat stripe(Color::White(), Color::Black());
   floor.material_.pattern_ = &stripe;
+  //   floor.material_.reflectivity_ = 0.6;
 
   // Make a plane as the back wall
   Plane back_wall;
@@ -35,6 +36,7 @@ int main() {
   middle.material_.color_ = Color(0.1, 1, 0.5);
   middle.material_.diffuse_ = 0.7;
   middle.material_.specular_ = 0.3;
+  middle.material_.reflectivity_ = 0.5;
   CheckerPat checker(Color::Blue(), Color::Red());
   middle.material_.pattern_ = &checker;
 
@@ -47,6 +49,7 @@ int main() {
   right.material_.specular_ = 0.3;
   GradientPat gradient(Color::White(), Color::Red());
   right.material_.pattern_ = &gradient;
+  right.material_.reflectivity_ = 0.5;
 
   // Make left sphere
   Sphere left;
@@ -63,9 +66,9 @@ int main() {
   World w({&floor, &back_wall, &middle, &right, &left},
           PointLight(Tuple::Point(-10, 10, -10), Color::White()));
 
-  Camera camera(2000, 1200, PI / 3);
+  Camera camera(500, 500, PI / 3);
   camera.transform_ = Mat<4>::view_transform(
-      Tuple::Point(0, 1.5, -5), Tuple::Point(0, 1, 0), Tuple::Vector(0, 1, 0));
+      Tuple::Point(0, 1.5, -7), Tuple::Point(0, 1, 0), Tuple::Vector(0, 1, 0));
 
   // Render & save
   Canvas canvas = camera.render(w);

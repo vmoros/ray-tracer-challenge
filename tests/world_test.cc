@@ -165,3 +165,39 @@ TEST(WorldTest, ReflectiveMaterial_ShadedReflectionHasCorrectColor) {
 
   EXPECT_EQ(color, Color(0.876757, 0.92434, 0.829174));
 }
+
+TEST(WorldTest, InfiniteReflections_AreAvoided) {
+  World w;
+  w.shapes_.clear();
+  w.light_ = PointLight(Tuple::Origin(), Color(1, 1, 1));
+  Plane lower;
+  lower.material_.reflectivity_ = 1.0;
+  lower.transformation_ = Mat<4>::translator(0, -1, 0);
+  w.shapes_.push_back(&lower);
+  Plane upper;
+  upper.material_.reflectivity_ = 1.0;
+  upper.transformation_ = Mat<4>::translator(0, 1, 0);
+  w.shapes_.push_back(&upper);
+  Ray r(Tuple::Origin(), Tuple::Vector(0, 1, 0));
+  w.color_at(r).print();
+
+  EXPECT_EXIT(
+      {
+        w.color_at(r);
+        std::exit(0);
+      },
+      testing::ExitedWithCode(0), "");
+}
+
+TEST(WorldTest, ReflectedColorAtMaxRecursionLimit_DoesNothing) {
+  World w;
+  Plane shape;
+  shape.material_.reflectivity_ = 0.5;
+  shape.transformation_ = Mat<4>::translator(0, -1, 0);
+  w.shapes_.push_back(&shape);
+  Ray r(Tuple::Point(0, 0, -3), Tuple::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
+  Intersection i(sqrt(2), &shape);
+  Intersection::Comps comps = i.prepare_computations(r);
+
+  EXPECT_EQ(w.reflected_color(comps, 0), Color::Black());
+}
