@@ -19,5 +19,6 @@ class Material {
   double diffuse_;
   double specular_;
   double shininess_;
+  double reflectivity_;
   std::optional<const Pattern*> pattern_;
 };

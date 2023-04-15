@@ -1,5 +1,5 @@
 build/
-Testing/
 .vscode/
+.cache/
 **/.DS_Store
 **/*.ppm

@@ -20,6 +20,7 @@ class World {
   Color shade_hit(Intersection::Comps comps) const;
   Color color_at(Ray ray) const;
   bool is_shadowed(Tuple point) const;
+  Color reflected_color(Intersection::Comps comps) const;
 
   // Member variables
   std::vector<const Shape*> shapes_;

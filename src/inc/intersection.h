@@ -27,6 +27,7 @@ class Intersection {
     Tuple over_point_;
     Tuple eyev_;
     Tuple normalv_;
+    Tuple reflectv_;
   };
 
   Comps prepare_computations(Ray ray) const;

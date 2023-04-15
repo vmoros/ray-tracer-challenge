@@ -1,7 +1,12 @@
 #include <gtest/gtest.h>
 #include <helpers.h>
 #include <intersection.h>
+#include <plane.h>
+#include <ray.h>
 #include <sphere.h>
+#include <tuple.h>
+
+#include <cmath>
 
 TEST(IntersectionTest, Intersection_HasCorrectComponents) {
   Sphere s;
@@ -87,4 +92,48 @@ TEST(IntersectionTest, HitIsSlightlyMoved_ToPreventSelfShadows) {
 
   EXPECT_LT(comps.over_point_.z_, -EPS / 2);
   EXPECT_GT(comps.point_.z_, comps.over_point_.z_);
+}
+
+TEST(IntersectionTest, PrepareComputations_HasCorrectComponents) {
+  Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
+  Sphere shape;
+  Intersection i(4, &shape);
+  Intersection::Comps comps = i.prepare_computations(r);
+
+  EXPECT_DOUBLE_EQ(comps.t_, i.t_);
+  EXPECT_EQ(comps.obj_, i.obj_);
+  EXPECT_EQ(comps.point_, Tuple::Point(0, 0, -1));
+  EXPECT_EQ(comps.eyev_, Tuple::Vector(0, 0, -1));
+  EXPECT_EQ(comps.normalv_, Tuple::Vector(0, 0, -1));
+}
+
+TEST(IntersectionTest, PrepareComputations_DetectsHitOnTheOutside) {
+  Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
+  Sphere shape;
+  Intersection i(4, &shape);
+  Intersection::Comps comps = i.prepare_computations(r);
+
+  EXPECT_FALSE(comps.inside_);
+}
+
+TEST(IntersectionTest,
+     PrepareComputations_DetectsHitOnTheInsideAndNegatesNormal) {
+  Ray r(Tuple::Point(0, 0, 0), Tuple::Vector(0, 0, 1));
+  Sphere shape;
+  Intersection i(1, &shape);
+  Intersection::Comps comps = i.prepare_computations(r);
+
+  EXPECT_EQ(comps.point_, Tuple::Point(0, 0, 1));
+  EXPECT_EQ(comps.eyev_, Tuple::Vector(0, 0, -1));
+  EXPECT_TRUE(comps.inside_);
+  EXPECT_EQ(comps.normalv_, Tuple::Vector(0, 0, -1));
+}
+
+TEST(IntersectionTest, PrepareComputations_ComputesReflectionVector) {
+  Plane shape;
+  Ray r(Tuple::Point(0, 1, -1), Tuple::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
+  Intersection i(sqrt(2), &shape);
+  Intersection::Comps comps = i.prepare_computations(r);
+
+  EXPECT_EQ(comps.reflectv_, Tuple::Vector(0, sqrt(2) / 2, sqrt(2) / 2));
 }

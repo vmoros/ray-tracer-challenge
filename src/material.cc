@@ -12,7 +12,8 @@ Material::Material(Color color)
       ambient_(AMB),
       diffuse_(DIFF),
       specular_(SPEC),
-      shininess_(SHIN) {}
+      shininess_(SHIN),
+      reflectivity_(0.0) {}
 
 Material::Material() : Material(Color::White()) {}
 

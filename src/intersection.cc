@@ -45,6 +45,7 @@ Intersection::Comps Intersection::prepare_computations(Ray ray) const {
   }
 
   ans.over_point_ = ans.point_ + ans.normalv_ * EPS;
+  ans.reflectv_ = ray.direction_.reflect(ans.normalv_);
 
   return ans;
 }

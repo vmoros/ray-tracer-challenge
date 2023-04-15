@@ -4,11 +4,14 @@
 #include <light.h>
 #include <material.h>
 #include <matrix.h>
+#include <plane.h>
 #include <ray.h>
 #include <shape.h>
 #include <sphere.h>
 #include <tuple.h>
 #include <world.h>
+
+#include <cmath>
 
 TEST(WorldTest, DefaultWorld_HasCorrectComponents) {
   PointLight light(Tuple::Point(-10, 10, -10), Color::White());
@@ -21,8 +24,8 @@ TEST(WorldTest, DefaultWorld_HasCorrectComponents) {
 
   EXPECT_EQ(w.light_, light);
   EXPECT_EQ(w.shapes_.size(), 2);
-  EXPECT_EQ(*dynamic_cast<const Sphere*>(w.shapes_[0]), s1);
-  EXPECT_EQ(*dynamic_cast<const Sphere*>(w.shapes_[1]), s2);
+  EXPECT_EQ(*dynamic_cast<const Sphere *>(w.shapes_[0]), s1);
+  EXPECT_EQ(*dynamic_cast<const Sphere *>(w.shapes_[1]), s2);
 }
 
 TEST(WorldTest, DefaultWorld_HasCorrectIntersections) {
@@ -35,40 +38,6 @@ TEST(WorldTest, DefaultWorld_HasCorrectIntersections) {
   EXPECT_DOUBLE_EQ(xs[1].t_, 4.5);
   EXPECT_DOUBLE_EQ(xs[2].t_, 5.5);
   EXPECT_DOUBLE_EQ(xs[3].t_, 6.0);
-}
-
-TEST(WorldTest, PrepareComputations_HasCorrectComponents) {
-  Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
-  Sphere shape;
-  Intersection i(4, &shape);
-  Intersection::Comps comps = i.prepare_computations(r);
-
-  EXPECT_DOUBLE_EQ(comps.t_, i.t_);
-  EXPECT_EQ(comps.obj_, i.obj_);
-  EXPECT_EQ(comps.point_, Tuple::Point(0, 0, -1));
-  EXPECT_EQ(comps.eyev_, Tuple::Vector(0, 0, -1));
-  EXPECT_EQ(comps.normalv_, Tuple::Vector(0, 0, -1));
-}
-
-TEST(WorldTest, PrepareComputations_DetectsHitOnTheOutside) {
-  Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
-  Sphere shape;
-  Intersection i(4, &shape);
-  Intersection::Comps comps = i.prepare_computations(r);
-
-  EXPECT_FALSE(comps.inside_);
-}
-
-TEST(WorldTest, PrepareComputations_DetectsHitOnTheInsideAndNegatesNormal) {
-  Ray r(Tuple::Point(0, 0, 0), Tuple::Vector(0, 0, 1));
-  Sphere shape;
-  Intersection i(1, &shape);
-  Intersection::Comps comps = i.prepare_computations(r);
-
-  EXPECT_EQ(comps.point_, Tuple::Point(0, 0, 1));
-  EXPECT_EQ(comps.eyev_, Tuple::Vector(0, 0, -1));
-  EXPECT_TRUE(comps.inside_);
-  EXPECT_EQ(comps.normalv_, Tuple::Vector(0, 0, -1));
 }
 
 TEST(WorldTest, ShadedIntersectionOnOutside_HasCorrectColor) {
@@ -154,4 +123,45 @@ TEST(WorldTest, PointInShadow_HasCorrectColor) {
 
   Intersection::Comps comps = i.prepare_computations(r);
   EXPECT_EQ(w.shade_hit(comps), Color(0.1, 0.1, 0.1));
+}
+
+TEST(WorldTest, NonReflectiveMaterial_ReflectsBlack) {
+  World w;
+  Ray r(Tuple::Point(0, 0, 0), Tuple::Vector(0, 0, 1));
+  Sphere s2(Mat<4>::scaler(0.5, 0.5, 0.5));
+  s2.material_.ambient_ = 1.0;
+  w.shapes_[1] = &s2;
+  Intersection i(1, &s2);
+  Intersection::Comps comps = i.prepare_computations(r);
+  Color color = w.reflected_color(comps);
+
+  EXPECT_EQ(color, Color::Black());
+}
+
+TEST(WorldTest, ReflectiveMaterial_ReflectionHasCorrectColor) {
+  World w;
+  Plane shape;
+  shape.material_.reflectivity_ = 0.5;
+  shape.transformation_ = Mat<4>::translator(0, -1, 0);
+  w.shapes_.push_back(&shape);
+  Ray r(Tuple::Point(0, 0, -3), Tuple::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
+  Intersection i(sqrt(2), &shape);
+  Intersection::Comps comps = i.prepare_computations(r);
+  Color color = w.reflected_color(comps);
+
+  EXPECT_EQ(color, Color(0.190332, 0.237915, 0.142749));
+}
+
+TEST(WorldTest, ReflectiveMaterial_ShadedReflectionHasCorrectColor) {
+  World w;
+  Plane shape;
+  shape.material_.reflectivity_ = 0.5;
+  shape.transformation_ = Mat<4>::translator(0, -1, 0);
+  w.shapes_.push_back(&shape);
+  Ray r(Tuple::Point(0, 0, -3), Tuple::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
+  Intersection i(sqrt(2), &shape);
+  Intersection::Comps comps = i.prepare_computations(r);
+  Color color = w.shade_hit(comps);
+
+  EXPECT_EQ(color, Color(0.876757, 0.92434, 0.829174));
 }

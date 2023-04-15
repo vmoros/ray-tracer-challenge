@@ -1,7 +1,9 @@
 #include <color.h>
+#include <helpers.h>
 #include <intersection.h>
 #include <light.h>
 #include <material.h>
+#include <ray.h>
 #include <sphere.h>
 #include <tuple.h>
 #include <world.h>
@@ -14,7 +16,7 @@ static Sphere s1(Material(Color(0.8, 1.0, 0.6), 0.7, 0.2));
 static Sphere s2(Mat<4>::scaler(0.5, 0.5, 0.5));
 PointLight default_light(Tuple::Point(-10, 10, -10), Color::White());
 
-World::World(std::vector<const Shape*> shapes, PointLight light)
+World::World(std::vector<const Shape *> shapes, PointLight light)
     : shapes_(shapes), light_(light) {}
 
 World::World() : World({&s1, &s2}, {default_light}) {}
@@ -28,22 +30,25 @@ World World::Empty() {
 std::vector<Intersection> World::intersect(Ray ray) const {
   std::vector<Intersection> ans;
 
-  for (auto& shape : shapes_) {
+  for (auto &shape : shapes_) {
     std::vector<Intersection> xs = shape->intersect(ray);
     ans.insert(ans.end(), xs.begin(), xs.end());
   }
 
   std::sort(
       ans.begin(), ans.end(),
-      [](const Intersection& a, const Intersection& b) { return a.t_ < b.t_; });
+      [](const Intersection &a, const Intersection &b) { return a.t_ < b.t_; });
   return ans;
 }
 
 Color World::shade_hit(Intersection::Comps comps) const {
   bool shadowed = is_shadowed(comps.over_point_);
 
-  return light_.lighting(comps.obj_->material_, comps.obj_, comps.point_,
-                         comps.eyev_, comps.normalv_, shadowed);
+  Color surface =
+      light_.lighting(comps.obj_->material_, comps.obj_, comps.over_point_,
+                      comps.eyev_, comps.normalv_, shadowed);
+  Color reflected = reflected_color(comps);
+  return surface + reflected;
 }
 
 Color World::color_at(Ray ray) const {
@@ -68,4 +73,15 @@ bool World::is_shadowed(Tuple point) const {
 
   std::optional<Intersection> maybe_hit = Intersection::hit(intersections);
   return maybe_hit.has_value() && (maybe_hit.value().t_ < distance);
+}
+
+Color World::reflected_color(Intersection::Comps comps) const {
+  double reflectivity = comps.obj_->material_.reflectivity_;
+  if (dbleq(reflectivity, 0.0)) {
+    return Color::Black();
+  }
+
+  Ray reflect_ray(comps.over_point_, comps.reflectv_);
+  Color color = color_at(reflect_ray);
+  return color * reflectivity;
 }

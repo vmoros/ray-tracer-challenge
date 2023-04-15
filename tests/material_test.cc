@@ -11,3 +11,9 @@ TEST(MaterialTest, Material_HasCorrectComponents) {
   EXPECT_DOUBLE_EQ(m.specular_, 0.9);
   EXPECT_DOUBLE_EQ(m.shininess_, 200.0);
 }
+
+TEST(MaterialTest, Material_HasReflectivityComponent) {
+  Material m;
+
+  EXPECT_DOUBLE_EQ(m.reflectivity_, 0.0);
+}
