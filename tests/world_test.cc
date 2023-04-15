@@ -140,9 +140,9 @@ TEST(WorldTest, NonReflectiveMaterial_ReflectsBlack) {
 
 TEST(WorldTest, ReflectiveMaterial_ReflectionHasCorrectColor) {
   World w;
-  Plane shape;
+  Plane shape(Mat<4>::translator(0, -1, 0));
   shape.material_.reflectivity_ = 0.5;
-  shape.transformation_ = Mat<4>::translator(0, -1, 0);
+  // shape.transformation_ = ;
   w.shapes_.push_back(&shape);
   Ray r(Tuple::Point(0, 0, -3), Tuple::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
   Intersection i(sqrt(2), &shape);
@@ -154,9 +154,8 @@ TEST(WorldTest, ReflectiveMaterial_ReflectionHasCorrectColor) {
 
 TEST(WorldTest, ReflectiveMaterial_ShadedReflectionHasCorrectColor) {
   World w;
-  Plane shape;
+  Plane shape(Mat<4>::translator(0, -1, 0));
   shape.material_.reflectivity_ = 0.5;
-  shape.transformation_ = Mat<4>::translator(0, -1, 0);
   w.shapes_.push_back(&shape);
   Ray r(Tuple::Point(0, 0, -3), Tuple::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
   Intersection i(sqrt(2), &shape);

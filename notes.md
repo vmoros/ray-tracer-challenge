@@ -30,3 +30,9 @@ I learned a lot by working on this project. In this file, I'll write about some 
 * Switch from headers to modules for fun & learning
 * Explore CRTP and/or std::variant/visit
 * Parallelize rendering
+* Use a profiler to see where the program spends time
+
+# Very rough benchmarks
+Patterns.cc run time (with 2000x1200 resolution and reflections on):
+Before caching each Shape's inverse: ~8.15 seconds
+After caching each Shape's inverse: ~3.1 seconds

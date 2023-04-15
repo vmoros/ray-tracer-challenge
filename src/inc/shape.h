@@ -24,5 +24,6 @@ class Shape {  // abstract parent class for all shapes e.g. Sphere
 
   // Member variables
   Mat<4> transformation_;
+  Mat<4> inverse_;
   Material material_;
 };

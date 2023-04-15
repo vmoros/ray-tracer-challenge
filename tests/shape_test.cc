@@ -13,6 +13,10 @@
 static Ray saved_ray;
 
 class TestShape : public Shape {
+ public:
+  TestShape(Mat<4> transformation) : Shape(transformation, Material()) {}
+  TestShape() = default;
+
  private:
   std::vector<Intersection> local_intersect(Ray r) const override {
     saved_ray = r;
@@ -54,8 +58,7 @@ TEST(ShapeTest, MaterialAssignedToShape_IsPreserved) {
 
 TEST(ShapeTest, IntersectionWithScaledShape_IsTransformed) {
   Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
-  TestShape s;
-  s.transformation_ = Mat<4>::scaler(2, 2, 2);
+  TestShape s(Mat<4>::scaler(2, 2, 2));
   std::vector<Intersection> xs = s.intersect(r);
 
   EXPECT_EQ(saved_ray.origin_, Tuple::Point(0, 0, -2.5));
@@ -64,8 +67,7 @@ TEST(ShapeTest, IntersectionWithScaledShape_IsTransformed) {
 
 TEST(ShapeTest, IntersectionWithTranslatedShape_IsTransformed) {
   Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
-  TestShape s;
-  s.transformation_ = Mat<4>::translator(5, 0, 0);
+  TestShape s(Mat<4>::translator(5, 0, 0));
   std::vector<Intersection> xs = s.intersect(r);
 
   EXPECT_EQ(saved_ray.origin_, Tuple::Point(-5, 0, -5));
@@ -73,16 +75,14 @@ TEST(ShapeTest, IntersectionWithTranslatedShape_IsTransformed) {
 }
 
 TEST(ShapeTest, NormalOnTranslatedShape_IsTransformed) {
-  TestShape s;
-  s.transformation_ = Mat<4>::translator(0, 1, 0);
+  TestShape s(Mat<4>::translator(0, 1, 0));
   Tuple n = s.normal_at(Tuple::Point(0, 1.70711, -0.70711));
 
   EXPECT_EQ(n, Tuple::Vector(0, 0.70711, -0.70711));
 }
 
 TEST(ShapeTest, NormalOnTransformedShape_IsTransformed) {
-  TestShape s;
-  s.transformation_ = Mat<4>::scaler(1, 0.5, 1) * Mat<4>::rotator_z(PI / 5);
+  TestShape s(Mat<4>::scaler(1, 0.5, 1) * Mat<4>::rotator_z(PI / 5));
   Tuple n = s.normal_at(Tuple::Point(0, sqrt(2) / 2, -sqrt(2) / 2));
 
   EXPECT_EQ(n, Tuple::Vector(0, 0.97014, -0.24254));

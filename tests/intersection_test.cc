@@ -66,8 +66,7 @@ TEST(IntersectionTest, FindIntersectionHitWithVariousT_GivesCorrectHit) {
 
 TEST(IntersectionTest, ScaledSphere_HasCorrectIntersections) {
   Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
-  Sphere s;
-  s.transformation_ = Mat<4>::scaler(2, 2, 2);
+  Sphere s(Mat<4>::scaler(2, 2, 2));
   auto xs = s.intersect(r);
 
   EXPECT_EQ(xs.size(), 2);
@@ -77,8 +76,7 @@ TEST(IntersectionTest, ScaledSphere_HasCorrectIntersections) {
 
 TEST(IntersectionTest, TranslatedSphere_HasCorrectIntersections) {
   Ray r(Tuple::Point(0, 0, -5), Tuple::Vector(0, 0, 1));
-  Sphere s;
-  s.transformation_ = Mat<4>::translator(5, 0, 0);
+  Sphere s(Mat<4>::translator(5, 0, 0));
   auto xs = s.intersect(r);
 
   EXPECT_EQ(xs.size(), 0);

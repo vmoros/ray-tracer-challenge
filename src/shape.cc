@@ -2,18 +2,20 @@
 #include <shape.h>
 
 Shape::Shape(Mat<4> transformation, Material material)
-    : transformation_(transformation), material_(material) {}
+    : transformation_(transformation),
+      inverse_(transformation.inverse()),
+      material_(material) {}
 
 std::vector<Intersection> Shape::intersect(Ray r) const {
-  Ray local_ray = r.transform(transformation_.inverse());
+  Ray local_ray = r.transform(inverse_);
 
   return local_intersect(local_ray);
 }
 
 Tuple Shape::normal_at(Tuple point) const {
-  Tuple local_point = transformation_.inverse() * point;
+  Tuple local_point = inverse_ * point;
   Tuple local_normal = local_normal_at(local_point);
-  Tuple world_normal = transformation_.inverse().transp() * local_normal;
+  Tuple world_normal = inverse_.transp() * local_normal;
   world_normal.w_ = 0;
 
   return world_normal.norm();
