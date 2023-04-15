@@ -6,6 +6,8 @@
 #include <sphere.h>
 #include <tuple.h>
 
+#include <cmath>
+
 static const Sphere s;
 
 TEST(LightTest, PointLight_HasCorrectComponents) {

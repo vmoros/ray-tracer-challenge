@@ -5,6 +5,8 @@
 #include <ray.h>
 class World;
 
+#include <cstddef>
+
 class Camera {
  private:
   void set_halves_and_pixel_size();
@@ -16,6 +18,9 @@ class Camera {
   // Misc
   Ray ray_for_pixel(size_t px, size_t py) const;
   Canvas render(const World& w) const;
+  void set_transformation(Mat<4> transformation) {
+    inverse_ = transformation.inverse();
+  }
 
   // Member variables
   size_t hsize_;
@@ -24,5 +29,5 @@ class Camera {
   double pixel_size_;
   double half_height_;
   double half_width_;
-  Mat<4> transform_;
+  Mat<4> inverse_;
 };

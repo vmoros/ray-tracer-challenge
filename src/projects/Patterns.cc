@@ -62,9 +62,9 @@ int main() {
   World w({&floor, &back_wall, &middle, &right, &left},
           PointLight(Tuple::Point(-10, 10, -10), Color::White()));
 
-  Camera camera(2000, 1200, PI / 3);
-  camera.transform_ = Mat<4>::view_transform(
-      Tuple::Point(0, 1.5, -7), Tuple::Point(0, 1, 0), Tuple::Vector(0, 1, 0));
+  Camera camera(500, 500, PI / 3);
+  camera.set_transformation(Mat<4>::view_transform(
+      Tuple::Point(0, 1.5, -7), Tuple::Point(0, 1, 0), Tuple::Vector(0, 1, 0)));
 
   // Render & save
   std::chrono::steady_clock timer;

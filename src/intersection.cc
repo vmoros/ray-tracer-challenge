@@ -2,6 +2,7 @@
 #include <intersection.h>
 #include <shape.h>
 
+#include <algorithm>
 #include <optional>
 #include <ranges>
 
@@ -34,9 +35,12 @@ Intersection::Comps Intersection::prepare_computations(Ray ray) const {
       .t_ = t_,
       .obj_ = obj_,
       .point_ = pos,
-      // Deliberately not setting over_point_ because it will be set later
+      .over_point_ = Tuple::Origin(),  // will be changed later, I just need to
+                                       // initialize it with something
       .eyev_ = -ray.direction_,
       .normalv_ = obj_->normal_at(pos),
+      .reflectv_ = Tuple::Origin(),  // will be changed later, I just need to
+                                     // initialize it with something
   };
 
   if (ans.normalv_.dot(ans.eyev_) < 0) {

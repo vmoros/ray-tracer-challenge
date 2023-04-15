@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 #include <iostream>
 #include <numeric>
 #include <ranges>

@@ -2,6 +2,7 @@
 
 #include <color.h>
 
+#include <cstddef>
 #include <ostream>
 #include <vector>
 

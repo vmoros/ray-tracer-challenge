@@ -13,7 +13,7 @@ TEST(CameraTest, BasicCamera_HasCorrectComponents) {
   EXPECT_EQ(c.hsize_, 160);
   EXPECT_EQ(c.vsize_, 120);
   EXPECT_DOUBLE_EQ(c.fov_, PI / 2);
-  EXPECT_EQ(c.transform_, Mat<4>::iden());
+  EXPECT_EQ(c.inverse_.inverse(), Mat<4>::iden());
 }
 
 TEST(CameraTest, PixelSizes_AreCorrect) {
@@ -42,7 +42,8 @@ TEST(CameraTest, RayThroughCornerOfCanvas_HasCorrectComponents) {
 
 TEST(CameraTest, RayWhenCameraIsTransformed_HasCorrectComponents) {
   Camera c(201, 101, PI / 2);
-  c.transform_ = Mat<4>::rotator_y(PI / 4) * Mat<4>::translator(0, -2, 5);
+  c.set_transformation(Mat<4>::rotator_y(PI / 4) *
+                       Mat<4>::translator(0, -2, 5));
   Ray r = c.ray_for_pixel(100, 50);
 
   EXPECT_EQ(r.origin_, Tuple::Point(0, 2, -5));
@@ -55,7 +56,7 @@ TEST(CameraTest, RenderingBasicWorldWithCamera_HasCorrectComponents) {
   Tuple from = Tuple::Point(0, 0, -5);
   Tuple to = Tuple::Point(0, 0, 0);
   Tuple up = Tuple::Vector(0, 1, 0);
-  c.transform_ = Mat<4>::view_transform(from, to, up);
+  c.set_transformation(Mat<4>::view_transform(from, to, up));
   auto image = c.render(w);
 
   EXPECT_EQ(image.pixel_at(5, 5), Color(0.38066, 0.47583, 0.2855));

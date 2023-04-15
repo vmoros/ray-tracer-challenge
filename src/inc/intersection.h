@@ -4,6 +4,7 @@
 #include <tuple.h>
 
 #include <optional>
+#include <vector>
 
 class Shape;  // forward decl to make Intersection work
               // Shape and Intersection have a cyclic dependency so Shape

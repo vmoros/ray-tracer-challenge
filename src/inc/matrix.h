@@ -3,6 +3,7 @@
 #include <tuple.h>
 
 #include <array>
+#include <cstddef>
 
 template <size_t sz>
 class Mat {
