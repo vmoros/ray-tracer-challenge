@@ -84,3 +84,21 @@ Intersection::Comps Intersection::prepare_computations(
 
   return ans;
 }
+
+double Intersection::Comps::schlick() const {
+  double cosine = eyev_.dot(normalv_);
+
+  if (n1_ > n2_) {
+    double n = n1_ / n2_;
+    double sin2_t = n * n * (1.0 - (cosine * cosine));
+    if (sin2_t > 1.0) {
+      return 1.0;
+    }
+
+    cosine = sqrt(1.0 - sin2_t);
+  }
+
+  double frac = (n1_ - n2_) / (n1_ + n2_);
+  double r0 = std::pow(frac, 2);
+  return r0 + (1 - r0) * pow(1 - cosine, 5);
+}

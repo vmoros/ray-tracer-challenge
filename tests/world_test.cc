@@ -285,3 +285,24 @@ TEST(WorldTest, ShadedRefractionWithTransparentMaterial_HasCorrectColor) {
 
   EXPECT_EQ(w.shade_hit(comps, 5), Color(0.93642, 0.68642, 0.68642));
 }
+
+TEST(WorldTest, ShadeHit_UsesSchlick) {
+  World w;
+
+  Plane floor(Mat<4>::translator(0, -1, 0));
+  floor.material_.reflectivity_ = 0.5;
+  floor.material_.transparency_ = 0.5;
+  floor.material_.refract_ = 1.5;
+  w.shapes_.push_back(&floor);
+
+  Sphere ball(Mat<4>::translator(0, -3.5, -0.5));
+  ball.material_.color_ = Color::Red();
+  ball.material_.ambient_ = 0.5;
+  w.shapes_.push_back(&ball);
+
+  Ray r(Tuple::Point(0, 0, -3), Tuple::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
+  std::vector<Intersection> xs = {{sqrt(2), &floor}};
+  Intersection::Comps comps = xs[0].prepare_computations(r, xs);
+
+  EXPECT_EQ(w.shade_hit(comps, 5), Color(0.93391, 0.69643, 0.69243));
+}

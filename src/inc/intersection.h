@@ -32,6 +32,8 @@ class Intersection {
     Tuple eyev_;
     Tuple normalv_;
     Tuple reflectv_;
+
+    [[nodiscard]] double schlick() const;
   };
 
   [[nodiscard]] Comps prepare_computations(

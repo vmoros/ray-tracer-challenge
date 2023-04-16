@@ -186,3 +186,31 @@ TEST(IntersectionTest, UnderPoint_IsJustBelowSurface) {
   EXPECT_GT(comps.under_point_.z_, EPS / 2);
   EXPECT_LT(comps.point_.z_, comps.under_point_.z_);
 }
+
+TEST(IntersectionTest, SchlickUnderTotalInternalReflection_GivesOne) {
+  Sphere shape = Sphere::glass_sphere();
+  Ray r(Tuple::Point(0, 0, sqrt(2) / 2), Tuple::Vector(0, 1, 0));
+  std::vector<Intersection> xs = {{-sqrt(2) / 2, &shape},
+                                  {sqrt(2) / 2, &shape}};
+  Intersection::Comps comps = xs[1].prepare_computations(r, xs);
+
+  EXPECT_DOUBLE_EQ(comps.schlick(), 1.0);
+}
+
+TEST(IntersectionTest, SchlickWithPerpendicularAngle_HasSmallReflectance) {
+  Sphere shape = Sphere::glass_sphere();
+  Ray r(Tuple::Point(0, 0, 0), Tuple::Vector(0, 1, 0));
+  std::vector<Intersection> xs = {{-1, &shape}, {1, &shape}};
+  Intersection::Comps comps = xs[1].prepare_computations(r, xs);
+
+  EXPECT_DOUBLE_EQ(comps.schlick(), 0.04);
+}
+
+TEST(IntersectionTest, SchlickWithSmallAngle_HasBigReflectance) {
+  Sphere shape = Sphere::glass_sphere();
+  Ray r(Tuple::Point(0, 0.99, -2), Tuple::Vector(0, 0, 1));
+  std::vector<Intersection> xs = {{1.8589, &shape}};
+  Intersection::Comps comps = xs[0].prepare_computations(r, xs);
+
+  EXPECT_TRUE(dbleq(comps.schlick(), 0.4887308));
+}
