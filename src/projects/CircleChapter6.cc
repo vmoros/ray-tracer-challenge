@@ -8,7 +8,6 @@
 #include <sphere.h>
 #include <tuple.h>
 
-#include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <optional>

@@ -8,8 +8,8 @@ class Ray {
   Ray(Tuple origin, Tuple direction);
   Ray();
 
-  Tuple position(double t) const;
-  Ray transform(Mat<4> mat) const;
+  [[nodiscard]] Tuple position(double t) const;
+  [[nodiscard]] Ray transform(Mat<4> mat) const;
   void print() const;
 
   Tuple origin_;

@@ -2,7 +2,6 @@
 #include <color.h>
 
 #include <algorithm>
-#include <cstddef>
 
 Canvas::Canvas(size_t w, size_t h, Color bg_color)
     : data_(std::vector<std::vector<Color>>(h,

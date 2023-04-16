@@ -8,7 +8,7 @@ class Tuple;
 class Pattern {
  public:
   // Constructors
-  Pattern(Mat<4> transformation);
+  explicit Pattern(Mat<4> transformation);
   Pattern() = default;
 
   // Misc
@@ -18,7 +18,7 @@ class Pattern {
   }
 
   // Virtual
-  virtual Color pattern_at(Tuple point) const = 0;
+  [[nodiscard]] virtual Color pattern_at(Tuple point) const = 0;
 
   // Member variables
   Mat<4> inverse_;
@@ -30,7 +30,7 @@ class StripePat : public Pattern {
   StripePat(Color a, Color b);
 
   // Misc
-  Color pattern_at(Tuple point) const override;
+  [[nodiscard]] Color pattern_at(Tuple point) const override;
 
   // Member variables
   Color a_;
@@ -44,7 +44,7 @@ class GradientPat : public Pattern {
   GradientPat() = default;
 
   // Misc
-  Color pattern_at(Tuple point) const override;
+  [[nodiscard]] Color pattern_at(Tuple point) const override;
 
   // Member variables
   Color a_;
@@ -58,7 +58,7 @@ class RingPat : public Pattern {
   RingPat() = default;
 
   // Misc
-  Color pattern_at(Tuple point) const override;
+  [[nodiscard]] Color pattern_at(Tuple point) const override;
 
   // Member variables
   Color a_;
@@ -72,7 +72,7 @@ class CheckerPat : public Pattern {
   CheckerPat() = default;
 
   // Misc
-  Color pattern_at(Tuple point) const override;
+  [[nodiscard]] Color pattern_at(Tuple point) const override;
 
   // Member variables
   Color a_;

@@ -15,7 +15,7 @@ Color Color::operator*(double scale) const {
   return Color(static_cast<Tuple>(*this) * scale);
 }
 Color Color::operator*(Tuple other) const {
-  return Color(r() * other.x_, g() * other.y_, b() * other.z_);
+  return {r() * other.x_, g() * other.y_, b() * other.z_};
 }
 
 double Color::r() const { return x_; }
@@ -32,9 +32,9 @@ int Color::bclamp() const {
   return std::clamp(static_cast<int>(b() * MAX_PIXEL), 0, MAX_PIXEL);
 }
 
-Color Color::Black() { return Color(0.0, 0.0, 0.0); }
-Color Color::White() { return Color(1.0, 1.0, 1.0); }
-Color Color::Red() { return Color(1.0, 0.0, 0.0); }
-Color Color::Green() { return Color(0.0, 1.0, 0.0); }
-Color Color::Blue() { return Color(0.0, 0.0, 1.0); }
+Color Color::Black() { return {0.0, 0.0, 0.0}; }
+Color Color::White() { return {1.0, 1.0, 1.0}; }
+Color Color::Red() { return {1.0, 0.0, 0.0}; }
+Color Color::Green() { return {0.0, 1.0, 0.0}; }
+Color Color::Blue() { return {0.0, 0.0, 1.0}; }
 Color Color::Pink() { return {1.0, PINK_G, 1.0}; }

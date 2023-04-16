@@ -18,12 +18,12 @@ class Intersection {
   // Misc
   static std::optional<Intersection> hit(
       const std::vector<Intersection>& intersections);
-  bool operator==(const Intersection other) const;
+  bool operator==(Intersection other) const;
 
   struct Comps {  // pre-computed values
-    bool inside_;
-    double t_;
-    const Shape* obj_;
+    bool inside_{};
+    double t_{};
+    const Shape* obj_{};
     Tuple point_;
     Tuple over_point_;
     Tuple eyev_;
@@ -31,7 +31,7 @@ class Intersection {
     Tuple reflectv_;
   };
 
-  Comps prepare_computations(Ray ray) const;
+  [[nodiscard]] Comps prepare_computations(Ray ray) const;
 
   // Member variables
   double t_;

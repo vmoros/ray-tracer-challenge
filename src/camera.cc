@@ -5,7 +5,6 @@
 #include <world.h>
 
 #include <cmath>
-#include <cstddef>
 
 void Camera::set_halves_and_pixel_size() {
   double half_view = tan(fov_ / 2);
@@ -23,7 +22,13 @@ void Camera::set_halves_and_pixel_size() {
 }
 
 Camera::Camera(size_t hsize, size_t vsize, double fov)
-    : hsize_(hsize), vsize_(vsize), fov_(fov), inverse_(Mat<4>::iden()) {
+    : hsize_(hsize),
+      vsize_(vsize),
+      fov_(fov),
+      pixel_size_(0.0),
+      half_height_(0.0),
+      half_width_(0.0),
+      inverse_(Mat<4>::iden()) {
   set_halves_and_pixel_size();
 }
 
@@ -38,7 +43,7 @@ Ray Camera::ray_for_pixel(size_t px, size_t py) const {
   Tuple origin = inverse_ * Tuple::Origin();
   Tuple direction = (pixel - origin).norm();
 
-  return Ray(origin, direction);
+  return {origin, direction};
 }
 
 Canvas Camera::render(const World& w) const {

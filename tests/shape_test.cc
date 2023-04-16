@@ -14,15 +14,17 @@ static Ray saved_ray;
 
 class TestShape : public Shape {
  public:
-  TestShape(Mat<4> transformation) : Shape(transformation, Material()) {}
+  explicit TestShape(Mat<4> transformation)
+      : Shape(transformation, Material()) {}
   TestShape() = default;
 
  private:
-  std::vector<Intersection> local_intersect(Ray r) const override {
+  [[nodiscard]] std::vector<Intersection> local_intersect(
+      Ray r) const override {
     saved_ray = r;
     return {};
   }
-  Tuple local_normal_at(Tuple point) const override {
+  [[nodiscard]] Tuple local_normal_at(Tuple point) const override {
     point.w_ = 0;
     return point;
   }

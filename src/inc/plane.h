@@ -12,10 +12,11 @@ class Plane : public Shape {
  public:
   // Constructors
   Plane() = default;
-  Plane(Mat<4> transformation) : Shape(transformation, Material()) {}
+  explicit Plane(Mat<4> transformation) : Shape(transformation, Material()) {}
 
   // Overrides
-  std::vector<Intersection> local_intersect(Ray ray) const override;
-  Tuple local_normal_at(Tuple point) const override;
-  ~Plane() = default;
+  [[nodiscard]] std::vector<Intersection> local_intersect(
+      Ray ray) const override;
+  [[nodiscard]] Tuple local_normal_at(Tuple point) const override;
+  ~Plane() override = default;
 };

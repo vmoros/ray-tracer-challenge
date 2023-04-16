@@ -8,7 +8,7 @@
 class Material {
  public:
   Material();
-  Material(Color color);
+  explicit Material(Color color);
   Material(Color color, double diffuse, double specular);
 
   bool operator==(Material other) const;

@@ -6,7 +6,6 @@
 #include <matrix.h>
 #include <plane.h>
 #include <ray.h>
-#include <shape.h>
 #include <sphere.h>
 #include <tuple.h>
 #include <world.h>
@@ -82,7 +81,7 @@ TEST(WorldTest, WhenRayHasSeveralIntersections_FirstHitIsUsed) {
   w.shapes_ = {&s1, &s2};
   Ray r(Tuple::Point(0, 0, 0.75), Tuple::Vector(0, 0, -1));
 
-  EXPECT_EQ(w.color_at(r), Material());
+  EXPECT_EQ(w.color_at(r), Material().color_);
 }
 
 TEST(WorldTest, NoObjectColinearWithLightAndPoint_NotInShadow) {
@@ -182,7 +181,7 @@ TEST(WorldTest, InfiniteReflections_AreAvoided) {
 
   EXPECT_EXIT(
       {
-        w.color_at(r);
+        static_cast<void>(w.color_at(r));
         std::exit(0);
       },
       testing::ExitedWithCode(0), "");

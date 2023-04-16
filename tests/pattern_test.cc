@@ -68,8 +68,8 @@ TEST(PatternTest, TransformedStripesOnTransformedObject_AreColoredCorrectly) {
 
 class TestPattern : public Pattern {
  private:
-  Color pattern_at(Tuple point) const override {
-    return Color(point.x_, point.y_, point.z_);
+  [[nodiscard]] Color pattern_at(Tuple point) const override {
+    return {point.x_, point.y_, point.z_};
   }
 };
 

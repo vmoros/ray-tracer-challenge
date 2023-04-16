@@ -23,12 +23,12 @@ class Tuple {
   Tuple operator/(double scale) const;
 
   // Misc
-  bool isPoint() const;
-  bool isVector() const;
-  double mag() const;
-  Tuple norm() const;
-  double dot(Tuple other) const;
-  Tuple cross(Tuple other) const;
+  [[nodiscard]] bool isPoint() const;
+  [[nodiscard]] bool isVector() const;
+  [[nodiscard]] double mag() const;
+  [[nodiscard]] Tuple norm() const;
+  [[nodiscard]] double dot(Tuple other) const;
+  [[nodiscard]] Tuple cross(Tuple other) const;
   void print() const;
-  Tuple reflect(Tuple normal) const;
+  [[nodiscard]] Tuple reflect(Tuple normal) const;
 };

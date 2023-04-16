@@ -16,8 +16,8 @@ class Camera {
   Camera(size_t hsize, size_t vsize, double fov);
 
   // Misc
-  Ray ray_for_pixel(size_t px, size_t py) const;
-  Canvas render(const World& w) const;
+  [[nodiscard]] Ray ray_for_pixel(size_t px, size_t py) const;
+  [[nodiscard]] Canvas render(const World& w) const;
   void set_transformation(Mat<4> transformation) {
     inverse_ = transformation.inverse();
   }

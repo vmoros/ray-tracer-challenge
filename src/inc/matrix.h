@@ -14,17 +14,17 @@ class Mat {
   std::array<double, sz> col(size_t c) const;
 
  public:
-  Mat(data d);
+  explicit Mat(data d);
   Mat();
   bool operator==(const Mat<sz>& other) const;
   Mat<sz> operator*(const Mat<sz>& other) const;
-  Tuple operator*(const Tuple tup) const;
+  Tuple operator*(Tuple tup) const;
   Mat<sz> transp() const;
-  double det() const;
+  [[nodiscard]] double det() const;
   Mat<sz - 1> submat(size_t row, size_t col) const;
-  double minor(size_t row, size_t col) const;
-  double cofactor(size_t row, size_t col) const;
-  bool isInvertible() const;
+  [[nodiscard]] double minor(size_t row, size_t col) const;
+  [[nodiscard]] double cofactor(size_t row, size_t col) const;
+  [[nodiscard]] bool isInvertible() const;
   Mat<sz> inverse() const;
   void print() const;
 

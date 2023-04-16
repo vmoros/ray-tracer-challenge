@@ -14,15 +14,16 @@ class Shape {  // abstract parent class for all shapes e.g. Sphere
   Shape() = default;
 
   // Misc
-  std::vector<Intersection> intersect(Ray r) const;
-  Tuple normal_at(Tuple point) const;
+  [[nodiscard]] std::vector<Intersection> intersect(Ray r) const;
+  [[nodiscard]] Tuple normal_at(Tuple point) const;
   void set_transformation(Mat<4> transformation) {
     inverse_ = transformation.inverse();
   }
 
   // Virtual functions
-  virtual std::vector<Intersection> local_intersect(Ray r) const = 0;
-  virtual Tuple local_normal_at(Tuple point) const = 0;
+  [[nodiscard]] virtual std::vector<Intersection> local_intersect(
+      Ray r) const = 0;
+  [[nodiscard]] virtual Tuple local_normal_at(Tuple point) const = 0;
   virtual ~Shape() = default;
 
   // Member variables

@@ -9,7 +9,6 @@
 #include <tuple.h>
 #include <world.h>
 
-#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -62,15 +61,14 @@ int main() {
   World w({&floor, &back_wall, &middle, &right, &left},
           PointLight(Tuple::Point(-10, 10, -10), Color::White()));
 
-  Camera camera(500, 500, PI / 3);
+  Camera camera(2000, 1200, PI / 3);
   camera.set_transformation(Mat<4>::view_transform(
       Tuple::Point(0, 1.5, -7), Tuple::Point(0, 1, 0), Tuple::Vector(0, 1, 0)));
 
   // Render & save
-  std::chrono::steady_clock timer;
-  auto start = timer.now();
+  auto start = std::chrono::steady_clock::now();
   Canvas canvas = camera.render(w);
-  auto end = timer.now();
+  auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double> elapsed = end - start;
 
   std::cout << "Finished rendering the world. It took " << elapsed.count()

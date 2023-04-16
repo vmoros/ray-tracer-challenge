@@ -14,17 +14,18 @@ class Sphere : public Shape {
  public:
   // Constructors
   Sphere(Mat<4> transformation, Material material);
-  Sphere(Mat<4> transformation);
-  Sphere(Material material);
+  explicit Sphere(Mat<4> transformation);
+  explicit Sphere(Material material);
   Sphere();
 
   // Misc
-  bool operator==(Sphere other) const;
+  bool operator==(const Sphere& other) const;
 
   // Member variables come from Shape
 
   // Overrides
-  std::vector<Intersection> local_intersect(Ray ray) const override;
-  Tuple local_normal_at(Tuple point) const override;
-  ~Sphere() = default;
+  [[nodiscard]] std::vector<Intersection> local_intersect(
+      Ray ray) const override;
+  [[nodiscard]] Tuple local_normal_at(Tuple point) const override;
+  ~Sphere() override = default;
 };
