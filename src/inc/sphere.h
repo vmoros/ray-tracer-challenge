@@ -20,6 +20,12 @@ class Sphere : public Shape {
 
   // Misc
   bool operator==(const Sphere& other) const;
+  static Sphere glass_sphere() {
+    Material mat;
+    mat.transparency_ = 1.0;
+    mat.refract_ = 1.5;
+    return Sphere(mat);
+  }
 
   // Member variables come from Shape
 

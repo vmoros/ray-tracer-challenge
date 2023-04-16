@@ -7,6 +7,7 @@
 #include <tuple.h>
 
 #include <cmath>
+#include <vector>
 
 TEST(IntersectionTest, Intersection_HasCorrectComponents) {
   Sphere s;
@@ -134,4 +135,22 @@ TEST(IntersectionTest, PrepareComputations_ComputesReflectionVector) {
   Intersection::Comps comps = i.prepare_computations(r);
 
   EXPECT_EQ(comps.reflectv_, Tuple::Vector(0, sqrt(2) / 2, sqrt(2) / 2));
+}
+
+TEST(IntersectionTest, N1AndN2AtVariousIntersections_AreCorrect) {
+  Sphere A = Sphere::glass_sphere();
+  A.set_transformation(Mat<4>::scaler(2, 2, 2));
+  A.material_.refract_ = 1.5;
+
+  Sphere B = Sphere::glass_sphere();
+  B.set_transformation(Mat<4>::translator(0, 0, -0.25));
+  B.material_.refract_ = 2.0;
+
+  Sphere C = Sphere::glass_sphere();
+  C.set_transformation(Mat<4>::translator(0, 0, 0.25));
+  C.material_.refract_ = 2.5;
+
+  Ray r(Tuple::Point(0, 0, -4), Tuple::Vector(0, 0, 1));
+  std::vector<Intersection> xs = {{2, &A},    {2.75, &B}, {3.25, &C},
+                                  {4.75, &B}, {5.25, &C}, {6, &A}};
 }

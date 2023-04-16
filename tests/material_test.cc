@@ -1,6 +1,7 @@
 #include <color.h>
 #include <gtest/gtest.h>
 #include <material.h>
+#include <sphere.h>
 
 TEST(MaterialTest, Material_HasCorrectComponents) {
   Material m;
@@ -16,4 +17,18 @@ TEST(MaterialTest, Material_HasReflectivityComponent) {
   Material m;
 
   EXPECT_DOUBLE_EQ(m.reflectivity_, 0.0);
+}
+
+TEST(MaterialTest, DefaultMaterial_HasTransparencyAndRefractiveIndex) {
+  Material m;
+
+  EXPECT_DOUBLE_EQ(m.transparency_, 0.0);
+  EXPECT_DOUBLE_EQ(m.refract_, 1.0);
+}
+
+TEST(MaterialTest, GlassSphere_HasCorrectComponents) {
+  Sphere s = Sphere::glass_sphere();
+
+  EXPECT_DOUBLE_EQ(s.material_.transparency_, 1.0);
+  EXPECT_DOUBLE_EQ(s.material_.refract_, 1.5);
 }
