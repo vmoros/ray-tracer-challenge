@@ -23,20 +23,24 @@ std::optional<Intersection> Intersection::hit(
   return *ans;
 }
 
-bool Intersection::operator==(const Intersection other) const {
-  return dbleq(t_, other.t_) && (obj_ == other.obj_);
-}
+// bool Intersection::operator==(const Intersection other) const {
+//   return dbleq(t_, other.t_) && (obj_ == other.obj_);
+// }
 
-Intersection::Comps Intersection::prepare_computations(Ray ray) const {
+Intersection::Comps Intersection::prepare_computations(
+    Ray ray, const std::vector<Intersection>& xs) const {
   Tuple pos = ray.position(t_);
 
   Intersection::Comps ans = {
       .inside_ = false,
       .t_ = t_,
+      .n1_ = 1.0,
+      .n2_ = 1.0,
       .obj_ = obj_,
       .point_ = pos,
       .over_point_ = Tuple::Origin(),  // will be changed later, I just need to
                                        // initialize it with something
+      .under_point_ = Tuple::Origin(),
       .eyev_ = -ray.direction_,
       .normalv_ = obj_->normal_at(pos),
       .reflectv_ = Tuple::Origin(),  // will be changed later, I just need to
@@ -49,7 +53,34 @@ Intersection::Comps Intersection::prepare_computations(Ray ray) const {
   }
 
   ans.over_point_ = ans.point_ + ans.normalv_ * EPS;
+  ans.under_point_ = ans.point_ - ans.normalv_ * EPS;
   ans.reflectv_ = ray.direction_.reflect(ans.normalv_);
+
+  std::vector<const Shape*> containers;
+  for (const auto& i : xs) {
+    if (i == *this) {
+      if (containers.empty()) {
+        ans.n1_ = 1.0;
+      } else {
+        ans.n1_ = containers.back()->material_.refract_;
+      }
+    }
+
+    if (auto it = std::find(containers.begin(), containers.end(), i.obj_);
+        it == containers.end()) {  // not present
+      containers.push_back(i.obj_);
+    } else {
+      containers.erase(it);
+    }
+
+    if (i == *this) {
+      if (containers.empty()) {
+        ans.n2_ = 1.0;
+      } else {
+        ans.n2_ = containers.back()->material_.refract_;
+      }
+    }
+  }
 
   return ans;
 }

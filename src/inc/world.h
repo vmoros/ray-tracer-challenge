@@ -8,7 +8,7 @@
 
 #include <vector>
 
-static constexpr int MAX_REFLECTIONS = 4;
+static constexpr int MAX_RECURSION = 4;
 
 class World {
  public:
@@ -19,11 +19,13 @@ class World {
   // Misc
   [[nodiscard]] std::vector<Intersection> intersect(Ray ray) const;
   [[nodiscard]] Color shade_hit(Intersection::Comps comps,
-                                int remaining = MAX_REFLECTIONS) const;
-  [[nodiscard]] Color color_at(Ray ray, int remaining = MAX_REFLECTIONS) const;
+                                int remaining = MAX_RECURSION) const;
+  [[nodiscard]] Color color_at(Ray ray, int remaining = MAX_RECURSION) const;
   [[nodiscard]] bool is_shadowed(Tuple point) const;
   [[nodiscard]] Color reflected_color(Intersection::Comps comps,
-                                      int remaining = MAX_REFLECTIONS) const;
+                                      int remaining = MAX_RECURSION) const;
+  [[nodiscard]] Color refracted_color(Intersection::Comps comps,
+                                      int remaining = MAX_RECURSION) const;
 
   // Member variables
   std::vector<const Shape*> shapes_;

@@ -19,7 +19,7 @@ TEST(LightTest, PointLight_HasCorrectComponents) {
   EXPECT_EQ(light.intensity_, intensity);
 }
 
-class LightingFixture : public ::testing::Test {
+class LightingFixture : public testing::Test {
  public:
   Material m{};
   Tuple position = Tuple::Origin();

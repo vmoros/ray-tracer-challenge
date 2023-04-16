@@ -15,3 +15,6 @@ target_link_libraries(PlaneCh9 stuff)
 
 add_executable(Patterns Patterns.cc)
 target_link_libraries(Patterns stuff)
+
+add_executable(Glass Glass.cc)
+target_link_libraries(Glass stuff)
