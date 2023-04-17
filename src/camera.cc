@@ -1,5 +1,6 @@
 #include <camera.h>
 #include <matrix.h>
+#include <omp.h>
 #include <ray.h>
 #include <tuple.h>
 #include <world.h>
@@ -49,6 +50,7 @@ Ray Camera::ray_for_pixel(size_t px, size_t py) const {
 Canvas Camera::render(const World& w) const {
   Canvas image(hsize_, vsize_);
 
+#pragma omp parallel for
   for (size_t y = 0; y < vsize_; ++y) {
     for (size_t x = 0; x < hsize_; ++x) {
       auto ray = ray_for_pixel(x, y);
