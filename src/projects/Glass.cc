@@ -31,7 +31,7 @@ int main() {
   World w({&back_wall, &middle},
           PointLight(Tuple::Point(-10, 10, -10), Color::White()));
 
-  Camera camera(3840, 2160, PI / 3);
+  Camera camera(2000, 1200, PI / 3);
   camera.set_transformation(Mat<4>::view_transform(
       Tuple::Point(0, 0, -4), Tuple::Point(0, 0, 1), Tuple::Vector(0, 1, 0)));
 

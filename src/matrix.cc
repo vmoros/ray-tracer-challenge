@@ -39,9 +39,10 @@ bool Mat<sz>::operator==(const Mat<sz>& other) const {
 template <size_t sz>
 double Mat<sz>::dot(const Mat<sz>& other, size_t row, size_t col) const {
   auto inds = std::views::iota(size_t{0}, sz);
-  return std::transform_reduce(
-      inds.begin(), inds.end(), 0.0, std::plus{},
-      [&](size_t i) { return data_[row][i] * other.data_[i][col]; });
+  return std::transform_reduce(inds.begin(), inds.end(), 0.0, std::plus{},
+                               [row, col, this, &other](size_t i) {
+                                 return data_[row][i] * other.data_[i][col];
+                               });
 }
 
 template <size_t sz>
@@ -49,7 +50,7 @@ std::array<double, sz> Mat<sz>::col(size_t c) const {
   auto inds = std::views::iota(size_t{0}, sz);
   std::array<double, sz> ans{};
   std::transform(inds.begin(), inds.end(), ans.begin(),
-                 [&](size_t i) { return data_[i][c]; });
+                 [c, this](size_t i) { return data_[i][c]; });
 
   return ans;
 }

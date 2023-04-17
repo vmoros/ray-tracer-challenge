@@ -18,5 +18,4 @@ class Plane : public Shape {
   [[nodiscard]] std::vector<Intersection> local_intersect(
       Ray ray) const override;
   [[nodiscard]] Tuple local_normal_at(Tuple point) const override;
-  ~Plane() override = default;
 };

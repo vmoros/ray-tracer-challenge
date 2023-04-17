@@ -10,6 +10,7 @@ class Pattern {
   // Constructors
   explicit Pattern(Mat<4> transformation);
   Pattern() = default;
+  virtual ~Pattern() = default;
 
   // Misc
   Color pattern_at_shape(const Shape* shape, Tuple point) const;
