@@ -9,7 +9,7 @@ set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=cppcoreguidelines*
 
 add_library(stuff STATIC tuple.cc color.cc canvas.cc matrix.cc
         ray.cc sphere.cc light.cc material.cc world.cc camera.cc
-        intersection.cc shape.cc plane.cc pattern.cc)
+        intersection.cc shape.cc plane.cc pattern.cc cube.cc)
 target_include_directories(stuff PUBLIC inc)
 
 set(OpenMP_C_FLAGS "-fopenmp -I/opt/homebrew/opt/libomp/include")

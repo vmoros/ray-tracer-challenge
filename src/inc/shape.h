@@ -7,6 +7,7 @@
 #include <tuple.h>
 
 #include <vector>
+
 class Shape {  // abstract parent class for all shapes e.g. Sphere
  public:
   // Constructors
