@@ -20,17 +20,7 @@ class Sphere : public Shape {
 
   // Misc
   bool operator==(const Sphere& other) const;
-  static Sphere glass_sphere() {
-    Material mat;
-    mat.reflectivity_ = 0.9;
-    mat.transparency_ = 1.0;
-    mat.refract_ = 1.5;
-    mat.diffuse_ = 0.1;
-    mat.specular_ = 1.0;
-    mat.shininess_ = 300.0;
-    mat.color_ = Color(0.5, 0.5, 0.5);
-    return Sphere(mat);
-  }
+  static Sphere glass_sphere() { return Sphere(Material::Glass()); }
 
   // Member variables come from Shape
 

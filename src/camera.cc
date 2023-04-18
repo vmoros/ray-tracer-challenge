@@ -6,6 +6,7 @@
 #include <world.h>
 
 #include <cmath>
+#include <iostream>
 
 void Camera::set_halves_and_pixel_size() {
   double half_view = tan(fov_ / 2);
@@ -53,6 +54,8 @@ Canvas Camera::render(const World& w) const {
 #pragma omp parallel for
   for (size_t y = 0; y < vsize_; ++y) {
     for (size_t x = 0; x < hsize_; ++x) {
+      //      std::cout << "Drawing pixel (" << x << ", " << y << ")" <<
+      //      std::endl;
       auto ray = ray_for_pixel(x, y);
       auto color = w.color_at(ray);
       image.write_pixel(x, y, color);

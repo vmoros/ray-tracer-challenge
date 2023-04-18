@@ -26,4 +26,5 @@ class Color : public Tuple {
   static Color Green();
   static Color Blue();
   static Color Pink();
+  static Color Gray() { return {0.5, 0.5, 0.5}; }
 };

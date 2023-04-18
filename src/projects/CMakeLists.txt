@@ -18,3 +18,6 @@ target_link_libraries(Patterns stuff)
 
 add_executable(Glass Glass.cc)
 target_link_libraries(Glass stuff)
+
+add_executable(Cubes Cubes.cc)
+target_link_libraries(Cubes stuff)

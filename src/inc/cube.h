@@ -12,6 +12,9 @@ class Cube : public Shape {
  public:
   // Constructors
   Cube() = default;
+  Cube(const Mat<4>& transformation, const Material& mat)
+      : Shape(transformation, mat) {}
+  explicit Cube(const Material& mat) : Cube(Mat<4>::iden(), mat) {}
 
   // Misc
   bool operator==(const Cube& other) const;
