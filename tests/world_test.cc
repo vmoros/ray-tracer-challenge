@@ -177,7 +177,6 @@ TEST(WorldTest, InfiniteReflections_AreAvoided) {
   upper.set_transformation(Mat<4>::translator(0, 1, 0));
   w.shapes_.push_back(&upper);
   Ray r(Tuple::Origin(), Tuple::Vector(0, 1, 0));
-  w.color_at(r).print();
 
   EXPECT_EXIT(
       {
@@ -281,7 +280,6 @@ TEST(WorldTest, ShadedRefractionWithTransparentMaterial_HasCorrectColor) {
   Ray r(Tuple::Point(0, 0, -3), Tuple::Vector(0, -sqrt(2) / 2, sqrt(2) / 2));
   std::vector<Intersection> xs = {{sqrt(2), &floor}};
   Intersection::Comps comps = xs[0].prepare_computations(r, xs);
-  w.shade_hit(comps, 5).print();
 
   EXPECT_EQ(w.shade_hit(comps, 5), Color(0.93642, 0.68642, 0.68642));
 }

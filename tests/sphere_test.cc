@@ -8,7 +8,7 @@
 TEST(SphereTest, SphereNormalAtPointOnXAxis_IsCorrect) {
   Sphere s;
   Tuple n = s.normal_at(Tuple::Point(1, 0, 0));
-  n.print();
+
   EXPECT_EQ(n, Tuple::Vector(1, 0, 0));
 }
 
@@ -37,7 +37,6 @@ TEST(SphereTest, SphereNormalAtNonAxialPoint_IsCorrect) {
 TEST(SphereTest, NormalOnTranslatedSphere_IsCorrect) {
   Sphere s(Mat<4>::translator(0, 1, 0));
   Tuple n = s.normal_at(Tuple::Point(0, 1.70711, -0.70711));
-  n.print();
 
   EXPECT_EQ(n, Tuple::Vector(0, 0.70711, -0.70711));
 }

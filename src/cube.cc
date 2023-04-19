@@ -13,8 +13,8 @@ std::pair<double, double> Cube::check_axis(double origin, double direction) {
     tmin = tmin_numerator / direction;
     tmax = tmax_numerator / direction;
   } else {
-    tmin = tmin_numerator * INFINITY;
-    tmax = tmax_numerator * INFINITY;
+    tmin = tmin_numerator * INFTY;
+    tmax = tmax_numerator * INFTY;
   }
 
   if (tmin > tmax) {
