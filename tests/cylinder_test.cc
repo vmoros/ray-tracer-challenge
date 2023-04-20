@@ -118,3 +118,22 @@ INSTANTIATE_TEST_SUITE_P(
         std::make_tuple(Tuple::Point(0, 4, -2), Tuple::Vector(0, -1, 1), 2),
         std::make_tuple(Tuple::Point(0, 0, -2), Tuple::Vector(0, 1, 2), 2),
         std::make_tuple(Tuple::Point(0, -1, -2), Tuple::Vector(0, 1, 1), 2)));
+
+class NormalsOnCaps : public testing::TestWithParam<std::tuple<Tuple, Tuple>> {
+};
+
+TEST_P(NormalsOnCaps, NormalsOnCylinderEndCaps_AreCorrect) {
+  Cylinder cyl(1.0, 2.0);
+
+  EXPECT_EQ(cyl.local_normal_at(get<0>(GetParam())), get<1>(GetParam()));
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    NormalsOnCaps, NormalsOnCaps,
+    testing::Values(
+        std::make_tuple(Tuple::Point(0, 1, 0), Tuple::Vector(0, -1, 0)),
+        std::make_tuple(Tuple::Point(0.5, 1, 0), Tuple::Vector(0, -1, 0)),
+        std::make_tuple(Tuple::Point(0, 1, 0.5), Tuple::Vector(0, -1, 0)),
+        std::make_tuple(Tuple::Point(0, 2, 0), Tuple::Vector(0, 1, 0)),
+        std::make_tuple(Tuple::Point(0.5, 2, 0), Tuple::Vector(0, 1, 0)),
+        std::make_tuple(Tuple::Point(0, 2, 0.5), Tuple::Vector(0, 1, 0))));

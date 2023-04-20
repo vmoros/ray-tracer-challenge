@@ -8,28 +8,36 @@
 #include <limits>
 #include <vector>
 
-class Cylinder : public Shape {
+class Cone : public Shape {
  public:
   // Constructors
-  Cylinder() : min_(-INFTY), max_(INFTY), closed_(false) {}
-  Cylinder(double min, double max, bool closed = true)
+  Cone() : min_(-INFTY), max_(INFTY), closed_(false) {}
+  Cone(double min, double max, bool closed = true)
       : min_(min), max_(max), closed_(closed) {}
-  Cylinder(Mat<4> trn, Material mat, double min, double max, bool closed)
+  Cone(Mat<4> trn, Material mat, double min, double max, bool closed)
       : Shape(trn, mat), min_(min), max_(max), closed_(closed) {}
 
   // Misc
   [[nodiscard]] std::vector<Intersection> local_intersect(
       Ray ray) const override {
+    double a = sqr(ray.direction_.x_) - sqr(ray.direction_.y_) +
+               sqr(ray.direction_.z_);
+    double b = 2 * ray.origin_.x_ * ray.direction_.x_ -
+               2 * ray.origin_.y_ * ray.direction_.y_ +
+               2 * ray.origin_.z_ * ray.direction_.z_;
+    double c = sqr(ray.origin_.x_) - sqr(ray.origin_.y_) + sqr(ray.origin_.z_);
+
     std::vector<Intersection> xs;
     intersect_caps(ray, xs);
-    double a = sqr(ray.direction_.x_) + sqr(ray.direction_.z_);
     if (dbleq(a, 0.0)) {
-      return xs;
+      if (dbleq(b, 0.0)) {
+        return xs;
+      } else {
+        xs.emplace_back(-c / (2.0 * b), this);
+        return xs;
+      }
     }
 
-    double b = 2 * ray.origin_.x_ * ray.direction_.x_ +
-               2 * ray.origin_.z_ * ray.direction_.z_;
-    double c = sqr(ray.origin_.x_) + sqr(ray.origin_.z_) - 1;
     double disc = sqr(b) - 4 * a * c;
 
     if (disc < 0) {
@@ -52,8 +60,6 @@ class Cylinder : public Shape {
       xs.emplace_back(t1, this);
     }
 
-    //    intersect_caps(ray, xs);
-
     return xs;
   }
 
@@ -69,7 +75,11 @@ class Cylinder : public Shape {
       }
     }
 
-    return Tuple::Vector(point.x_, 0.0, point.z_);
+    double y = sqrt(sqr(point.x_) + sqr(point.z_));
+    if (point.y_ > 0) {
+      y = -y;
+    }
+    return Tuple::Vector(point.x_, y, point.z_);
   }
 
   // Member variables - some come from Shape
@@ -84,20 +94,20 @@ class Cylinder : public Shape {
     }
 
     double t = (min_ - ray.origin_.y_) / ray.direction_.y_;
-    if (check_cap(ray, t)) {
+    if (check_cap(ray, t, abs(min_))) {
       xs.emplace_back(t, this);
     }
 
     t = (max_ - ray.origin_.y_) / ray.direction_.y_;
-    if (check_cap(ray, t)) {
+    if (check_cap(ray, t, abs(max_))) {
       xs.emplace_back(t, this);
     }
   }
 
-  static bool check_cap(Ray ray, double t) {
+  static bool check_cap(Ray ray, double t, double radius) {
     double x = ray.origin_.x_ + t * ray.direction_.x_;
     double z = ray.origin_.z_ + t * ray.direction_.z_;
 
-    return sqr(x) + sqr(z) <= 1.0;
+    return sqr(x) + sqr(z) <= radius;
   }
 };
