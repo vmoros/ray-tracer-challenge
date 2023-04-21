@@ -1,3 +1,4 @@
+#include <group.h>
 #include <gtest/gtest.h>
 #include <helpers.h>
 #include <intersection.h>
@@ -17,6 +18,10 @@ class TestShape : public Shape {
   explicit TestShape(Mat<4> transformation)
       : Shape(transformation, Material()) {}
   TestShape() = default;
+
+  bool operator==(const TestShape& other) const {
+    return inverse_ == other.inverse_ && material_ == other.material_;
+  }
 
  private:
   [[nodiscard]] std::vector<Intersection> local_intersect(
@@ -88,4 +93,21 @@ TEST(ShapeTest, NormalOnTransformedShape_IsTransformed) {
   Tuple n = s.normal_at(Tuple::Point(0, sqrt(2) / 2, -sqrt(2) / 2));
 
   EXPECT_EQ(n, Tuple::Vector(0, 0.97014, -0.24254));
+}
+
+TEST(ShapeTest, Shape_HasParentAttribute) {
+  TestShape s;
+
+  EXPECT_FALSE(s.parent_.has_value());
+}
+
+TEST(ShapeTest, Shape_CanBeAddedToGroup) {
+  Group g;
+  TestShape s;
+  g.add_child(s);
+
+  EXPECT_EQ(g.shapes_.size(), 1);
+  EXPECT_EQ(*dynamic_cast<TestShape*>(g.shapes_[0]), s);
+  EXPECT_TRUE(s.parent_.has_value());
+  EXPECT_EQ(s.parent_.value(), &g);
 }

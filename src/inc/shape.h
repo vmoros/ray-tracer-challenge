@@ -5,7 +5,9 @@
 #include <matrix.h>
 #include <ray.h>
 #include <tuple.h>
+class Group;
 
+#include <optional>
 #include <vector>
 
 class Shape {  // abstract parent class for all shapes e.g. Sphere
@@ -30,6 +32,7 @@ class Shape {  // abstract parent class for all shapes e.g. Sphere
   // Mat<4> transformation_;
   Mat<4> inverse_;
   Material material_;
+  std::optional<Group*> parent_;
 
   virtual ~Shape() = default;
 };
