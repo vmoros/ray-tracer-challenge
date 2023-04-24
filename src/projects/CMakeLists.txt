@@ -24,3 +24,6 @@ target_link_libraries(Cubes stuff)
 
 add_executable(Cylinders Cylinders.cc)
 target_link_libraries(Cylinders stuff)
+
+add_executable(Cover Cover.cc)
+target_link_libraries(Cover stuff)

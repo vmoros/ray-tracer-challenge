@@ -8,7 +8,7 @@ Pattern::Pattern(Mat<4> transformation) : inverse_(transformation.inverse()) {}
 
 // Pattern
 Color Pattern::pattern_at_shape(const Shape* shape, Tuple point) const {
-  Tuple object_point = shape->inverse_ * point;
+  Tuple object_point = world_to_object(shape, point);
   Tuple pattern_point = inverse_ * object_point;
 
   return pattern_at(pattern_point);

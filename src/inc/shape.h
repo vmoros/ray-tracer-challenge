@@ -15,6 +15,7 @@ class Shape {  // abstract parent class for all shapes e.g. Sphere
   // Constructors
   Shape(Mat<4> transformation, Material material);
   Shape() = default;
+  virtual ~Shape() = default;
 
   // Misc
   [[nodiscard]] std::vector<Intersection> intersect(Ray r) const;
@@ -28,11 +29,13 @@ class Shape {  // abstract parent class for all shapes e.g. Sphere
       Ray r) const = 0;
   [[nodiscard]] virtual Tuple local_normal_at(Tuple point) const = 0;
 
+  // Friends
+  friend Tuple world_to_object(const Shape* shape, Tuple point);
+  friend Tuple normal_to_world(const Shape* shape, Tuple point);
+
   // Member variables
   // Mat<4> transformation_;
   Mat<4> inverse_;
   Material material_;
-  std::optional<Group*> parent_;
-
-  virtual ~Shape() = default;
+  std::optional<const Group*> parent_;
 };

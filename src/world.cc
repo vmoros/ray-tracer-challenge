@@ -26,7 +26,7 @@ World::World() : World({&s1, &s2}, {default_light}) {}
 std::vector<Intersection> World::intersect(Ray ray) const {
   std::vector<Intersection> ans;
 
-  for (auto& shape : shapes_) {
+  for (auto shape : shapes_) {
     std::vector<Intersection> xs = shape->intersect(ray);
     ans.insert(ans.end(), xs.begin(), xs.end());
   }

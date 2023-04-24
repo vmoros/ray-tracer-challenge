@@ -1,3 +1,4 @@
+#include <group.h>
 #include <ray.h>
 #include <shape.h>
 
@@ -17,4 +18,24 @@ Tuple Shape::normal_at(Tuple point) const {
   world_normal.w_ = 0;
 
   return world_normal.norm();
+}
+
+[[nodiscard]] Tuple world_to_object(const Shape* shape, Tuple point) {
+  if (shape->parent_.has_value()) {
+    point = world_to_object(shape->parent_.value(), point);
+  }
+
+  return shape->inverse_ * point;
+}
+
+[[nodiscard]] Tuple normal_to_world(const Shape* shape, Tuple normal) {
+  normal = shape->inverse_.transp() * normal;
+  normal.w_ = 0;
+  normal = normal.norm();
+
+  if (shape->parent_.has_value()) {
+    normal = normal_to_world(shape->parent_.value(), normal);
+  }
+
+  return normal;
 }

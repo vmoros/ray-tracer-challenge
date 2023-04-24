@@ -8,7 +8,7 @@
 
 #include <vector>
 
-static constexpr int MAX_RECURSION = 4;
+static constexpr int MAX_RECURSION = 10;
 
 class World {
  public:
