@@ -3,7 +3,7 @@ I learned how to make a 3D ray tracer from the awesome book [The Ray Tracer Chal
 This ray tracer is parallelized with OpenMP and has shadows, reflection, refraction, transparency, various patterns, and the Fresnel effect.
 
 # Example renderings
-<img src="pics/cover.png" width=80%> <img src="pics/patterns.png" width=80%> <img src="pics/glass_orb.png" width=80%>
+![](pics/cover.png) ![](pics/patterns.png) ![](pics/glass_orb.png)
 
 # How to run
 The project files that generate pictures like those above are in `src/projects`. Pick a file in there to render and run
