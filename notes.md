@@ -51,11 +51,11 @@ I learned a lot by working on this project. In this file, I'll write about some 
 
 # To do
 
-* General cleanup
-* Switch from headers to modules for fun & learning
-* Explore CRTP and/or std::variant/visit
-* Parallelize rendering
-* Use a profiler to see where the program spends time
+- [ ] General cleanup
+- [ ] Switch from headers to modules for fun & learning
+- [ ] Explore CRTP and/or std::variant/visit
+- [x] Parallelize rendering
+- [x] Use a profiler to see where the program spends time
 
 # Very rough benchmarks
 

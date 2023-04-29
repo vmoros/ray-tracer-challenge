@@ -1,12 +1,10 @@
 #include <camera.h>
 #include <matrix.h>
-#include <omp.h>
 #include <ray.h>
 #include <tuple.h>
 #include <world.h>
 
 #include <cmath>
-#include <iostream>
 
 void Camera::set_halves_and_pixel_size() {
   double half_view = tan(fov_ / 2);

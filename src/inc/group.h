@@ -10,7 +10,7 @@ class Group : public Shape {
  public:
   // Constructors
   Group() = default;
-  Group(const Mat<4> transf) : Shape(transf, Material()) {}
+  explicit Group(const Mat<4> transf) : Shape(transf, Material()) {}
 
   // Misc
   [[nodiscard]] std::vector<Intersection> local_intersect(

@@ -17,7 +17,9 @@ class Cube : public Shape {
   explicit Cube(const Material& mat) : Cube(Mat<4>::iden(), mat) {}
 
   // Misc
-  bool operator==(const Cube& other) const;
+  bool operator==(const Cube& other) const {
+    return inverse_ == other.inverse_ && material_ == other.material_;
+  }
 
   // Member variables come from Shape
 

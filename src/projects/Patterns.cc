@@ -22,11 +22,11 @@ int main() {
   floor.material_.pattern_ = &stripe;
   //   floor.material_.reflectivity_ = 0.6;
 
-  // Make a plane as the back wall
-  Plane back_wall(Mat<4>::rotator_y(PI / 2) * Mat<4>::translator(0, 0, 5) *
-                  Mat<4>::rotator_x(PI / 2));
-  RingPat ring(Color::Pink(), Color::Green());
-  back_wall.material_.pattern_ = &ring;
+  // // Make a plane as the back wall
+  // Plane back_wall(Mat<4>::rotator_y(PI / 2) * Mat<4>::translator(0, 0, 5) *
+  //                 Mat<4>::rotator_x(PI / 2));
+  // RingPat ring(Color::Pink(), Color::Green());
+  // back_wall.material_.pattern_ = &ring;
 
   // Make large sphere in the middle
   Sphere middle(Mat<4>::translator(-0.5, 1, 0.5));
@@ -34,8 +34,8 @@ int main() {
   middle.material_.diffuse_ = 0.7;
   middle.material_.specular_ = 0.3;
   middle.material_.reflectivity_ = 0.5;
-  CheckerPat checker(Color::Blue(), Color::Red());
-  middle.material_.pattern_ = &checker;
+  // CheckerPat checker(Color::Blue(), Color::Red());
+  // middle.material_.pattern_ = &checker;
 
   // Make right sphere
   Sphere right(Mat<4>::translator(1.5, 0.5, -0.5) *
@@ -58,10 +58,10 @@ int main() {
   left.material_.pattern_ = &queen_ring;
 
   // Make world & camera
-  World w({&floor, &back_wall, &middle, &right, &left},
+  World w({&floor, &middle, &right, &left},
           PointLight(Tuple::Point(-10, 10, -10), Color::White()));
 
-  Camera camera(2000, 1200, PI / 3);
+  Camera camera(6000, 4000, PI / 3);
   camera.set_transformation(Mat<4>::view_transform(
       Tuple::Point(0, 1.5, -7), Tuple::Point(0, 1, 0), Tuple::Vector(0, 1, 0)));
 
