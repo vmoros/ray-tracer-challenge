@@ -50,8 +50,8 @@ Canvas Camera::render(const World& w) const {
   Canvas image(hsize_, vsize_);
 
 #pragma omp parallel for
-  for (size_t y = 0; y < vsize_; ++y) {
-    for (size_t x = 0; x < hsize_; ++x) {
+  for (int y = 0; y < vsize_; ++y) {
+    for (int x = 0; x < hsize_; ++x) {
       //      std::cout << "Drawing pixel (" << x << ", " << y << ")" <<
       //      std::endl;
       auto ray = ray_for_pixel(x, y);

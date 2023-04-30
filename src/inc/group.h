@@ -4,6 +4,7 @@
 #include <shape.h>
 
 #include <algorithm>
+#include <stdexcept>
 #include <vector>
 
 class Group : public Shape {
