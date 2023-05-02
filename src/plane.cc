@@ -7,7 +7,7 @@
 #include <vector>
 
 std::vector<Intersection> Plane::local_intersect(Ray ray) const {
-  if (abs(ray.direction_.y_) < EPS) {
+  if (std::abs(ray.direction_.y_) < EPS) {
     return {};  // ray is coplanar
   }
 

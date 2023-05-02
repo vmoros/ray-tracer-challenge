@@ -73,7 +73,7 @@ int main() {
   Cube c17(Mat<4>::translator(-0.5, -8.5, 8) * largeobj, whitemat);
 
   // Camera & World
-  Camera cam(6000, 4000, 1);
+  Camera cam(600, 400, 1);
   cam.set_transformation(Mat<4>::view_transform(Tuple::Point(-6, 6, -10),
                                                 Tuple::Point(6, -4, 6),
                                                 Tuple::Vector(-0.45, 1, 0)));

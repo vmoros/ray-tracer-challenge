@@ -39,11 +39,12 @@ std::vector<Intersection> Cube::local_intersect(Ray ray) const {
 }
 
 Tuple Cube::local_normal_at(Tuple point) const {
-  double maxc = std::max({abs(point.x_), abs(point.y_), abs(point.z_)});
+  double maxc =
+      std::max({std::abs(point.x_), std::abs(point.y_), std::abs(point.z_)});
 
-  if (dbleq(maxc, abs(point.x_))) {
+  if (dbleq(maxc, std::abs(point.x_))) {
     return Tuple::Vector(point.x_, 0, 0);
-  } else if (dbleq(maxc, abs(point.y_))) {
+  } else if (dbleq(maxc, std::abs(point.y_))) {
     return Tuple::Vector(0, point.y_, 0);
   }
   return Tuple::Vector(0, 0, point.z_);

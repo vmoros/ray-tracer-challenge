@@ -94,12 +94,12 @@ class Cone : public Shape {
     }
 
     double t = (min_ - ray.origin_.y_) / ray.direction_.y_;
-    if (check_cap(ray, t, abs(min_))) {
+    if (check_cap(ray, t, std::abs(min_))) {
       xs.emplace_back(t, this);
     }
 
     t = (max_ - ray.origin_.y_) / ray.direction_.y_;
-    if (check_cap(ray, t, abs(max_))) {
+    if (check_cap(ray, t, std::abs(max_))) {
       xs.emplace_back(t, this);
     }
   }

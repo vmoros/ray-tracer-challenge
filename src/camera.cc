@@ -4,7 +4,10 @@
 #include <tuple.h>
 #include <world.h>
 
+#include <algorithm>
 #include <cmath>
+#include <execution>
+#include <utility>
 
 void Camera::set_halves_and_pixel_size() {
   double half_view = tan(fov_ / 2);
@@ -49,16 +52,20 @@ Ray Camera::ray_for_pixel(size_t px, size_t py) const {
 Canvas Camera::render(const World& w) const {
   Canvas image(hsize_, vsize_);
 
-#pragma omp parallel for
-  for (int y = 0; y < vsize_; ++y) {
-    for (int x = 0; x < hsize_; ++x) {
-      //      std::cout << "Drawing pixel (" << x << ", " << y << ")" <<
-      //      std::endl;
-      auto ray = ray_for_pixel(x, y);
-      auto color = w.color_at(ray);
-      image.write_pixel(x, y, color);
+  std::vector<std::pair<size_t, size_t>> inds;
+  for (size_t y = 0; y < vsize_; ++y) {
+    for (size_t x = 0; x < hsize_; ++x) {
+      inds.emplace_back(x, y);
     }
   }
+
+  std::for_each(std::execution::par_unseq, inds.cbegin(), inds.cend(),
+                [&](const std::pair<size_t, size_t> indpair) {
+                  const auto [x, y] = indpair;
+                  auto ray = ray_for_pixel(x, y);
+                  auto color = w.color_at(ray);
+                  image.write_pixel(x, y, color);
+                });
 
   return image;
 }

@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #add_compile_options(-fsanitize=address -fsanitize=undefined)
 #add_link_options(-fsanitize=address -fsanitize=undefined)
+add_link_options(-ltbb)
 
 # set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE
 # "include-what-you-use;-Xiwyu;--mapping_file=/opt/homebrew/opt/llvm/include/c++/v1/libcxx.imp")
@@ -15,6 +16,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(RayTracer)
 
-# enable_testing()
+enable_testing()
 add_subdirectory(src)
-# add_subdirectory(tests)
+add_subdirectory(tests)

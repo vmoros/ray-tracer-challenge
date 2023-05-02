@@ -1,6 +1,6 @@
 I learned how to make a 3D ray tracer from the awesome book [The Ray Tracer Challenge](http://raytracerchallenge.com/).
 
-This ray tracer is parallelized with OpenMP and has shadows, reflection, refraction, transparency, various patterns, and the Fresnel effect.
+This ray tracer is parallelized with C++ [execution policies](https://en.cppreference.com/w/cpp/algorithm/execution_policy_tag_t) and has shadows, reflection, refraction, transparency, various patterns, and the Fresnel effect.
 
 # Example renderings
 ![](pics/cover.png) ![](pics/patterns.png) ![](pics/glass_orb.png)
